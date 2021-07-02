@@ -1,0 +1,16 @@
+# cache
+**/.mypy_cache/
+**/.pytest_cache/
+**/__pycache__/
+
+# build
+**/*.egg-info/
+
+# vscode
+**/.devcontainer/
+**/.vscode/launch.json
+**/.vscode/settings.json
+
+# coverage
+*.coverage
+**/htmlcov/
