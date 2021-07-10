@@ -1,6 +1,6 @@
 import pytest
-from figure_parser.errors import (FigureParserException, OrderPeriodError,
-                                  UnsupportedDomainError)
+from figure_parser.exceptions import (FigureParserException, OrderPeriodError,
+                                      UnsupportedDomainError)
 
 
 def test_order_period_error():

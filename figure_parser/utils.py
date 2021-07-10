@@ -9,7 +9,7 @@ import requests as rq
 from bs4 import BeautifulSoup
 
 from .constants import BrandHost
-from .errors import UnsupportedDomainError
+from .exceptions import UnsupportedDomainError
 
 T = TypeVar('T')
 

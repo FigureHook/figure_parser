@@ -294,7 +294,7 @@ class ProductFactory(ABC):
     __product_parser__: ClassVar[Type[ProductParser]]
 
     @classmethod
-    def createProduct(
+    def create_product(
             cls,
             url: str,
             page: Optional[BeautifulSoup] = None,

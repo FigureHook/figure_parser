@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Any, Optional, TypeVar
 
-from .errors import OrderPeriodError
+from .exceptions import OrderPeriodError
 from .utils import AsDictable
 
 __all__ = [

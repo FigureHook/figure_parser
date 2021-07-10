@@ -1,7 +1,7 @@
 from datetime import date, datetime
 
 import pytest
-from figure_parser.errors import OrderPeriodError
+from figure_parser.exceptions import OrderPeriodError
 from figure_parser.extension_class import (HistoricalReleases, OrderPeriod,
                                            Price, Release)
 from pytest_mock import MockerFixture

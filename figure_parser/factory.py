@@ -9,12 +9,12 @@ from bs4 import BeautifulSoup
 from .abcs import ProductFactory
 from .alter import AlterProductParser
 from .constants import BrandHost
-from .errors import UnsupportedDomainError
+from .exceptions import UnsupportedDomainError
 from .gsc import GSCProductParser
 from .native import NativeProductParser
 
 __all__ = [
-    "GeneralFactory",
+    "UniversalFactory",
     "GSCFactory",
     "AlterFactory",
     "NativeFactory",
@@ -42,7 +42,7 @@ SupportingFactory = namedtuple(
 )
 
 
-class GeneralFactory:
+class UniversalFactory:
     """General Factory"""
     supporting_factories = (
         SupportingFactory(BrandHost.GSC, GSCFactory),
@@ -51,7 +51,7 @@ class GeneralFactory:
     )
 
     @classmethod
-    def createProduct(
+    def create_product(
             cls,
             url: str,
             page: Optional[BeautifulSoup] = None,
@@ -66,7 +66,7 @@ class GeneralFactory:
             raise UnsupportedDomainError(
                 f"Couldn't detect any factory for provided url({url})\nCurrent supported hostnames: {pformat(supported_hosts)}"
             )
-        return factory.createProduct(url, page, is_normalized)
+        return factory.create_product(url, page, is_normalized)
 
     @classmethod
     def detect_factory(cls, url: str) -> Union[Type[ProductFactory], None]:
