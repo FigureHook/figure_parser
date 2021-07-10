@@ -4,6 +4,21 @@ version = "0.0.1"
 description = "Parser for figure"
 authors = ["Elton Chou <plscd748@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/FigureHook/figure_parser"
+keywords = [
+    "parser",
+    "figure"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "License :: OSI Approved :: MIT License",
+]
+include = [
+    "README.md"
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
