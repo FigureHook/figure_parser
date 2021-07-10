@@ -1,6 +1,6 @@
 import re
 from datetime import date
-from typing import Mapping
+from typing import Dict, List, Mapping
 
 from bs4 import BeautifulSoup
 
@@ -11,7 +11,7 @@ from ..utils import RelativeUrl
 class GSCShipment(ShipmentParser):
     source_url = "https://www.goodsmile.info/ja/releaseinfo"
 
-    def _parse_shipment(self, page: BeautifulSoup) -> dict[date, list[Mapping[str, str]]]:
+    def _parse_shipment(self, page: BeautifulSoup) -> Dict[date, List[Mapping[str, str]]]:
         shipment_by_date = {}
 
         dates = _parse_release_dates(page)

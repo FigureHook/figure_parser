@@ -1,6 +1,6 @@
 import re
 from datetime import date, datetime
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from bs4 import BeautifulSoup
 
@@ -37,7 +37,7 @@ class NativeProductParser(ProductParser):
     def parse_category(self) -> str:
         return "フィギュア"
 
-    def parse_prices(self) -> list[Price]:
+    def parse_prices(self) -> List[Price]:
         prices = []
         price_text = self.detail.get('価格')
         if price_text:
@@ -160,7 +160,7 @@ class NativeProductParser(ProductParser):
         return super().parse_order_period()
 
 
-def parse_details(page: BeautifulSoup) -> dict[str, str]:
+def parse_details(page: BeautifulSoup) -> Dict[str, str]:
     details = {}
 
     dts = page.select('dt')

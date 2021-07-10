@@ -14,3 +14,9 @@
 # coverage
 *.coverage
 **/htmlcov/
+
+# one-time data
+**/test_case/html
+
+# config
+.python-version

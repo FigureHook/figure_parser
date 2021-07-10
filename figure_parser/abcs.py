@@ -280,7 +280,7 @@ class ShipmentParser(ABC, UserDict):
         return self.get(_date)
 
     @abstractmethod
-    def _parse_shipment(self, page: BeautifulSoup) -> dict[date, list]:
+    def _parse_shipment(self, page: BeautifulSoup) -> Dict[date, list]:
         """return value would be used in UserDict _dict
         """
         pass

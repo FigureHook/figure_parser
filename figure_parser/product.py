@@ -3,7 +3,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import date
 from hashlib import md5
-from typing import Callable, Optional, Union
+from typing import Callable, List, Optional, Union
 
 from .extension_class import HistoricalReleases, OrderPeriod, Price, Release
 from .utils import AsDictable
@@ -49,9 +49,9 @@ class ProductBase(AsDictable):
     category: str
     resale: bool
     adult: bool
-    images: list[str]
-    sculptors: list[str]
-    paintworks: list[str]
+    images: List[str]
+    sculptors: List[str]
+    paintworks: List[str]
     order_period: OrderPeriod
     release_infos: HistoricalReleases[Release]
     release_date: Optional[date]
@@ -109,7 +109,7 @@ class ProductDataProcessMixin:
         "paintworks",
         "sculptors"
     ]
-    __attrs_to_be_normalized__: list[str] = [
+    __attrs_to_be_normalized__: List[str] = [
         "name",
         "series",
         "manufacturer",
@@ -159,18 +159,18 @@ class Product(ProductBase, ProductDataProcessMixin):
 
 class ProductUtils:
     @staticmethod
-    def normalize_product_attr(attr_value: Union[str, list[str]]):
+    def normalize_product_attr(attr_value: Union[str, List[str]]):
         return _normalize(attr_value, _general_normalize)
 
     @staticmethod
-    def normalize_worker_attr(attr_value: Union[str, list[str]]):
+    def normalize_worker_attr(attr_value: Union[str, List[str]]):
         return _normalize(attr_value, _worker_normalize)
 
 
 NormalizeFunc = Callable[[str], str]
 
 
-def _normalize(attr_value: Union[str, list[str]], normalize_func: NormalizeFunc) -> Union[str, list[str]]:
+def _normalize(attr_value: Union[str, List[str]], normalize_func: NormalizeFunc) -> Union[str, List[str]]:
     if not attr_value:
         return attr_value
     if isinstance(attr_value, str):

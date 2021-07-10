@@ -1,10 +1,13 @@
 import os
 from datetime import datetime
+from hashlib import md5
 from pathlib import Path
 
 import pytest
+import requests
 import yaml
 from _pytest.assertion.util import isiterable
+from bs4 import BeautifulSoup
 from figure_parser.alter import (AlterAnnouncementLinkExtractor,
                                  AlterProductParser, AlterYearlyAnnouncement)
 from figure_parser.constants import AlterCategory, GSCCategory, GSCLang
@@ -22,6 +25,28 @@ def load_yaml(path):
         sth = yaml.safe_load(stream)
 
     return sth
+
+
+def get_html(url: str, headers={}, cookies={}) -> BeautifulSoup:
+    m = md5()
+    m.update(url.encode('utf-8'))
+    hash_name = m.hexdigest()
+
+    html_dir = THIS_DIR.joinpath("test_case", "html")
+    html_dir.mkdir(exist_ok=True)
+
+    html_path = html_dir.joinpath(f"{hash_name}.html")
+    if html_path.exists():
+        with open(html_path, 'r', encoding='utf-8') as html:
+            page = BeautifulSoup(html, "lxml")
+
+    else:
+        with open(html_path, 'w', encoding='utf-8') as html:
+            response = requests.get(url, headers=headers, cookies=cookies)
+            page = BeautifulSoup(response.content, "lxml")
+            html.write(str(page))
+
+    return page
 
 
 class BaseTestCase:
@@ -80,7 +105,8 @@ class BaseTestCase:
             expected_date = e_r["release_date"].date(
             ) if e_r["release_date"] else e_r["release_date"]
             assert r.release_date == expected_date
-            assert r.price.tax_including is e_r['tax_including']
+            if r.price:
+                assert r.price.tax_including is e_r['tax_including']
 
     def test_maker_id(self, item):
         id_ = item["test"].parse_maker_id()
@@ -149,8 +175,9 @@ class TestGSCParser(BaseTestCase):
 
     @pytest.fixture(scope="class", params=products)
     def item(self, request):
+        page = get_html(request.param["url"], GSCProductParser.headers, GSCProductParser.cookies)
         return {
-            "test": GSCProductParser(request.param["url"]),
+            "test": GSCProductParser(request.param["url"], page=page),
             "expected": request.param
         }
 
@@ -201,8 +228,9 @@ class TestAlterParser(BaseTestCase):
 
     @pytest.fixture(scope="class", params=products)
     def item(self, request):
+        page = get_html(request.param["url"])
         return {
-            "test": AlterProductParser(request.param["url"]),
+            "test": AlterProductParser(request.param["url"], page=page),
             "expected": request.param
         }
 
@@ -235,8 +263,9 @@ class TestNativeParser(BaseTestCase):
 
     @pytest.fixture(scope="class", params=products)
     def item(self, request):
+        page = get_html(request.param["url"])
         return {
-            "test": NativeProductParser(request.param["url"]),
+            "test": NativeProductParser(request.param["url"], page=page),
             "expected": request.param
         }
 

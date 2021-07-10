@@ -1,4 +1,5 @@
 import re
+from typing import List
 
 from bs4 import BeautifulSoup
 
@@ -48,7 +49,7 @@ class NativeAnnouncementParser:
 
 class NativeAnnouncementLinkExtractor:
     @staticmethod
-    def extract(page: BeautifulSoup) -> list[str]:
+    def extract(page: BeautifulSoup) ->List[str]:
         item_selector = 'section > a'
         items = page.select(item_selector)
         return [item['href'] for item in items]
