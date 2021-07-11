@@ -58,10 +58,22 @@ figure\_parser.factory module
 figure\_parser.product module
 -----------------------------
 
-.. automodule:: figure_parser.product
+.. currentmodule:: figure_parser.product
+
+.. autoclass:: Product
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. autoclass:: ProductBase
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: ProductDataProcessMixin()
+   :members:
+   :special-members: __attrs_to_be_normalized__
+   :undoc-members:
 
 figure\_parser.utils module
 ---------------------------

@@ -21,7 +21,9 @@ project = 'figure_parser'
 copyright = '2021, Elton'
 author = 'Elton'
 
-
+autodoc_type_aliases = {
+    'Release': 'figure_parser.extension_class.Release',
+}
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -31,6 +33,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx_autodoc_typehints',
+    'sphinx.ext.napoleon'
 ]
 
 html_experimental_html5_writer = True

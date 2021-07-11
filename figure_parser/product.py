@@ -3,7 +3,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import date
 from hashlib import md5
-from typing import Callable, List, Optional, Union
+from typing import Callable, List, Optional, Protocol, Union
 
 from .extension_class import HistoricalReleases, OrderPeriod, Price, Release
 from .utils import AsDictable
@@ -69,6 +69,10 @@ class ProductBase(AsDictable):
 
     @property
     def checksum(self):
+        """md5 checksum.
+
+        This value could be used to check the data was changed or not.
+        """
         checksum_slot = (
             self.name,
             self.manufacturer,
@@ -103,7 +107,12 @@ class ProductBase(AsDictable):
         return f"[{self.manufacturer}] {self.name} {self.category}"
 
 
-class ProductDataProcessMixin:
+class ProductProtocol(Protocol):
+    order_period: OrderPeriod
+    release_infos: HistoricalReleases[Release]
+
+
+class ProductDataProcessMixin(ProductProtocol):
     __slots__ = ()
     __worker_attrs__ = [
         "paintworks",
@@ -119,17 +128,21 @@ class ProductDataProcessMixin:
         "sculptors"
     ]
 
-    order_period: OrderPeriod
-    release_infos: HistoricalReleases[Release]
-
     def normalize_attrs(self) -> None:
         """
-        ## normalize string attributes or string in list attributes
-        + full-width (alphabet, notation) to half-width.
-        + remove duplicate spaces.
-        + remove some weird notations.
-        ## normalize attributes `paintworks` and `sculptors`
-        + replace all brackets to round bracket
+        normalize string value listed in :attr:`__attrs_to_be_normalized__` from :class:`ProductBase`
+
+        +  full-width (alphabet, notation) to half-width.
+
+        +  remove duplicate spaces.
+
+        +  remove some weird notations.
+
+
+        normalize attributes :attr:`.paintworks` and :attr:`.sculptors`
+
+        +  replace all brackets to round bracket
+
         """
         for attr in self.__attrs_to_be_normalized__:
             attr_value = getattr(self, attr)
@@ -142,9 +155,7 @@ class ProductDataProcessMixin:
                 setattr(self, attr, normalized_attr_value)
 
     def speculate_announce_date(self) -> None:
-        """speculate announce_date from order_period
-
-        this method should set last release `.announced_at` to date of order_period `.start`(when existed)
+        """Speculate announce date from :attr:`~ProductBase.order_period`
         """
         last_release = self.release_infos.last()
         if last_release:
