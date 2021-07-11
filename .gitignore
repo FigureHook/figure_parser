@@ -22,3 +22,6 @@
 
 # config
 .python-version
+
+# docs
+docs/_build
