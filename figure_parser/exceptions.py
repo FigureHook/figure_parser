@@ -7,7 +7,7 @@ class FigureParserException(Exception):
 
 class OrderPeriodError(FigureParserException):
     """
-    Exception which is thrown by :class:`OrderPeriod`
+    Exception which is thrown by :class:`figure_parser.extension_class.OrderPeriod`
     """
     pass
 

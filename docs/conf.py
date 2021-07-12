@@ -26,6 +26,7 @@ autodoc_type_aliases = {
     'Price': 'figure_parser.extension_class.Price',
     'HistoricalRelease': 'figure_parser.extension_class.HistoricalReleases',
     'OrderPeriod': 'figure_parser.extension_class.OrderPeriod',
+    'Product': 'figure_parser.product.Product',
 }
 # -- General configuration ---------------------------------------------------
 

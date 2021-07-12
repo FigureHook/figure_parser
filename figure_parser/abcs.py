@@ -21,9 +21,9 @@ __all__ = [
 class ProductParser(ABC):
     """ProductParser base abstract class
 
-    parser would check the given url is from `__allow_domain__` or not when initialized.
+    parser would check the given url is from :attr:`__allow_domain__` or not when initialized.
 
-    For some site you might need to set class variable `headers` or `cookies`.
+    For some site you might need to set :attr:`headers` or :attr:`cookies`.
     """
     __allow_domain__: ClassVar[str]
     headers: ClassVar[Dict[str, str]] = {}
@@ -288,8 +288,8 @@ class ShipmentParser(ABC, UserDict):
 
 class ProductFactory(ABC):
     """
-    # abstract product factory
-    Inherit this class and implement the parser class property
+    Abstract product factory class
+    Inherit this class and implement the :attr:`__product_parser__`
     """
     __product_parser__: ClassVar[Type[ProductParser]]
 
@@ -300,7 +300,23 @@ class ProductFactory(ABC):
             page: Optional[BeautifulSoup] = None,
             is_normalized: bool = False,
             speculate_announce_date: bool = False
-    ):
+    ) -> Product:
+        """
+        Factory method for creating :class:`figure_parser.product.Product` object.
+
+        :param url: Product url
+        :type url: str
+        :param page: Product page, defaults to None
+        :type page: Optional[BeautifulSoup]
+        :param is_normalized: Flag of exectuion of :meth:`figure_parser.product.ProductDataProcessMixin.normalize_attrs`, defaults to False
+        :type is_normalized: bool, optional
+        :param speculate_announce_date: Flag of exectuion of :meth:`figure_parser.product.ProductDataProcessMixin.speculate_announce_date`,
+            defaults to False
+        :type speculate_announce_date: bool, optional
+        :raises NotImplementedError: When :attr:`__product_parser__` is not set.
+        :return: :class:`figure_parser.product.Product` object.
+        :rtype: figure_parser.product.Product
+        """
         if not getattr(cls, "__product_parser__", None):
             raise NotImplementedError(
                 f"Please inherit from {ProductFactory.__name__} and set the class attribute `__product_parser__`."
