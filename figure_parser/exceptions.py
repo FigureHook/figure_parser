@@ -1,16 +1,19 @@
 class FigureParserException(Exception):
-    """Base exception for figure_parser
+    """
+    Base exception for figure_parser
     """
     pass
 
 
 class OrderPeriodError(FigureParserException):
-    """Exception which is thrown when :class:`OrderPeriod` :attr:`.start` is smaller than :attr:`.end`
+    """
+    Exception which is thrown by :class:`OrderPeriod`
     """
     pass
 
 
 class UnsupportedDomainError(FigureParserException):
-    """Exception which is thrown when the given url is from a unsupported domain.
+    """
+    Exception which is thrown when the given url is from a unsupported domain.
     """
     pass

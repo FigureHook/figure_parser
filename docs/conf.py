@@ -23,6 +23,9 @@ author = 'Elton'
 
 autodoc_type_aliases = {
     'Release': 'figure_parser.extension_class.Release',
+    'Price': 'figure_parser.extension_class.Price',
+    'HistoricalRelease': 'figure_parser.extension_class.HistoricalReleases',
+    'OrderPeriod': 'figure_parser.extension_class.OrderPeriod',
 }
 # -- General configuration ---------------------------------------------------
 
