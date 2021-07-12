@@ -1,10 +1,7 @@
-figure\_parser.native package
+native
 =============================
 
-Submodules
-----------
-
-figure\_parser.native.announcement\_parser module
+announcement\_parser
 -------------------------------------------------
 
 .. automodule:: figure_parser.native.announcement_parser
@@ -12,18 +9,10 @@ figure\_parser.native.announcement\_parser module
    :undoc-members:
    :show-inheritance:
 
-figure\_parser.native.product\_parser module
+product\_parser
 --------------------------------------------
 
 .. automodule:: figure_parser.native.product_parser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: figure_parser.native
    :members:
    :undoc-members:
    :show-inheritance:

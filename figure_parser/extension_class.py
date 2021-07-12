@@ -79,21 +79,20 @@ T = TypeVar('T')
 
 class HistoricalReleases(UserList[T]):
     """
-    List[Release]
-
     This would follow None-release-date-first-with-asc rule **when sorted**.
 
-    e.g.
-    ```py
-    HistoricalReleases[
-        Release(release_date=None, price=12000),
-        Release(release_date=date(2020, 1, 1), price=10000),
-        Release(release_date=date(2020, 2, 1), price=12000)
-    ]
-    ```
+    .. highlight:: python
+    .. code-block:: python
+
+        HistoricalReleases([
+            Release(release_date=None, price=12000),
+            Release(release_date=date(2020, 1, 1), price=10000),
+            Release(release_date=date(2020, 2, 1), price=12000)
+        ])
+
     """
 
-    def sort(self, *args: Any, **kwds: Any) -> None:
+    def sort(self, *args: Any, **kwargs: Any) -> None:
         def sort_release(release: Release):
             if isinstance(release.release_date, date):
                 return release.release_date

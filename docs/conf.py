@@ -37,8 +37,8 @@ extensions = [
 ]
 
 html_experimental_html5_writer = True
-add_module_names = False
 autodoc_typehints = 'description'
+autodoc_member_order = 'bysource'
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3', None)
 }

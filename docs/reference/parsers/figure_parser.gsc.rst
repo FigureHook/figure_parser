@@ -1,10 +1,7 @@
-figure\_parser.gsc package
+gsc
 ==========================
 
-Submodules
-----------
-
-figure\_parser.gsc.announcement\_parser module
+announcement\_parser
 ----------------------------------------------
 
 .. automodule:: figure_parser.gsc.announcement_parser
@@ -12,7 +9,7 @@ figure\_parser.gsc.announcement\_parser module
    :undoc-members:
    :show-inheritance:
 
-figure\_parser.gsc.product\_parser module
+product\_parser
 -----------------------------------------
 
 .. automodule:: figure_parser.gsc.product_parser
@@ -20,18 +17,10 @@ figure\_parser.gsc.product\_parser module
    :undoc-members:
    :show-inheritance:
 
-figure\_parser.gsc.shipment\_parser module
+shipment\_parser
 ------------------------------------------
 
 .. automodule:: figure_parser.gsc.shipment_parser
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: figure_parser.gsc
    :members:
    :undoc-members:
    :show-inheritance:

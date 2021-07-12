@@ -10,7 +10,7 @@ Welcome to figure_parser's documentation!
    :maxdepth: 3
    :caption: Contents:
 
-   modules
+   reference/index
 
 
 Indices and tables
