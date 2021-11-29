@@ -259,6 +259,8 @@ class GSCProductParser(ProductParser):
         the_copyright: str = _copyright.text.strip()
         # FIXME: This is monkey patch.
         the_copyright = the_copyright.replace("\n\n", "\n")
+        the_copyright = the_copyright.replace("\r", "")
+        the_copyright = the_copyright.replace(u"\u3000", "\n")
 
         return the_copyright
 
