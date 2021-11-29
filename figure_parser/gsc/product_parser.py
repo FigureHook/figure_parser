@@ -18,7 +18,7 @@ Bs4Element = Union[Tag, NavigableString, None]
 
 locale_file_path = Path(__file__).parent.joinpath('locale', 'gsc_parse.yml')
 
-with open(locale_file_path, "r") as stream:
+with open(locale_file_path, "r", encoding='utf-8') as stream:
     locale_dict = yaml.safe_load(stream)
 
 

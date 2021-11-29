@@ -21,7 +21,7 @@ THIS_DIR = Path(os.path.dirname(__file__)).resolve()
 
 
 def load_yaml(path):
-    with open(path, "r") as stream:
+    with open(path, "r", encoding='utf-8') as stream:
         sth = yaml.safe_load(stream)
 
     return sth
