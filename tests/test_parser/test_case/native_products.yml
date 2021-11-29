@@ -97,7 +97,7 @@
     - 中野フィギュア教室（福井）
   release_infos:
     - price: 29700
-      release_date: 2021-10-01 00:00:00
+      release_date: 2021-12-01 00:00:00
       tax_including: true
   releaser: BINDing
   resale: false
@@ -196,7 +196,7 @@
   distributer: ネイティブ
   images: https://www.native-web.jp/wp-content/uploads/2020/06/img_200605-misa_02.jpg
   maker_id: "4875"
-  manufacturer: PROGRESS
+  manufacturer: native
   name: ミサ
   og_image: https://www.native-web.jp/wp-content/uploads/2020/06/img_200605-misa_01.jpg
   order_period:

@@ -301,7 +301,7 @@
       release_date: 2017-04-01 00:00:00
       tax_including: false
     - price: 13000
-      release_date: 2021-05-01 00:00:00
+      release_date: 2021-11-01 00:00:00
       tax_including: false
   releaser: Phat!
   resale: true
@@ -335,7 +335,7 @@
       release_date: 2017-02-01 00:00:00
       tax_including: true
     - price: 14300
-      release_date: 2021-05-01 00:00:00
+      release_date: 2021-11-01 00:00:00
       tax_including: true
   releaser: Phat! Company
   resale: true
@@ -623,7 +623,7 @@
   distributer: グッドスマイルカンパニー
   images: https://images.goodsmile.info/cgm/images/product/20200131/9250/67403/large/9b6feaa42c4e43c59d2bf1d5fb94a8a9.jpg
   maker_id: "9250"
-  manufacturer: アクアマリン
+  manufacturer: グッドスマイルカンパニー
   name: 時崎狂三 決意のafter date style
   og_image: http://images.goodsmile.info/cgm/images/product/20200131/9250/67413/medium/804a5ffe1132adb6dce72b2e271ec3b3.jpg
   order_period:
@@ -635,7 +635,7 @@
     - price: 15180
       release_date: 2021-06-01 00:00:00
       tax_including: true
-  releaser: アクアマリン
+  releaser: グッドスマイルカンパニー
   resale: false
   scale: 7
   sculptor:
