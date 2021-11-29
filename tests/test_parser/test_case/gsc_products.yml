@@ -72,7 +72,7 @@
     - 佐倉
   release_infos:
     - price: 35200
-      release_date: 2021-09-01 00:00:00
+      release_date: 2022-03-01 00:00:00
       tax_including: true
   releaser: ファット・カンパニー
   resale: false
@@ -186,7 +186,7 @@
   paintwork: []
   release_infos:
     - price: 66000
-      release_date: 2021-09-01 00:00:00
+      release_date: 2022-01-01 00:00:00
       tax_including: true
   releaser: threezero
   resale: false
@@ -541,7 +541,7 @@
     - 中野フィギュア教室（福井）
   release_infos:
     - price: 16800
-      release_date: 2021-08-01 00:00:00
+      release_date: 2021-12-01 00:00:00
       tax_including: true
   releaser: マックスファクトリー
   resale: false
