@@ -257,6 +257,8 @@ class GSCProductParser(ProductParser):
             return None
 
         the_copyright: str = _copyright.text.strip()
+        # FIXME: This is monkey patch.
+        the_copyright = the_copyright.replace("\n\n", "\n")
 
         return the_copyright
 
