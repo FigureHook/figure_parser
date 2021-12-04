@@ -1,0 +1,2 @@
+furo==2021.7.5-beta.38
+sphinx-autodoc-typehints==1.12.0
