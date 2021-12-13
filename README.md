@@ -17,6 +17,7 @@
 | ORCATORYS      |                |              |                 |
 | quesQ          |                |              |                 |
 | MegaHouse      |                |              |                 |
+| F:NEX          |                |              |                 |
 
 ## Shop List
 - [ ] TokyoFigure
