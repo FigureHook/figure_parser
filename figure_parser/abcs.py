@@ -308,10 +308,11 @@ class ProductFactory(ABC):
         :type url: str
         :param page: Product page, defaults to None
         :type page: Optional[BeautifulSoup]
-        :param is_normalized: Flag of exectuion of :meth:`figure_parser.product.ProductDataProcessMixin.normalize_attrs`, defaults to False
+        :param is_normalized: Flag of exectuion of
+            :meth:`figure_parser.product.ProductDataProcessMixin.normalize_attrs`, defaults to False
         :type is_normalized: bool, optional
-        :param speculate_announce_date: Flag of exectuion of :meth:`figure_parser.product.ProductDataProcessMixin.speculate_announce_date`,
-            defaults to False
+        :param speculate_announce_date: Flag of exectuion of
+            :meth:`figure_parser.product.ProductDataProcessMixin.speculate_announce_date`, defaults to False
         :type speculate_announce_date: bool, optional
         :raises NotImplementedError: When :attr:`__product_parser__` is not set.
         :return: :class:`figure_parser.product.Product` object.
