@@ -672,3 +672,32 @@
   size: 250
   thumbnail: http://images.goodsmile.info/cgm/images/product/20180424/7236/51673/medium/a7b017b3455ac47778439f07e888e7d0.jpg
   url: https://www.goodsmile.info/ja/product/7236/
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©くまなの・主婦と生活社／くまクマ熊ベアー製作委員会
+  distributer: グッドスマイルカンパニー
+  images: https://images.goodsmile.info/cgm/images/product/20210820/11683/88996/large/7d16192298deea4821984ebef8e1246f.jpg
+  maker_id: "11683"
+  manufacturer: FREEing
+  name: ユナ クマスーツVer.
+  og_image: http://images.goodsmile.info/cgm/images/product/20210820/11683/89003/medium/c7cdf08c1afe298b4a285404bd9dfd0f.jpg
+  order_period:
+    end: 2021-09-22 21:00:00
+    start: 2021-08-26 12:00:00
+  paintwork:
+    - 谷本 裕人
+  release_infos:
+    - price: 29700
+      release_date: 2022-04-01 00:00:00
+      tax_including: true
+  releaser: FREEing
+  resale: false
+  scale: 4
+  sculptor:
+    - そんそーす
+    - YOSHI
+  series: くまクマ熊ベアー
+  size: 370
+  thumbnail: http://images.goodsmile.info/cgm/images/product/20210820/11683/89003/medium/c7cdf08c1afe298b4a285404bd9dfd0f.jpg
+  url: https://www.goodsmile.info/ja/product/11683
