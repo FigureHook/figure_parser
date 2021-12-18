@@ -199,7 +199,9 @@ def _normalize(attr_value: Union[str, list[str]], normalize_func: NormalizeFunc)
     if isinstance(attr_value, list):
         return [normalize_func(v) for v in attr_value]
 
-    raise TypeError(f"attr_value {attr_value} should be `{str}` or `{list[str]}`")
+    raise TypeError(
+        f"attr_value can't be {type(attr_value)} should be `{str}` or `{list[str]}`. (value: {attr_value}"
+    )
 
 
 def _general_normalize(value: str) -> str:
