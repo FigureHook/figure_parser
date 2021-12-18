@@ -87,7 +87,7 @@ def scale_parse(text: str) -> Union[int, None]:
 
 def size_parse(text: str) -> Union[int, None]:
     text = text.replace(",", "")
-    pattern = r"(\d+)\s?[㎜|mm|ｍｍ|cm|㎝|ｃｍ]"
+    pattern = r"([\d\.?]+)\s?[㎜|mm|ｍｍ|cm|㎝|ｃｍ]"
     is_cm = any(("cm" in text, "㎝" in text, "ｃｍ" in text))
     size_text = re.search(pattern, text)
 
