@@ -3,7 +3,7 @@ import unicodedata
 from dataclasses import dataclass
 from datetime import date
 from hashlib import md5
-from typing import Callable, List, Optional, Protocol, Union
+from typing import Callable, List, Optional, Protocol, Union, overload
 
 from .extension_class import HistoricalReleases, OrderPeriod, Price, Release
 from .utils import AsDictable
@@ -170,18 +170,28 @@ class Product(ProductBase, ProductDataProcessMixin):
 
 class ProductUtils:
     @staticmethod
-    def normalize_product_attr(attr_value: Union[str, List[str]]):
+    def normalize_product_attr(attr_value: Union[str, list[str]]):
         return _normalize(attr_value, _general_normalize)
 
     @staticmethod
-    def normalize_worker_attr(attr_value: Union[str, List[str]]):
+    def normalize_worker_attr(attr_value: Union[str, list[str]]):
         return _normalize(attr_value, _worker_normalize)
 
 
 NormalizeFunc = Callable[[str], str]
 
 
-def _normalize(attr_value: Union[str, List[str]], normalize_func: NormalizeFunc) -> Union[str, List[str]]:
+@overload
+def _normalize(attr_value: str, normalize_func: NormalizeFunc) -> str:
+    ...
+
+
+@overload
+def _normalize(attr_value: list[str], normalize_func: NormalizeFunc) -> list[str]:
+    ...
+
+
+def _normalize(attr_value: Union[str, list[str]], normalize_func: NormalizeFunc) -> Union[str, list[str]]:
     if not attr_value:
         return attr_value
     if isinstance(attr_value, str):
@@ -189,7 +199,7 @@ def _normalize(attr_value: Union[str, List[str]], normalize_func: NormalizeFunc)
     if isinstance(attr_value, list):
         return [normalize_func(v) for v in attr_value]
 
-    raise TypeError(f"attr_value {attr_value} should be `str` or `list[str]`")
+    raise TypeError(f"attr_value {attr_value} should be `{str}` or `{list[str]}`")
 
 
 def _general_normalize(value: str) -> str:
