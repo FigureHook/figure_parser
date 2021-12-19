@@ -98,7 +98,6 @@ def parse_year_and_month(day_month_ele):
     return year, month
 
 
-@is_critical
 def parse_day(day_ele) -> int:
     day_pattern = r"(?P<month>\d+)月(?P<day>\d+)日"
 
