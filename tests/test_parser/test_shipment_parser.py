@@ -1,8 +1,9 @@
 from datetime import date
-from pytest_mock import MockerFixture
-from figure_parser.gsc.shipment_parser import GSCShipment, is_critical
-from figure_parser.exceptions import TargetConstructureChangeError
+
 import pytest
+from figure_parser.exceptions import UnreliableParserError
+from figure_parser.gsc.shipment_parser import GSCShipment, is_critical
+from pytest_mock import MockerFixture
 
 
 class TestGSCShipment:
@@ -13,20 +14,28 @@ class TestGSCShipment:
             assert type(d) is date
 
     def test_parsing_year_and_month_failed(self, mocker: MockerFixture):
-        mocker.patch(
-            "figure_parser.gsc.shipment_parser._parse_release_dates",
-            side_effect=TargetConstructureChangeError("Damn")
-        )
+        mocker.patch("figure_parser.gsc.shipment_parser.parse_year_and_month", side_effect=AssertionError("Damn"))
 
-        with pytest.raises(TargetConstructureChangeError):
+        with pytest.raises(UnreliableParserError):
+            GSCShipment()
+
+    def test_parsing_day_failed(self, mocker: MockerFixture):
+        mocker.patch("figure_parser.gsc.shipment_parser.parse_day", side_effect=AssertionError("Damn"))
+
+        with pytest.raises(UnreliableParserError):
             GSCShipment()
 
     def test_critical_decorator(self):
         def mock_func():
-            raise TargetConstructureChangeError("Damn")
-
-        from figure_parser.gsc.shipment_parser import is_critical
+            assert None, "Damn"
 
         damn = is_critical(mock_func)
-        with pytest.raises(TargetConstructureChangeError, match="Please contact with"):
+        with pytest.raises(UnreliableParserError, match="Please contact with"):
             damn()
+
+    def test_dates_and_products_are_misaligned(self, mocker: MockerFixture):
+        mocker.patch("figure_parser.gsc.shipment_parser.parse_release_dates", return_value=[1, 2])
+        mocker.patch("figure_parser.gsc.shipment_parser.parse_release_products", return_value=[1, 2, 3])
+
+        with pytest.raises(UnreliableParserError):
+            GSCShipment()
