@@ -1,6 +1,7 @@
 [![Pypi](https://img.shields.io/pypi/pyversions/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
 [![Pypi](https://img.shields.io/pypi/v/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
 [![CI](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml/badge.svg?branch=main&event=schedule&)](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml)
+[![Coverage](https://img.shields.io/coveralls/github/FigureHook/figure_parser?style=flat-square)](https://coveralls.io/github/FigureHook/figure_parser)
 
 ## Maker List
 |                                      | Product parser | Delay parser | Shipment parser |
