@@ -21,18 +21,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-        
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install poetry==1.1.8 tox
+        pip install poetry==1.1.11 tox
         poetry config virtualenvs.create false
-    
+
     - name: Test Project
       run: |
         tox
+
+    - name: Run coverage
+      if: ${{ github.event_name == 'push' }}
+      run: |
+        poetry install
+        coverage run -m pytest
+
+    - name:  coverage data to Coveralls
+      if: ${{ github.event_name == 'push' }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
