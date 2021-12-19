@@ -3,25 +3,25 @@
 [![CI](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml/badge.svg?branch=main&event=schedule&)](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml)
 
 ## Maker List
-|                | Product parser | Delay parser | Shipment parser |
-| -------------- | -------------- | ------------ | --------------- |
-| GSC            | V              |              | V               |
-| Alter          | V              |              |                 |
-| native         | V              |              |                 |
-| SKYTUBE        |                |              |                 |
-| AMAKUNI        |                |              |                 |
-| KOTOBUKIYA     |                |              |                 |
-| daikikougyou   |                |              |                 |
-| OrchidSeed     |                |              |                 |
-| FLARE          |                |              |                 |
-| PLUM           |                |              |                 |
-| WAVE           |                |              |                 |
-| union-creative |                |              |                 |
-| alphamax       |                |              |                 |
-| ORCATORYS      |                |              |                 |
-| quesQ          |                |              |                 |
-| MegaHouse      |                |              |                 |
-| F:NEX          |                |              |                 |
+|                                      | Product parser | Delay parser | Shipment parser |
+| ------------------------------------ | -------------- | ------------ | --------------- |
+| [GSC](https://www.goodsmile.info/)   | V              |              | V               |
+| [Alter](https://alter-web.jp/)       | V              |              |                 |
+| [native](https://www.native-web.jp/) | V              |              |                 |
+| [SKYTUBE](https://skytube.jp/)       |                |              |                 |
+| [AMAKUNI](http://amakuni.info/)      |                |              |                 |
+| KOTOBUKIYA                           |                |              |                 |
+| daikikougyou                         |                |              |                 |
+| OrchidSeed                           |                |              |                 |
+| FLARE                                |                |              |                 |
+| PLUM                                 |                |              |                 |
+| WAVE                                 |                |              |                 |
+| union-creative                       |                |              |                 |
+| alphamax                             |                |              |                 |
+| ORCATORYS                            |                |              |                 |
+| quesQ                                |                |              |                 |
+| MegaHouse                            |                |              |                 |
+| F:NEX                                |                |              |                 |
 
 ## Shop List
 - [ ] TokyoFigure
