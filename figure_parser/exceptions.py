@@ -19,7 +19,7 @@ class UnsupportedDomainError(FigureParserException):
     pass
 
 
-class TargetConstructureChangeError(FigureParserException):
+class UnreliableParserError(FigureParserException):
     """
-    Critical error that might need rewrite the parser.
+    Thrown when the parser might be unreliable.
     """

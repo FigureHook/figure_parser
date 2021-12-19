@@ -5,7 +5,7 @@ from typing import Callable, Dict, List, Mapping
 from bs4 import BeautifulSoup
 
 from ..abcs import ShipmentParser
-from ..exceptions import TargetConstructureChangeError
+from ..exceptions import UnreliableParserError
 from ..utils import RelativeUrl
 
 
@@ -13,8 +13,8 @@ def is_critical(func: Callable):
     def wrap(*args, **kwargs):
         try:
             ret_val = func(*args, **kwargs)
-        except TargetConstructureChangeError as err:
-            raise TargetConstructureChangeError(
+        except AssertionError as err:
+            raise UnreliableParserError(
                 f"{func.__name__} part of {GSCShipment} can't be executed normally.\n"
                 f"Please contact with maintainers."
                 f"(reasons: {str(err)})"
@@ -31,8 +31,11 @@ class GSCShipment(ShipmentParser):
     def _parse_shipment(self, page: BeautifulSoup) -> Dict[date, List[Mapping[str, str]]]:
         shipment_by_date = {}
 
-        dates = _parse_release_dates(page)
-        products = _parse_release_products(page)
+        dates = parse_release_dates(page)
+        products = parse_release_products(page)
+
+        if len(dates) != len(products):
+            raise UnreliableParserError(f"Can't align dates and products amount in {self.source_url}.")
 
         for d, ps in zip(dates, products):
             shipment_by_date.setdefault(d, ps)
@@ -40,7 +43,7 @@ class GSCShipment(ShipmentParser):
         return shipment_by_date
 
 
-def _parse_release_products(page):
+def parse_release_products(page):
     products_by_date = []
     product_batches = page.select(".arrowlisting > ul")
     for batch in product_batches:
@@ -67,7 +70,7 @@ def parse_products(batch):
 
 
 @is_critical
-def _parse_release_dates(page):
+def parse_release_dates(page):
     release_group = page.select(".arrowlisting")
 
     dates = []
@@ -90,21 +93,21 @@ def parse_year_and_month(day_month_ele):
         for x in day_month_ele.select_one("#largedate").text.split(".")
     )
 
-    if all((year, month)):
-        return year, month
+    assert all((year, month)), "Failed to parse the year and the month."
 
-    raise TargetConstructureChangeError(f"Failed to parse the year and the month.")
+    return year, month
 
 
+@is_critical
 def parse_day(day_ele) -> int:
     day_pattern = r"(?P<month>\d+)月(?P<day>\d+)日"
 
     day_match = re.match(day_pattern, day_ele.text.strip())
-    if day_match:
-        day = day_match.group('day')
-        return int(day)
 
-    raise TargetConstructureChangeError("Failed to parse the day.")
+    assert day_match, "Failed to parse the day."
+
+    day = day_match.group('day')
+    return int(day)
 
 
 def parse_jan(jan_ele):
