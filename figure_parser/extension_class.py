@@ -1,7 +1,7 @@
 from collections import UserList
 from dataclasses import dataclass
 from datetime import date, datetime
-from typing import Any, Optional, TypeVar
+from typing import Any, Optional, TypeVar, Union
 
 from .exceptions import OrderPeriodError
 from .utils import AsDictable
@@ -160,9 +160,11 @@ class HistoricalReleases(UserList[T]):
         :param kwargs: Additional key-word arguments for :meth:`list.sort`.
         :type kwargs: dict
         """
-        def sort_release(release: Release):
-            if isinstance(release.release_date, date):
-                return release.release_date
+
+        def sort_release(release: Union[T, Release, None]):
+            if isinstance(release, Release):
+                if isinstance(release.release_date, date):
+                    return release.release_date
             return date.fromtimestamp(0)
 
         super().sort(key=sort_release, *args, **kwargs)
