@@ -1,6 +1,6 @@
 [![Pypi](https://img.shields.io/pypi/pyversions/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
 [![Pypi](https://img.shields.io/pypi/v/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
-[![CI](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml/badge.svg?branch=main&event=schedule&)](https://github.com/FigureHook/figure_parser/actions/workflows/tox.yml)
+[![CI](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FFigureHook%2Ffigure_parser%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/FigureHook/figure_parser/goto?ref=main)
 [![Coverage](https://img.shields.io/coveralls/github/FigureHook/figure_parser?style=flat-square)](https://coveralls.io/github/FigureHook/figure_parser)
 
 ## Maker List
