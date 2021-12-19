@@ -37,16 +37,15 @@ jobs:
       run: |
         tox
 
-    - name: Coverage
+    - name: Run coverage
       if: ${{ github.event_name == 'push' }}
       run: |
         poetry install
         coverage run -m pytest
-        coverage xml
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
+    - name:  coverage data to Coveralls
       if: ${{ github.event_name == 'push' }}
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: .coverage
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        coveralls --service=github
