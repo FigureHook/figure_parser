@@ -285,7 +285,7 @@ class ShipmentParser(ABC, UserDict):
 
     @property
     def dates(self):
-        return self.keys
+        return self.keys()
 
     def today(self):
         return self.get(date.today())
