@@ -23,7 +23,7 @@ include = [
 [tool.poetry.dependencies]
 python = "^3.9"
 beautifulsoup4 = ">=4.9.3"
-lxml = ">=4.6.3"
+lxml = ">=4.6.5"
 requests = ">=2.25.1"
 PyYAML = "^5.2"
 feedparser = "^6.0.8"
