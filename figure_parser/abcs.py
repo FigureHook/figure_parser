@@ -214,14 +214,28 @@ class ProductParser(ABC):
         """
         meta_thumbnail = self.page.select_one("meta[name='thumbnail']")
         thumbnail = meta_thumbnail["content"] if meta_thumbnail else None
-        return thumbnail
+
+        if type(thumbnail) is list:
+            if len(thumbnail):
+                return thumbnail[0]
+        if type(thumbnail) is str:
+            return thumbnail
+
+        return None
 
     def parse_og_image(self) -> Union[str, None]:
         """Parse open graph image from meta tag.
         """
-        meta_og_image = self.page.find("meta", property="og:image")
+        meta_og_image = self.page.select_one("meta[property='og:image']")
         og_image = meta_og_image["content"] if meta_og_image else None
-        return og_image
+
+        if type(og_image) is list:
+            if len(og_image):
+                return og_image[0]
+        if type(og_image) is str:
+            return og_image
+
+        return None
 
 
 class YearlyAnnouncement(ABC):
