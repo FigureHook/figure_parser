@@ -27,6 +27,12 @@ class GSCYearlyAnnouncement(YearlyAnnouncement):
 class GSCAnnouncementLinkExtractor:
     @staticmethod
     def extract(page: BeautifulSoup) -> List[str]:
+        item_urls = []
         item_selector = ".hitItem:not(.shimeproduct) > .hitBox > a"
         items = page.select(item_selector)
-        return [item["href"] for item in items]
+
+        for item in items:
+            if 'href' in item.attrs:
+                item_urls.append([item.get('href')])
+
+        return item_urls
