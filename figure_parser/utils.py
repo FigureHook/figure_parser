@@ -30,6 +30,7 @@ def make_last_element_filler(target_list: List[T], desired_length: int) -> Itera
 
 def get_page(url, headers={}, cookies={}):
     response = rq.get(url, headers=headers, cookies=cookies)
+    response.raise_for_status()
     page = BeautifulSoup(response.text, "lxml")
     return page
 
