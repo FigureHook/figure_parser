@@ -17,3 +17,9 @@ class UnsupportedDomainError(FigureParserException):
     Exception which is thrown when the given url is from a unsupported domain.
     """
     pass
+
+
+class UnreliableParserError(FigureParserException):
+    """
+    Thrown when the parser might be unreliable.
+    """
