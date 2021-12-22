@@ -182,9 +182,9 @@ NormalizeFunc = Callable[[str], str]
 
 
 @overload
-def _normalize(attr_value: str, normalize_func: NormalizeFunc) -> str: ...  # pragma: no cover
+def _normalize(attr_value: str, normalize_func: NormalizeFunc) -> str: ...
 @overload
-def _normalize(attr_value: list[str], normalize_func: NormalizeFunc) -> list[str]: ...  # pragma: no cover
+def _normalize(attr_value: list[str], normalize_func: NormalizeFunc) -> list[str]: ...
 
 
 def _normalize(attr_value: Union[str, list[str]], normalize_func: NormalizeFunc) -> Union[str, list[str]]:
