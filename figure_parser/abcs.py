@@ -240,6 +240,8 @@ class ProductParser(ABC):
 
 class YearlyAnnouncement(ABC):
     def __init__(self, start: int, end: Optional[int]):
+        self._current_year = start
+
         if not end:
             end = datetime.now().replace(tzinfo=timezone('Asia/Tokyo')).year
 
@@ -254,12 +256,17 @@ class YearlyAnnouncement(ABC):
 
         self.period = range(start, end+1)
 
+    @property
+    def current_year(self):
+        return self._current_year
+
     @abstractmethod
     def get_yearly_items(self, year: int) -> List[str]:
         pass
 
     def __iter__(self):
         for year in self.period:
+            self._current_year = year
             items = self.get_yearly_items(year)
             yield items
 

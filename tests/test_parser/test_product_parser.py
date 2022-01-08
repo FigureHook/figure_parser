@@ -189,8 +189,12 @@ class TestGSCParser(BaseTestCase):
         )
 
         assert isiterable(gsc_yearly)
+
+        now = datetime.now()
         for items in gsc_yearly:
-            assert items
+            is_beginning_of_year = gsc_yearly.current_year == now.year and now < datetime(now.year, 1, 20)
+            if gsc_yearly.current_year != now.year or not is_beginning_of_year:
+                assert items
             assert isinstance(items, list)
 
     def test_worker_parser(self):
