@@ -192,7 +192,7 @@
 - JAN: null
   adult: true
   category: フィギュア
-  copyright: ©PROGRESS ©なつめえり
+  copyright: ©なつめえり
   distributer: ネイティブ
   images: https://www.native-web.jp/wp-content/uploads/2020/06/img_200605-misa_02.jpg
   maker_id: "4875"
@@ -208,7 +208,7 @@
     - price: 18700
       release_date: 2022-01-01 00:00:00
       tax_including: true
-  releaser: PROGRESS
+  releaser: ネイティブ
   resale: false
   scale: 6
   sculptor:
