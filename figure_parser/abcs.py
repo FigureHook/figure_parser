@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from collections import UserDict
 from datetime import date, datetime
 from typing import ClassVar, Dict, List, Optional, Type, Union
 
@@ -13,7 +12,6 @@ from .utils import check_domain, get_page, make_last_element_filler
 __all__ = [
     "ProductParser",
     "YearlyAnnouncement",
-    "ShipmentParser",
     "ProductFactory",
 ]
 
@@ -269,42 +267,6 @@ class YearlyAnnouncement(ABC):
             self._current_year = year
             items = self.get_yearly_items(year)
             yield items
-
-
-class ShipmentParser(ABC, UserDict):
-    """
-    ShipmentParser
-
-    dict-like object.
-
-    Keys should be `datetime.date`
-
-    Values should be list with products' identification (keys: `url`, `jan`)
-    """
-    source_url: ClassVar[str]
-
-    def __init__(self, page: BeautifulSoup = None) -> None:
-        if not page:
-            page = get_page(self.source_url)
-
-        init_data = self._parse_shipment(page)
-        super().__init__(init_data)
-
-    @property
-    def dates(self):
-        return self.keys()
-
-    def today(self):
-        return self.get(date.today())
-
-    def shipped_out_on(self, _date: date):
-        return self.get(_date)
-
-    @abstractmethod
-    def _parse_shipment(self, page: BeautifulSoup) -> Dict[date, list]:
-        """return value would be used in UserDict _dict
-        """
-        pass
 
 
 class ProductFactory(ABC):

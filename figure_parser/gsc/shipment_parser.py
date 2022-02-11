@@ -1,12 +1,13 @@
 import re
+from collections import UserDict
+from dataclasses import dataclass
 from datetime import date
-from typing import Callable, Dict, List, Mapping
+from typing import Callable, Optional
 
 from bs4 import BeautifulSoup
 
-from ..abcs import ShipmentParser
 from ..exceptions import UnreliableParserError
-from ..utils import RelativeUrl
+from ..utils import RelativeUrl, get_page
 
 
 def is_critical(func: Callable):
@@ -25,26 +26,32 @@ def is_critical(func: Callable):
     return wrap
 
 
-class GSCShipment(ShipmentParser):
-    source_url = "https://www.goodsmile.info/ja/releaseinfo"
-
-    def _parse_shipment(self, page: BeautifulSoup) -> Dict[date, List[Mapping[str, str]]]:
-        shipment_by_date = {}
-
-        dates = parse_release_dates(page)
-        products = parse_release_products(page)
-
-        if len(dates) != len(products):
-            raise UnreliableParserError(f"Can't align dates and products amount in {self.source_url}.")
-
-        for d, ps in zip(dates, products):
-            shipment_by_date.setdefault(d, ps)
-
-        return shipment_by_date
+@dataclass
+class GSCShipmentTag:
+    url: str
+    jan: Optional[str]
 
 
-def parse_release_products(page):
-    products_by_date = []
+def _parse_shipment(url: str, page: BeautifulSoup) -> dict[date, list[GSCShipmentTag]]:
+    if not page:
+        page = get_page(url)
+
+    shipment_by_date = {}
+
+    dates = parse_release_dates(page)
+    products = parse_release_products(page)
+
+    if len(dates) != len(products):
+        raise UnreliableParserError(f"Can't align dates and products amount in {url}.")
+
+    for d, ps in zip(dates, products):
+        shipment_by_date.setdefault(d, ps)
+
+    return shipment_by_date
+
+
+def parse_release_products(page) -> list[list[GSCShipmentTag]]:
+    products_by_date: list[list[GSCShipmentTag]] = []
     product_batches = page.select(".arrowlisting > ul")
     for batch in product_batches:
         products = parse_products(batch)
@@ -54,26 +61,23 @@ def parse_release_products(page):
 
 
 def parse_products(batch):
-    products = []
+    products: list[GSCShipmentTag] = []
 
     for product in batch.select("li"):
         product_link = product.select_one("a")
         jan_ele = fetch_jan_element(product)
         if product_link:
-            product = {
-                "url": RelativeUrl.gsc(product_link["href"]),
-                "jan": parse_jan(jan_ele)
-            }
-            products.append(product)
+            product_tag = GSCShipmentTag(url=RelativeUrl.gsc(product_link["href"]), jan=parse_jan(jan_ele))
+            products.append(product_tag)
 
     return products
 
 
 @is_critical
-def parse_release_dates(page):
+def parse_release_dates(page) -> list[date]:
     release_group = page.select(".arrowlisting")
 
-    dates = []
+    dates: list[date] = []
 
     for group in release_group:
         year, month = parse_year_and_month(group)
@@ -120,3 +124,22 @@ def parse_jan(jan_ele):
 
 def fetch_jan_element(product_li_ele):
     return product_li_ele.select_one("small")
+
+
+class GSCShipment(UserDict[date, list[GSCShipmentTag]]):
+    source_url = "https://www.goodsmile.info/ja/releaseinfo"
+
+    @property
+    def dates(self):
+        return self.keys()
+
+    def today(self):
+        return self.get(date.today())
+
+    def shipped_out_on(self, _date: date):
+        return self.get(_date)
+
+    @classmethod
+    def create(cls, page=None):
+        init_data = _parse_shipment(cls.source_url, page)
+        return cls(init_data)
