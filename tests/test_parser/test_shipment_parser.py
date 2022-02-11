@@ -43,3 +43,11 @@ class TestGSCShipment:
 
         with pytest.raises(UnreliableParserError):
             GSCShipment.create()
+
+    def test_get_today_shipment(self):
+        shipments = GSCShipment.create()
+        shipments.today()
+
+    def test_get_dedicated_date_shipment(self):
+        shipments = GSCShipment.create()
+        shipments.shipped_out_on(date(2022, 2, 11))

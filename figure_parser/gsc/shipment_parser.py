@@ -32,7 +32,7 @@ class GSCShipmentTag:
     jan: Optional[str]
 
 
-def _parse_shipment(url: str, page: BeautifulSoup) -> dict[date, list[GSCShipmentTag]]:
+def _parse_shipment(url: str, page: Optional[BeautifulSoup]) -> dict[date, list[GSCShipmentTag]]:
     if not page:
         page = get_page(url)
 
@@ -140,6 +140,6 @@ class GSCShipment(UserDict[date, list[GSCShipmentTag]]):
         return self.get(_date)
 
     @classmethod
-    def create(cls, page=None):
+    def create(cls, page: Optional[BeautifulSoup] = None):
         init_data = _parse_shipment(cls.source_url, page)
         return cls(init_data)
