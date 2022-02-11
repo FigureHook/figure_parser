@@ -1,4 +1,5 @@
 from dataclasses import is_dataclass
+from typing import Type
 
 import pytest
 from figure_parser.abcs import ProductFactory
@@ -16,7 +17,7 @@ class TestABCFactory:
 
 
 class FactoryTestBase:
-    factory: ProductFactory
+    factory: Type[ProductFactory]
     product_url: str
 
     def test_product_creation(self):
