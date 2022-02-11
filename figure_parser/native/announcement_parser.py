@@ -12,8 +12,10 @@ from ..utils import RelativeUrl, get_page
 def get_max_page_count(category_page: BeautifulSoup):
     pattern = r"\d\ / (?P<total>\d)"
     count_ele = category_page.select_one('.pages')
+    assert count_ele, "Can't get native page counting element."
     count_text = count_ele.text.strip()
     result = re.search(pattern, count_text)
+    assert result, "Can't get native announcement page counting."
     total = result.groupdict().get('total')
     if total:
         if total.isdigit():

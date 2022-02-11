@@ -10,11 +10,11 @@ from _pytest.assertion.util import isiterable
 from bs4 import BeautifulSoup
 from figure_parser.alter import (AlterAnnouncementLinkExtractor,
                                  AlterProductParser, AlterYearlyAnnouncement)
-from figure_parser.constants import AlterCategory, GSCCategory, GSCLang
+from figure_parser.constants import AlterCategory, GSCCategory, GSCLang, NativeCategory
 from figure_parser.extension_class import HistoricalReleases, Release
 from figure_parser.gsc import (GSCAnnouncementLinkExtractor, GSCProductParser,
                                GSCYearlyAnnouncement)
-from figure_parser.native import NativeProductParser
+from figure_parser.native import NativeProductParser, NativeAnnouncementParser
 from figure_parser.utils import get_page
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
@@ -272,6 +272,14 @@ class TestNativeParser(BaseTestCase):
             "test": NativeProductParser(request.param["url"], page=page),
             "expected": request.param
         }
+
+    def test_announcement(self):
+        native_announ = NativeAnnouncementParser(NativeCategory.CHARACTERS)
+
+        assert isiterable(native_announ)
+        for items in native_announ:
+            assert items
+            assert isinstance(items, list)
 
 
 class TestParserUtils:
