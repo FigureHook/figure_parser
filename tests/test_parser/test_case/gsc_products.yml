@@ -186,7 +186,7 @@
   paintwork: []
   release_infos:
     - price: 66000
-      release_date: 2022-02-01 00:00:00
+      release_date: 2022-03-01 00:00:00
       tax_including: true
   releaser: threezero
   resale: false
@@ -200,7 +200,7 @@
 - JAN: null
   adult: false
   category: POP UP PARADE
-  copyright: ©荒川弘／鋼の錬金術師製作委員会・MBS
+  copyright: ©荒川弘／鋼の錬金術師製作委員会
   distributer: グッドスマイルカンパニー
   images: https://images.goodsmile.info/cgm/images/product/20200907/10021/74006/large/e1b9bd1473d3b1a6718e271d9bfad747.jpg
   maker_id: "10021"
