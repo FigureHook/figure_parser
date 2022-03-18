@@ -37,7 +37,7 @@ def product():
         scale=random.randint(1, 30),
         sculptors=[fake.name() for _ in range(2)],
         paintworks=[fake.name() for _ in range(2)],
-        resale=fake.boolean(chance_of_getting_true=25),
+        rerelease=fake.boolean(chance_of_getting_true=25),
         adult=fake.boolean(chance_of_getting_true=30),
         copyright=fake.text(max_nb_chars=20),
         releaser=fake.company(),

@@ -112,8 +112,8 @@ class ProductParser(ABC):
         """
 
     @abstractmethod
-    def parse_resale(self) -> bool:
-        """Parse the product is resale or not.
+    def parse_rerelease(self) -> bool:
+        """Parse the product is rerelease or not.
         """
 
     @abstractmethod
@@ -321,7 +321,7 @@ class ProductFactory(ABC):
             scale=parser.parse_scale(),
             sculptors=parser.parse_sculptors(),
             paintworks=parser.parse_paintworks(),
-            resale=parser.parse_resale(),
+            rerelease=parser.parse_rerelease(),
             adult=parser.parse_adult(),
             copyright=parser.parse_copyright(),
             releaser=parser.parse_releaser(),

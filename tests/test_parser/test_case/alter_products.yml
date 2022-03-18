@@ -18,7 +18,7 @@
       release_date: 2021-07-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - みさいる
@@ -52,7 +52,7 @@
       release_date: 2019-10-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - のぶた（リボルブ）
@@ -80,7 +80,7 @@
       release_date: 2021-05-01 00:00:00
       tax_including: true
   releaser: リューノス
-  resale: false
+  rerelease: false
   scale: 6
   sculptor:
     - 竜人
@@ -108,7 +108,7 @@
       release_date: 2017-07-01 00:00:00
       tax_including: true
   releaser: ホビージャパン
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - 本宮あまと
@@ -140,7 +140,7 @@
       release_date: 2022-01-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - 田中冬志
@@ -171,7 +171,7 @@
       release_date: 2022-04-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - 槙尾宗利
@@ -200,7 +200,7 @@
       release_date: 2018-08-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - i-con（藍色空色）
@@ -231,7 +231,7 @@
       release_date: 2020-09-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - 橋本涼
@@ -258,7 +258,7 @@
       release_date: 2009-12-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - 齊藤史樹
@@ -285,7 +285,7 @@
       release_date: 2013-08-01 00:00:00
       tax_including: true
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - 田中冬志
@@ -314,7 +314,7 @@
       release_date: 2021-02-01 00:00:00
       tax_including: false
   releaser: アルター
-  resale: false
+  rerelease: false
   scale: 10
   sculptor:
     - たなか☆せんう

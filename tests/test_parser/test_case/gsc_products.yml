@@ -20,7 +20,7 @@
       release_date: 2016-09-01 00:00:00
       tax_including: true
   releaser: ウイング
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - 絵里子（新居興業）
@@ -47,7 +47,7 @@
       release_date: 2020-06-01 00:00:00
       tax_including: true
   releaser: Myethos
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - SunYaMing
@@ -75,7 +75,7 @@
       release_date: 2022-03-01 00:00:00
       tax_including: true
   releaser: ファット・カンパニー
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - 間崎祐介
@@ -103,7 +103,7 @@
       release_date: 2020-12-01 00:00:00
       tax_including: true
   releaser: KADOKAWA
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - のぶた（リボルブ）
@@ -130,7 +130,7 @@
       release_date: 2021-02-01 00:00:00
       tax_including: true
   releaser: ウイング
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - 絵里子（新居興業）
@@ -159,7 +159,7 @@
       release_date: 2021-01-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: null
   sculptor:
     - jarel
@@ -189,7 +189,7 @@
       release_date: 2022-03-01 00:00:00
       tax_including: true
   releaser: threezero
-  resale: false
+  rerelease: false
   scale: null
   sculptor:
     - threezero
@@ -216,7 +216,7 @@
       release_date: 2021-01-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: null
   sculptor: []
   series: 鋼の錬金術師 FULLMETAL ALCHEMIST
@@ -242,7 +242,7 @@
       release_date: 2009-01-01 00:00:00
       tax_including: true
   releaser: FREEing
-  resale: false
+  rerelease: false
   scale: 4
   sculptor:
     - FREEing
@@ -269,7 +269,7 @@
       release_date: 2009-02-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: 6
   sculptor:
     - 川畑和男
@@ -304,7 +304,7 @@
       release_date: 2021-11-01 00:00:00
       tax_including: false
   releaser: Phat!
-  resale: true
+  rerelease: true
   scale: 8
   sculptor:
     - iTANDi
@@ -338,7 +338,7 @@
       release_date: 2021-11-01 00:00:00
       tax_including: true
   releaser: Phat! Company
-  resale: true
+  rerelease: true
   scale: 8
   sculptor:
     - iTANDi
@@ -370,7 +370,7 @@
       release_date: 2021-10-01 00:00:00
       tax_including: false
   releaser: グッドスマイルカンパニー
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - ゆうこ～ん(knead)
@@ -401,7 +401,7 @@
       release_date: 2020-10-01 00:00:00
       tax_including: false
   releaser: グッドスマイルカンパニー
-  resale: true
+  rerelease: true
   scale: null
   sculptor:
     - デザインココ
@@ -429,7 +429,7 @@
       release_date: 2020-12-01 00:00:00
       tax_including: false
   releaser: フロンティアワークス
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - モワノー
@@ -456,7 +456,7 @@
       release_date: 2019-09-01 00:00:00
       tax_including: true
   releaser: オランジュ・ルージュ
-  resale: false
+  rerelease: false
   scale: 1
   sculptor:
     - プラスティックマニア
@@ -483,7 +483,7 @@
       release_date: 2020-02-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: null
   sculptor:
     - アストレイズ
@@ -514,7 +514,7 @@
       release_date: 2021-06-01 00:00:00
       tax_including: true
   releaser: WonderfulWorks
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - 榊馨
@@ -544,7 +544,7 @@
       release_date: 2021-12-01 00:00:00
       tax_including: true
   releaser: マックスファクトリー
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - あきもふ
@@ -571,7 +571,7 @@
       release_date: 2013-05-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - Fio（ReplyFrom...）
@@ -608,7 +608,7 @@
       release_date: 2023-02-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: true
+  rerelease: true
   scale: 7
   sculptor:
     - あきもふ
@@ -636,7 +636,7 @@
       release_date: 2021-06-01 00:00:00
       tax_including: true
   releaser: グッドスマイルカンパニー
-  resale: false
+  rerelease: false
   scale: 7
   sculptor:
     - デザインココ
@@ -664,7 +664,7 @@
       release_date: 2019-01-01 00:00:00
       tax_including: true
   releaser: アクアマリン
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - Chilmiru
@@ -692,7 +692,7 @@
       release_date: 2022-04-01 00:00:00
       tax_including: true
   releaser: FREEing
-  resale: false
+  rerelease: false
   scale: 4
   sculptor:
     - そんそーす

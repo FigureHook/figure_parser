@@ -31,7 +31,7 @@ class ProductBase(AsDictable):
         "scale",
         "sculptors",
         "paintworks",
-        "resale",
+        "rerelease",
         "adult",
         "copyright",
         "releaser",
@@ -47,7 +47,7 @@ class ProductBase(AsDictable):
     name: str
     manufacturer: str
     category: str
-    resale: bool
+    rerelease: bool
     adult: bool
     images: List[str]
     sculptors: List[str]
@@ -80,7 +80,7 @@ class ProductBase(AsDictable):
             self.copyright,
             self.price,
             self.size,
-            self.resale,
+            self.rerelease,
             self.adult,
             self.images,
             self.sculptors,

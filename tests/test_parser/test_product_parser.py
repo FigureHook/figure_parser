@@ -120,9 +120,9 @@ class BaseTestCase:
         size = item["test"].parse_size()
         assert size == item["expected"]["size"]
 
-    def test_resale(self, item):
-        resale = item["test"].parse_resale()
-        assert resale is item["expected"]["resale"]
+    def test_rerelease(self, item):
+        rerelease = item["test"].parse_rerelease()
+        assert rerelease is item["expected"]["rerelease"]
 
     def test_adult(self, item):
         adult = item["test"].parse_adult()

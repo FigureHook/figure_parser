@@ -26,7 +26,7 @@ class GSCProductParser(ProductParser):
     __allow_domain__ = BrandHost.GSC
 
     locale: str
-    resale: bool
+    rerelease: bool
     detail: Union[Tag, Any]
     cookies: ClassVar[Dict[str, str]] = {
         "age_verification_ok": "true"
@@ -43,7 +43,7 @@ class GSCProductParser(ProductParser):
             self.locale = re.match(r"^\/(\w+)\/", parsed_url.path).group(1)
 
         self.detail = self._parse_detail()
-        self.resale = self._parse_resale()
+        self.rerelease = self._parse_rerelease()
 
     def _get_from_locale(self, key: str) -> Any:
         return locale_dict[self.locale][key.lower()]
@@ -60,7 +60,7 @@ class GSCProductParser(ProductParser):
         detail: Union[Tag, None] = self.page.select_one(".itemDetail")
         return detail
 
-    def _parse_resale_dates(self) -> List[date]:
+    def _parse_rerelease_dates(self) -> List[date]:
         resale_tag = self._get_from_locale("resale")
         date_style = self._get_from_locale("release_date_format")
         date_pattern: Pattern = self._get_from_locale("release_date_pattern")
@@ -90,8 +90,8 @@ class GSCProductParser(ProductParser):
             "dd", {"itemprop": "releaseDate"}
         ).text.strip()
 
-        if self.parse_resale():
-            dates = self._parse_resale_dates()
+        if self.parse_rerelease():
+            dates = self._parse_rerelease_dates()
             if dates:
                 return dates
 
@@ -143,7 +143,7 @@ class GSCProductParser(ProductParser):
         else:
             last_price = None
 
-        if self.resale:
+        if self.rerelease:
             price_slot = self._parse_resale_prices()
 
             if not price_slot and last_price:
@@ -264,13 +264,13 @@ class GSCProductParser(ProductParser):
 
         return the_copyright
 
-    def _parse_resale(self) -> bool:
+    def _parse_rerelease(self) -> bool:
         tag = self._get_from_locale("resale")
         resale = self._find_detail("dt", tag)
         return bool(resale)
 
-    def parse_resale(self) -> bool:
-        return self.resale
+    def parse_rerelease(self) -> bool:
+        return self.rerelease
 
     def parse_maker_id(self) -> str:
         return re.findall(r"\d+", self.url)[0]

@@ -117,7 +117,7 @@ class NativeProductParser(ProductParser):
         distributer = self.detail.get('販売元')
         return distributer
 
-    def parse_resale(self) -> bool:
+    def parse_rerelease(self) -> bool:
         return False
 
     def parse_images(self) -> List[str]:

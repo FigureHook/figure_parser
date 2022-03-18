@@ -153,7 +153,7 @@ class AlterProductParser(ProductParser):
         distributer = re.search(pattern, distributer_text).group(1).strip()
         return distributer
 
-    def parse_resale(self) -> bool:
+    def parse_rerelease(self) -> bool:
         is_resale = bool(self.page.find(class_='resale'))
         return is_resale
 
