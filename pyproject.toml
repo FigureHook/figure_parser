@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "figure_parser"
-version = "0.0.3"
+version = "0.1.0"
 description = "Parser for figure"
 authors = ["Elton Chou <plscd748@gmail.com>"]
 license = "MIT"
