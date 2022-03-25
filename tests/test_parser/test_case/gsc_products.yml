@@ -72,7 +72,7 @@
     - 佐倉
   release_infos:
     - price: 35200
-      release_date: 2022-03-01 00:00:00
+      release_date: 2022-08-01 00:00:00
       tax_including: true
   releaser: ファット・カンパニー
   rerelease: false
@@ -186,7 +186,7 @@
   paintwork: []
   release_infos:
     - price: 66000
-      release_date: 2022-03-01 00:00:00
+      release_date: 2022-06-01 00:00:00
       tax_including: true
   releaser: threezero
   rerelease: false
@@ -208,15 +208,18 @@
   name: POP UP PARADE エドワード・エルリック
   og_image: http://images.goodsmile.info/cgm/images/product/20200907/10021/74016/medium/243822a5bd46eb175dfbc98e7feafbbe.jpg
   order_period:
-    end: 2020-10-07 21:00:00
-    start: 2020-09-10 12:00:00
+    end: 2022-04-20 21:00:00
+    start: 2022-03-25 12:00:00
   paintwork: []
   release_infos:
     - price: 3900
       release_date: 2021-01-01 00:00:00
       tax_including: true
+    - price: 3900
+      release_date: 2022-07-01 00:00:00
+      tax_including: true
   releaser: グッドスマイルカンパニー
-  rerelease: false
+  rerelease: true
   scale: null
   sculptor: []
   series: 鋼の錬金術師 FULLMETAL ALCHEMIST
