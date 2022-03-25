@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 from hashlib import md5
 from pathlib import Path
+from typing import Any
 
 import pytest
 import requests
@@ -10,11 +11,12 @@ from _pytest.assertion.util import isiterable
 from bs4 import BeautifulSoup
 from figure_parser.alter import (AlterAnnouncementLinkExtractor,
                                  AlterProductParser, AlterYearlyAnnouncement)
-from figure_parser.constants import AlterCategory, GSCCategory, GSCLang, NativeCategory
+from figure_parser.constants import (AlterCategory, GSCCategory, GSCLang,
+                                     NativeCategory)
 from figure_parser.extension_class import HistoricalReleases, Release
 from figure_parser.gsc import (GSCAnnouncementLinkExtractor, GSCProductParser,
                                GSCYearlyAnnouncement)
-from figure_parser.native import NativeProductParser, NativeAnnouncementParser
+from figure_parser.native import NativeAnnouncementParser, NativeProductParser
 from figure_parser.utils import get_page
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
@@ -91,8 +93,8 @@ class BaseTestCase:
         assert sorted(sculptor) == sorted(item["expected"]["sculptor"])
 
     def test_release_infos(self, item):
-        release_infos: HistoricalReleases = item["test"].parse_release_infos()
-        expected_release_infos: list = item["expected"]["release_infos"]
+        release_infos: HistoricalReleases[Release] = item["test"].parse_release_infos()
+        expected_release_infos: list[dict[str, Any]] = item["expected"]["release_infos"]
         assert len(release_infos) == len(expected_release_infos)
 
         release_infos.sort()
@@ -100,13 +102,12 @@ class BaseTestCase:
             key=lambda r: r["release_date"].timestamp() if r["release_date"] else 0)
 
         for r, e_r in zip(release_infos, expected_release_infos):
-            r: Release
-            assert r.price == e_r["price"]
+            assert r.price == e_r["price"], "The price didn't match."
             expected_date = e_r["release_date"].date(
             ) if e_r["release_date"] else e_r["release_date"]
-            assert r.release_date == expected_date
+            assert r.release_date == expected_date, "The release date didn't match."
             if r.price:
-                assert r.price.tax_including is e_r['tax_including']
+                assert r.price.tax_including is e_r['tax_including'], "Tax-including information didn't match."
 
     def test_maker_id(self, item):
         id_ = item["test"].parse_maker_id()
