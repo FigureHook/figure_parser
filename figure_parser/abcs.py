@@ -45,7 +45,7 @@ class ProductParser(ABC):
         """Parse product name"""
 
     @abstractmethod
-    def parse_series(self) -> Union[str, None]:
+    def parse_series(self) -> Optional[str]:
         """Parse series of product"""
 
     @abstractmethod
@@ -87,7 +87,7 @@ class ProductParser(ABC):
         """
 
     @abstractmethod
-    def parse_scale(self) -> Union[int, None]:
+    def parse_scale(self) -> Optional[int]:
         """
         The result should be the denominator of scale:
 
@@ -97,17 +97,17 @@ class ProductParser(ABC):
         """
 
     @abstractmethod
-    def parse_size(self) -> Union[int, None]:
+    def parse_size(self) -> Optional[int]:
         """The unit is `mm`"""
 
     @abstractmethod
-    def parse_copyright(self) -> Union[str, None]:
+    def parse_copyright(self) -> Optional[str]:
         """Copyright would be something like this
         `© YYYY foo/bar All Rights Reserved.`
         """
 
     @abstractmethod
-    def parse_releaser(self) -> Union[str, None]:
+    def parse_releaser(self) -> Optional[str]:
         """Releaser is `発売元` in Japanese.
         """
 
@@ -121,11 +121,11 @@ class ProductParser(ABC):
         """Parse images of the product.
         """
 
-    def parse_price(self) -> Union[Price, None]:
+    def parse_price(self) -> Optional[Price]:
         last_release = self.parse_release_infos().last()
         return last_release.price if last_release else None
 
-    def parse_release_date(self) -> Union[date, None]:
+    def parse_release_date(self) -> Optional[date]:
         last_release = self.parse_release_infos().last()
         return last_release.release_date if last_release else None
 
@@ -172,7 +172,7 @@ class ProductParser(ABC):
         historical_releases.sort()
         return historical_releases
 
-    def parse_distributer(self) -> Union[str, None]:
+    def parse_distributer(self) -> Optional[str]:
         """Distributer is `販売元` in Japanese.
         """
         return None
@@ -195,19 +195,19 @@ class ProductParser(ABC):
         """
         return []
 
-    def parse_JAN(self) -> Union[str, None]:
+    def parse_JAN(self) -> Optional[str]:
         """Parse JAN code of product.
         """
         return None
 
-    def parse_maker_id(self) -> Union[str, None]:
+    def parse_maker_id(self) -> Optional[str]:
         """
         Not sure what kind do data should be parsed.
         But it should be unique enough in the source site.
         """
         return None
 
-    def parse_thumbnail(self) -> Union[str, None]:
+    def parse_thumbnail(self) -> Optional[str]:
         """Parse thumbnail from meta tag.
         """
         meta_thumbnail = self.page.select_one("meta[name='thumbnail']")
@@ -221,7 +221,7 @@ class ProductParser(ABC):
 
         return None
 
-    def parse_og_image(self) -> Union[str, None]:
+    def parse_og_image(self) -> Optional[str]:
         """Parse open graph image from meta tag.
         """
         meta_og_image = self.page.select_one("meta[property='og:image']")

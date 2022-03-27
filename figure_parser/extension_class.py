@@ -128,7 +128,7 @@ class Release(AsDictable):
     """The announcing date of the release."""
 
 
-T = TypeVar('T')
+T = TypeVar('T', bound=Release)
 
 
 class HistoricalReleases(UserList[T]):
@@ -161,7 +161,7 @@ class HistoricalReleases(UserList[T]):
         :type kwargs: dict
         """
 
-        def sort_release(release: Union[T, Release, None]):
+        def sort_release(release: T):
             if isinstance(release, Release):
                 if isinstance(release.release_date, date):
                     return release.release_date

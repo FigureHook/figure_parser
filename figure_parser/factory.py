@@ -1,6 +1,6 @@
 import re
 from pprint import pformat
-from typing import Dict, Optional, Type
+from typing import ClassVar, Dict, Optional, Type
 from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
@@ -41,7 +41,7 @@ class UniversalFactory(ProductFactory):
 
     This factory could detect the factory fit for the given url.
     """
-    __supporting_factories__: Dict[BrandHost, Type[ProductFactory]] = {
+    __supporting_factories__: ClassVar[Dict[BrandHost, Type[ProductFactory]]] = {
         BrandHost.ALTER: AlterFactory,
         BrandHost.GSC: GSCFactory,
         BrandHost.NATIVE: NativeFactory,
