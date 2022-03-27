@@ -26,6 +26,7 @@
 | [WAVE](https://www.hobby-wave.com/products-cat/figure/) |                |              |                 |
 | [KOTOBUKIYA](https://www.kotobukiya.co.jp/product-category/figure/) |                |              |                 |
 | [MegaHouse](https://www.megahouse.co.jp/products/highqualityfigure/) |                |              |                 |
+| [Lechery](https://lechery.biz/) |                |              |                 |
 
 ## Shop List
 - [ ] HobbyJapan
