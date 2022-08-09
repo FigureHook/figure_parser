@@ -28,3 +28,6 @@ docs/_build
 
 # playground
 playground.py
+
+# temp
+**/temp/

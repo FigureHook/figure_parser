@@ -5,7 +5,7 @@ from typing import ClassVar, Dict, List, Optional, Type, Union
 from bs4 import BeautifulSoup
 from pytz import timezone
 
-from .extension_class import HistoricalReleases, OrderPeriod, Price, Release
+from .entity import HistoricalReleases, OrderPeriod, Release
 from .product import Product
 from .utils import check_domain, get_page, make_last_element_filler
 

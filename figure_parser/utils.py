@@ -14,11 +14,6 @@ from .exceptions import UnsupportedDomainError
 T = TypeVar('T')
 
 
-class AsDictable:
-    def as_dict(self):
-        return asdict(self)
-
-
 def make_last_element_filler(target_list: List[T], desired_length: int) -> Iterable[T]:
     original_len = len(target_list)
     last_element = target_list[-1]
