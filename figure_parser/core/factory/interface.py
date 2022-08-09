@@ -1,13 +1,17 @@
 from abc import ABC, abstractmethod
 from typing import Generic, Optional, Type, TypeVar
 
-from figure_parser.core.parser.interface import AbstractProductParser
+from figure_parser.core.parser.interface import ProductParserInterface
 
 Source_T = TypeVar('Source_T')
 Product_T = TypeVar('Product_T')
 
+__all__ = (
+    'ProductFactoryInterface',
+)
 
-class AbstractProductFactory(ABC, Generic[Source_T, Product_T]):
+
+class ProductFactoryInterface(ABC, Generic[Source_T, Product_T]):
     """Abstract product factory class"""
     @abstractmethod
     def create_product(
@@ -25,13 +29,13 @@ class AbstractProductFactory(ABC, Generic[Source_T, Product_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def register_parser(self, domain: str, parser: Type[AbstractProductParser[Source_T]]):
+    def register_parser(self, domain: str, parser: Type[ProductParserInterface[Source_T]]):
         raise NotImplementedError
 
     @abstractmethod
-    def get_parser_by_domain(self, domain: str) -> Optional[Type[AbstractProductParser[Source_T]]]:
+    def get_parser_by_domain(self, domain: str) -> Optional[Type[ProductParserInterface[Source_T]]]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_parser_by_url(self, url: str) -> Optional[Type[AbstractProductParser[Source_T]]]:
+    def get_parser_by_url(self, url: str) -> Optional[Type[ProductParserInterface[Source_T]]]:
         raise NotImplementedError

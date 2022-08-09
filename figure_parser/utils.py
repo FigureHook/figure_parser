@@ -1,15 +1,9 @@
 import re
-from dataclasses import asdict
-from functools import wraps
 from itertools import repeat
 from typing import Iterable, List, TypeVar, Union
-from urllib.parse import urlparse
 
 import requests as rq
 from bs4 import BeautifulSoup
-
-from .constants import BrandHost
-from .exceptions import UnsupportedDomainError
 
 T = TypeVar('T')
 
@@ -28,35 +22,6 @@ def get_page(url, headers={}, cookies={}):
     response.raise_for_status()
     page = BeautifulSoup(response.text, "lxml")
     return page
-
-
-class RelativeUrl:
-    @staticmethod
-    def gsc(path):
-        return f"https://{BrandHost.GSC}{path}"
-
-    @staticmethod
-    def alter(path):
-        return f"https://{BrandHost.ALTER}{path}"
-
-    @staticmethod
-    def native(path):
-        return f"https://{BrandHost.NATIVE}{path}"
-
-
-def check_domain(init_func):
-    @wraps(init_func)
-    def checker(parser, url, *args, **kwargs):
-        netloc = urlparse(url).netloc
-
-        valid_domain = re.search(parser.__allow_domain__, netloc)
-        if netloc and not valid_domain:
-            raise UnsupportedDomainError("Invalid domain.")
-
-        elif netloc and valid_domain:
-            init_func(parser, url, *args, **kwargs)
-
-    return checker
 
 
 def price_parse(text: str) -> int:

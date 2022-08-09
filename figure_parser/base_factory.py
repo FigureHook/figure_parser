@@ -7,8 +7,8 @@ from bs4 import BeautifulSoup
 from figure_parser.core.entity.product import ProductBase
 from figure_parser.core.factory.exceptions import (
     DomainInvalid, DuplicatedDomainRegistration, UnregisteredDomain)
-from figure_parser.core.factory.interface import AbstractProductFactory
-from figure_parser.core.parser.interface import AbstractProductParser
+from figure_parser.core.factory.interface import ProductFactoryInterface
+from figure_parser.core.parser.interface import ProductParserInterface
 from figure_parser.core.usecase.normalize_product import (
     ProductGeneralFieldstNormalizer, ProductWorkerFieldstNormalizer)
 
@@ -17,13 +17,13 @@ def _extract_domain_from_url(url: str) -> str:
     return urlparse(url).netloc
 
 
-class BaseProductFactory(AbstractProductFactory[BeautifulSoup, ProductBase]):
+class BaseProductFactory(ProductFactoryInterface[BeautifulSoup, ProductBase]):
     """Base product factory"""
-    __parser_registration__: MutableMapping[str, Type[AbstractProductParser[BeautifulSoup]]]
+    __parser_registration__: MutableMapping[str, Type[ProductParserInterface[BeautifulSoup]]]
 
     def __init__(
         self,
-        parser_registrations: Sequence[Tuple[str, Type[AbstractProductParser[BeautifulSoup]]]]
+        parser_registrations: Sequence[Tuple[str, Type[ProductParserInterface[BeautifulSoup]]]]
     ) -> None:
         self.__parser_registration__ = {}
         for domain, parser in parser_registrations:
@@ -39,10 +39,11 @@ class BaseProductFactory(AbstractProductFactory[BeautifulSoup, ProductBase]):
         normalize_workers_filed: bool = False,
         speculate_announce_date: bool = False
     ) -> ProductBase:
-        parser = self.get_parser_by_url(url)
-        if not parser:
+        parser_cls = self.get_parser_by_url(url)
+        if not parser_cls:
             raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
 
+        parser = parser_cls.create_parser(url=url, source=source)
         product = ProductBase(
             url=url,
             name=parser.parse_name(source),
@@ -84,7 +85,7 @@ class BaseProductFactory(AbstractProductFactory[BeautifulSoup, ProductBase]):
                 return domain
         return ''
 
-    def register_parser(self, domain: str, parser: Type[AbstractProductParser[BeautifulSoup]]):
+    def register_parser(self, domain: str, parser: Type[ProductParserInterface[BeautifulSoup]]):
         domain = domain.strip()
         if domain in self.__parser_registration__:
             raise DuplicatedDomainRegistration(f"{domain} was registered.")
@@ -94,9 +95,9 @@ class BaseProductFactory(AbstractProductFactory[BeautifulSoup, ProductBase]):
 
         self.__parser_registration__.setdefault(domain, parser)
 
-    def get_parser_by_domain(self, domain: str) -> Optional[Type[AbstractProductParser[BeautifulSoup]]]:
+    def get_parser_by_domain(self, domain: str) -> Optional[Type[ProductParserInterface[BeautifulSoup]]]:
         return self.__parser_registration__.get(domain)
 
-    def get_parser_by_url(self, url: str) -> Optional[Type[AbstractProductParser[BeautifulSoup]]]:
+    def get_parser_by_url(self, url: str) -> Optional[Type[ProductParserInterface[BeautifulSoup]]]:
         domain = self.validate_url(url)
         return self.__parser_registration__.get(domain)
