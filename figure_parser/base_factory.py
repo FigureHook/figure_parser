@@ -23,11 +23,12 @@ class BaseProductFactory(ProductFactoryInterface[BeautifulSoup, ProductBase]):
 
     def __init__(
         self,
-        parser_registrations: Sequence[Tuple[str, Type[ProductParserInterface[BeautifulSoup]]]]
+        parser_registrations: Optional[Sequence[Tuple[str, Type[ProductParserInterface[BeautifulSoup]]]]] = None
     ) -> None:
         self.__parser_registration__ = {}
-        for domain, parser in parser_registrations:
-            self.register_parser(domain=domain, parser=parser)
+        if parser_registrations:
+            for domain, parser in parser_registrations:
+                self.register_parser(domain=domain, parser=parser)
 
         super().__init__()
 

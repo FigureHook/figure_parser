@@ -13,12 +13,12 @@ __all__ = (
 
 
 class ProductParserInterface(ABC, Generic[Source_T]):
-    @abstractmethod
+    """Abstract product parser class"""
     @classmethod
+    @abstractmethod
     def create_parser(cls: Type[Parser_T], url: str, source: Source_T) -> Parser_T:
         raise NotImplementedError
 
-    """Abstract product parser class"""
     @abstractmethod
     def parse_name(self, source: Source_T) -> str:
         """Parse the product name"""
