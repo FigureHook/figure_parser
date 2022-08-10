@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
-from typing import Generic, List, Optional, Type, TypeVar
+from abc import abstractmethod
+from typing import List, Optional, Protocol, Type, TypeVar
 
 from figure_parser.core.entity import OrderPeriod, Release
 
-Source_T = TypeVar('Source_T')
+Source_T = TypeVar('Source_T', contravariant=True)
 Parser_T = TypeVar('Parser_T')
 
 
@@ -12,7 +12,7 @@ __all__ = (
 )
 
 
-class ProductParserInterface(ABC, Generic[Source_T]):
+class ProductParserInterface(Protocol[Source_T]):
     """Abstract product parser class"""
     @classmethod
     @abstractmethod

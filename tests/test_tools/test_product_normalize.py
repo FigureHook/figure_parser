@@ -1,6 +1,6 @@
 import pytest
 from figure_parser.core.entity.product import ProductBase
-from figure_parser.core.usecase.normalize_product import (
+from figure_parser.core.tools.normalize_product import (
     ProductGeneralFieldstNormalizer, ProductWorkerFieldstNormalizer,
     general_normalize, worker_normalize)
 

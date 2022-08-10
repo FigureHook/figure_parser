@@ -1,17 +1,17 @@
 from abc import ABC, abstractmethod
-from typing import Generic, Optional, Type, TypeVar
+from typing import Generic, Optional, Protocol, Type, TypeVar
 
 from figure_parser.core.parser.interface import ProductParserInterface
 
-Source_T = TypeVar('Source_T')
-Product_T = TypeVar('Product_T')
+Source_T = TypeVar('Source_T', contravariant=True)
+Product_T = TypeVar('Product_T', covariant=True)
 
 __all__ = (
     'ProductFactoryInterface',
 )
 
 
-class ProductFactoryInterface(ABC, Generic[Source_T, Product_T]):
+class ProductFactoryInterface(Protocol[Source_T, Product_T]):
     """Abstract product factory class"""
     @abstractmethod
     def create_product(
