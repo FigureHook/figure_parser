@@ -14,7 +14,6 @@ class ProductGeneralFieldstNormalizer(PipeInterface[ProductBase]):
     @staticmethod
     def process(product_item: ProductBase) -> ProductBase:
         for field in product_item.general_str_fields():
-            value = getattr(product_item, field)
             processed_value = _normalize(getattr(product_item, field), general_normalize)
             setattr(product_item, field, processed_value)
         return product_item
@@ -24,7 +23,6 @@ class ProductWorkerFieldstNormalizer(PipeInterface[ProductBase]):
     @staticmethod
     def process(product_item: ProductBase) -> ProductBase:
         for field in product_item.worker_fields():
-            value = getattr(product_item, field)
             processed_value = _normalize(getattr(product_item, field), worker_normalize)
             setattr(product_item, field, processed_value)
         return product_item
