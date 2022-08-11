@@ -2,8 +2,6 @@ import re
 from itertools import repeat
 from typing import Iterable, List, TypeVar, Union
 
-import requests as rq
-from bs4 import BeautifulSoup
 
 T = TypeVar('T')
 
@@ -15,6 +13,7 @@ def make_last_element_filler(target_list: List[T], desired_length: int) -> Itera
     filler = repeat(last_element, repeat_times)
 
     return filler
+
 
 def price_parse(text: str) -> int:
     pattern = r"\d+"

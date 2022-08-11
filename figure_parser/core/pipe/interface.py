@@ -5,5 +5,5 @@ Product_T = TypeVar('Product_T')
 
 class PipeInterface(Protocol[Product_T]):
     @staticmethod
-    def process(product_item: Product_T) -> Product_T:
-        raise NotImplementedError
+    def process(product_item: Product_T) -> Product_T:  # pragma: no cover
+        raise NotImplementedError  # pragma: no cover

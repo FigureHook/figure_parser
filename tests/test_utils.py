@@ -1,6 +1,7 @@
 import pytest
 from faker import Faker
-from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
+from figure_parser.parsers.utils import (make_last_element_filler, price_parse,
+                                         scale_parse, size_parse)
 
 
 def test_price_parser(faker: Faker):
@@ -31,6 +32,8 @@ def test_size_parser(faker: Faker):
 
         assert size_parse(size_text) == ran_num
 
+    assert not size_parse('100dd')
+
 
 def test_scale_parser(faker: Faker):
     for _ in range(100):
@@ -38,3 +41,9 @@ def test_scale_parser(faker: Faker):
         scale_text = f"1/{denominator}"
 
         assert scale_parse(scale_text) == denominator
+
+
+def test_last_element_filler():
+    list_to_fill = [1, 2, 3]
+    list_to_fill.extend(make_last_element_filler(list_to_fill, 5))
+    assert list_to_fill == [1, 2, 3, 3, 3]

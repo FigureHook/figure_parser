@@ -31,3 +31,6 @@ playground.py
 
 # temp
 **/temp/
+
+#environment
+.venv/

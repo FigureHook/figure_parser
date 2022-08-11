@@ -15,13 +15,25 @@ class TestOrderPeriod:
 
     def test_is_available_at_specific_time(self):
         start = datetime(2020, 2, 2, 9, 0)
-        end = datetime(2020, 3, 2, 23, 0)
+        end = datetime(2022, 3, 2, 23, 0)
 
         now = datetime(2020, 2, 22, 5, 34)
-
         order_period = OrderPeriod(start=start, end=end)
         assert order_period.is_available_at(now)
         assert now in order_period
+
+        order_period = OrderPeriod(end=end)
+        assert order_period.is_available_at(now)
+        assert now in order_period
+
+        order_period = OrderPeriod(start=start)
+        assert order_period.is_available_at(now)
+        assert now in order_period
+
+        now = datetime(2025, 3, 2, 23, 0)
+        order_period = OrderPeriod()
+        assert not order_period.is_available_at(now)
+        assert not now in order_period
 
     def test_default_value(self):
         order_period = OrderPeriod()
