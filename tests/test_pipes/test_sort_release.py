@@ -1,12 +1,11 @@
 import random
 from datetime import date
 
-from faker import Faker
-from figure_parser.core.entity import Release
-from figure_parser.core.tools.sort_release import ReleaseSorting
+from figure_parser.core.entity import ProductBase, Release
+from figure_parser.core.pipe.sorting_pipe import ReleaseSorting
 
 
-def test_release_sorting(faker: Faker):
+def test_release_sorting(product: ProductBase):
     release_1 = Release(
         release_date=None
     )
@@ -21,6 +20,7 @@ def test_release_sorting(faker: Faker):
 
     shuffled_releases = expected_releases.copy()
     random.shuffle(shuffled_releases)
-    ReleaseSorting.sort(shuffled_releases)
+    product.releases = shuffled_releases
+    ReleaseSorting.process(product)
 
-    assert shuffled_releases == expected_releases
+    assert product.releases == expected_releases

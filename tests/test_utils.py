@@ -1,6 +1,6 @@
 import pytest
 from faker import Faker
-from figure_parser.utils import price_parse, scale_parse, size_parse
+from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
 
 
 def test_price_parser(faker: Faker):
