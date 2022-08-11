@@ -38,6 +38,16 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._pipes = pipes
         self._sort_pipes()
 
+    @property
+    def parser_registration(self):
+        return self._parser_registration
+
+    @property
+    def pipes(self):
+        if not self._is_pipes_sorted:
+            self._sort_pipes()
+        return self._pipes
+
     def create_product(
         self,
         url: str,
