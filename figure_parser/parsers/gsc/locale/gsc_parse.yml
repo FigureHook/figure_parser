@@ -1,0 +1,72 @@
+en:
+  series: Series
+  manufacturer: Manufacturer
+  category: Category
+  price: Price
+  sculptor: Sculptor
+  paintwork: Paintwork
+  spec: Specifications
+  releaser: Released by
+  release_date_pattern: (?P<month>January|February|March|April|May|June|July|August|September|October|November|December)\s(?P<year>\d+)
+  release_date_format: "%B %Y"
+  distributer: Distributed by
+  resale: Release Info
+  order_period_pattern: (?P<day>\d+)\S+ (?P<month>\S+) (?P<year>\d+) \(\S+\) \S+ (?P<hour>\d+):(?P<minute>\d+)
+  adult: Recommeded for Adults Only | 18 and up | 18 and over
+  scale_category: Scale
+  weird_date_pattern: .*\s(\d+)
+  tax: .*
+  seasons:
+    spring: 3
+    summer: 6
+    autumn: 9
+    winter: 12
+  default_manufacturer: "Good Smile Company"
+ja:
+  series: 作品名
+  manufacturer: メーカー
+  category: カテゴリー
+  price: 価格
+  sculptor: 原型制作
+  paintwork: 彩色
+  spec: 仕様
+  releaser: 発売元
+  release_date_pattern: (?P<year>\d+)[\/|年](?P<month>\d+)月?
+  release_date_format: "%Y年%m月"
+  distributer: 販売元
+  resale: 再販
+  order_period_pattern: (?P<year>\d+)年(?P<month>\d+)月(?P<day>\d+)日（\S）(?P<hour>\d+):(?P<minute>\d+)
+  adult: 18歳以上推奨
+  scale_category: フィギュア
+  weird_date_pattern: (\d+)[\/|年]
+  tax: .*税込
+  seasons:
+    春: 3
+    夏: 6
+    秋: 9
+    冬: 12
+  default_manufacturer: "グッドスマイルカンパニー"
+zh:
+  series: 作品名稱
+  manufacturer: 製造商
+  category: 分類
+  price: 價格
+  sculptor: 原型製作
+  paintwork: 色彩
+  spec: 商品規格
+  releaser: 發售商
+  release_date_pattern: (?P<year>\d+)[\/|年](?P<month>\d+)月?
+  release_date_format: "%Y年%m月"
+  distributer: 販售商
+  resale: 再販
+  order_period_pattern: (?P<year>\d+)年(?P<month>\d+)月(?P<day>\d+)日（\S）(?P<hour>\d+):(?P<minute>\d+)
+  adult: 18歲以上建議
+  scale_category: 比例模型
+  weird_date_pattern: (\d+)[\/|年]
+  tax: .*含稅
+  seasons:
+    春: 3
+    夏: 6
+    秋: 9
+    冬: 12
+  default_manufacturer: "Good Smile Company"
