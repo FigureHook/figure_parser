@@ -54,5 +54,5 @@ class ProductBase(BaseModel):
         return cls.__general_str_fields__
 
     @classmethod
-    def worker_fiedls(cls):
+    def worker_fields(cls):
         return cls.__worker_fields__
