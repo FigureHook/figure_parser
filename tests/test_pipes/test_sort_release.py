@@ -2,7 +2,7 @@ import random
 from datetime import date
 
 from figure_parser.core.entity import ProductBase, Release
-from figure_parser.core.pipe.sorting_pipe import ReleaseSorting
+from figure_parser.core.pipe.sorting import sort_releases
 
 
 def test_release_sorting(product: ProductBase):
@@ -21,6 +21,6 @@ def test_release_sorting(product: ProductBase):
     shuffled_releases = expected_releases.copy()
     random.shuffle(shuffled_releases)
     product.releases = shuffled_releases
-    ReleaseSorting.process(product)
+    sort_releases(product)
 
     assert product.releases == expected_releases

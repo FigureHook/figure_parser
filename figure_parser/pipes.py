@@ -1,3 +1,3 @@
-from figure_parser.core.pipe.nomalization_pipe import (
-    ProductGeneralFieldstNormalizer, ProductWorkerFieldstNormalizer)
-from figure_parser.core.pipe.sorting_pipe import ReleaseSorting
+from figure_parser.core.pipe.nomalization import (
+    normalize_general_fields, normalize_worker_fields)
+from figure_parser.core.pipe.sorting import sort_releases

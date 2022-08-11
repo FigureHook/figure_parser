@@ -5,27 +5,22 @@ from typing import Callable, Union, overload
 
 from figure_parser.core.entity import ProductBase
 
-from .interface import PipeInterface
 
 NormalizeFunc = Callable[[str], str]
 
 
-class ProductGeneralFieldstNormalizer(PipeInterface[ProductBase]):
-    @staticmethod
-    def process(product_item: ProductBase) -> ProductBase:
-        for field in product_item.general_str_fields():
-            processed_value = _normalize(getattr(product_item, field), general_normalize)
-            setattr(product_item, field, processed_value)
-        return product_item
+def normalize_general_fields(product_item: ProductBase) -> ProductBase:
+    for field in product_item.general_str_fields():
+        processed_value = _normalize(getattr(product_item, field), general_normalize)
+        setattr(product_item, field, processed_value)
+    return product_item
 
 
-class ProductWorkerFieldstNormalizer(PipeInterface[ProductBase]):
-    @staticmethod
-    def process(product_item: ProductBase) -> ProductBase:
-        for field in product_item.worker_fields():
-            processed_value = _normalize(getattr(product_item, field), worker_normalize)
-            setattr(product_item, field, processed_value)
-        return product_item
+def normalize_worker_fields(product_item: ProductBase) -> ProductBase:
+    for field in product_item.worker_fields():
+        processed_value = _normalize(getattr(product_item, field), worker_normalize)
+        setattr(product_item, field, processed_value)
+    return product_item
 
 
 def _validate_field_value(func):

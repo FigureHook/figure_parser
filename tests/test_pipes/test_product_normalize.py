@@ -1,8 +1,10 @@
 import pytest
 from figure_parser.core.entity.product import ProductBase
-from figure_parser.core.pipe.nomalization_pipe import (
-    ProductGeneralFieldstNormalizer, ProductWorkerFieldstNormalizer,
-    _normalize, general_normalize, worker_normalize)
+from figure_parser.core.pipe.nomalization import (_normalize,
+                                                  general_normalize,
+                                                  normalize_general_fields,
+                                                  normalize_worker_fields,
+                                                  worker_normalize)
 
 
 class TestProductTextUtils:
@@ -31,8 +33,8 @@ class TestProductTextUtils:
             text_with_no_space_before_square_bracket) == "Newbie (NW)"
 
     def test_list_attribute_normalization(self, product: ProductBase):
-        ProductGeneralFieldstNormalizer.process(product)
-        ProductWorkerFieldstNormalizer.process(product)
+        normalize_general_fields(product)
+        normalize_worker_fields(product)
 
     def test_falsy_value_normalization(self):
         value = ''
