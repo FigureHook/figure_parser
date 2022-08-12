@@ -11,7 +11,7 @@ from ..utils import price_parse, scale_parse, size_parse
 
 
 def _parse_detail(source: BeautifulSoup):
-    detail= source.select_one("#contents")
+    detail = source.select_one("#contents")
     return detail
 
 
@@ -20,6 +20,7 @@ def _parse_spec(source: BeautifulSoup):
     heads = []
     values = []
 
+    # FIXME: This is too magic...
     for table in tables:
         for th, td in zip(table.select("th"), table.select("td")):
             key = "".join(th.text.split())
@@ -29,7 +30,7 @@ def _parse_spec(source: BeautifulSoup):
                 value = [
                     content
                     for content in td.contents
-                    # if content.name != "br"
+                    if content.name != "br"  # type: ignore
                 ]
             values.append(value)
 

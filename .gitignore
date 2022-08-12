@@ -32,5 +32,8 @@ playground.py
 # temp
 **/temp/
 
-#environment
+# environment
 .venv/
+
+# test files
+tests/**/*.html
