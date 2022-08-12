@@ -1,6 +1,6 @@
 from abc import ABC
-from typing import (Callable, Generic, List, MutableMapping, Optional,
-                    Sequence, Tuple, Type, TypeVar)
+from typing import (Callable, Generic, List, Mapping, MutableMapping, Optional,
+                    Tuple, Type, TypeVar)
 from urllib.parse import urlparse
 
 import validators
@@ -26,17 +26,18 @@ class GenericProductFactory(Generic[Source_T], ABC):
     def __init__(
         self,
         *,
-        parser_registrations: Optional[Sequence[Tuple[str, Type[AbstractProductParser[Source_T]]]]] = None,
+        parser_registrations: Optional[Mapping[str, Type[AbstractProductParser[Source_T]]]] = None,
         pipes: Optional[List[Tuple[Callable[[ProductBase], ProductBase], int]]] = None
     ) -> None:
+        self._is_pipes_sorted = False
         self._parser_registration = {}
+        self._pipes = pipes if pipes else []
+
         if parser_registrations:
-            for domain, parser in parser_registrations:
+            for domain, parser in parser_registrations.items():
                 self.register_parser(domain=domain, parser=parser)
 
-        if pipes:
-            self._pipes = pipes
-            self._sort_pipes()
+        self._sort_pipes()
 
     @property
     def parser_registration(self):
@@ -44,8 +45,7 @@ class GenericProductFactory(Generic[Source_T], ABC):
 
     @property
     def pipes(self):
-        if not self._is_pipes_sorted:
-            self._sort_pipes()
+        self._sort_pipes()
         return self._pipes
 
     def create_product(
@@ -53,6 +53,7 @@ class GenericProductFactory(Generic[Source_T], ABC):
         url: str,
         source: Source_T
     ) -> ProductBase:
+        self._sort_pipes()
         parser_cls = self.get_parser_by_url(url)
         if not parser_cls:
             raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
@@ -80,9 +81,6 @@ class GenericProductFactory(Generic[Source_T], ABC):
             thumbnail=parser.parse_thumbnail(source),
             og_image=parser.parse_og_image(source),
         )
-
-        if not self._is_pipes_sorted:
-            self._sort_pipes()
 
         for process, _ in self._pipes:
             product = process(product)
@@ -125,8 +123,9 @@ class GenericProductFactory(Generic[Source_T], ABC):
         return self._parser_registration.get(domain)
 
     def _sort_pipes(self):
-        self._pipes.sort(key=lambda p: p[1])
-        self._is_pipes_sorted = True
+        if not self._is_pipes_sorted:
+            self._pipes.sort(key=lambda p: p[1])
+            self._is_pipes_sorted = True
 
 
 def _extract_domain_from_url(url: str) -> str:
