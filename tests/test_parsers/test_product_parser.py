@@ -11,7 +11,8 @@ import yaml
 from bs4 import BeautifulSoup
 from figure_parser.core.entity import Release
 from figure_parser.core.pipe.sorting import _sort_release
-from figure_parser.parsers import AlterProductParser, GSCProductParser
+from figure_parser.parsers import (AlterProductParser, GSCProductParser,
+                                   NativeProductParser)
 from figure_parser.parsers.base import AbstractBs4ProductParser
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
@@ -226,16 +227,16 @@ class TestAlterParser(BaseTestCase):
         pytest.skip("Alter doesn't provide order_period.")
 
 
-# class TestNativeParser(BaseTestCase):
-#     products = load_yaml(
-#         f"{THIS_DIR}/test_case/native_products.yml"
-#     )
+class TestNativeParser(BaseTestCase):
+    products = load_yaml(
+        TEST_CASE_DIR.joinpath("native_products.yml")
+    )
 
-#     @pytest.fixture(scope="class", params=products)
-#     def target(self, request) -> ParserTestTarget:
-#         page = get_html(request.param["url"])
-#         return ParserTestTarget(
-#             parser=NativeProductParser.create_parser(request.param["url"], page=page),
-#             page=page,
-#             expected=request.param
-#         )
+    @pytest.fixture(scope="class", params=products)
+    def target(self, request) -> ParserTestTarget:
+        page = get_html(request.param["url"])
+        return ParserTestTarget(
+            parser=NativeProductParser.create_parser(request.param["url"], source=page),
+            page=page,
+            expected=request.param
+        )
