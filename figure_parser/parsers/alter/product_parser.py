@@ -215,7 +215,8 @@ class AlterProductParser(AbstractBs4ProductParser):
         return False
 
     def parse_order_period(self) -> OrderPeriod:
-        return OrderPeriod()
+        """Not a useful parser in alter site."""
+        return OrderPeriod()  # pragma: no cover
 
 
 def parse_worker(text) -> Union[List[str], str]:
