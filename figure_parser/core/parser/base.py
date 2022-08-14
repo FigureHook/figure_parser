@@ -14,33 +14,47 @@ __all__ = (
 
 class AbstractProductParser(ABC, Generic[Source_T]):
     """Abstract product parser class"""
+    _source: Source_T
+
+    def __init__(self, source: Source_T) -> None:
+        self._source = source
+        super().__init__()
+
+    @property
+    def source(self):
+        return self._source
+
+    @source.setter
+    def source(self, source: Source_T):
+        self._source = source
+
     @classmethod
     @abstractmethod
     def create_parser(cls: Type[Parser_T], url: str, source: Source_T) -> Parser_T:
         raise NotImplementedError
 
     @abstractmethod
-    def parse_name(self, source: Source_T) -> str:
+    def parse_name(self) -> str:
         """Parse the product name"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_series(self, source: Source_T) -> Optional[str]:
+    def parse_series(self) -> Optional[str]:
         """Parse the series of product"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_manufacturer(self, source: Source_T) -> str:
+    def parse_manufacturer(self) -> str:
         """Parse the manufacturer"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_category(self, source: Source_T) -> str:
+    def parse_category(self) -> str:
         """Parse the category"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_sculptors(self, source: Source_T) -> List[str]:
+    def parse_sculptors(self) -> List[str]:
         """
         This project respect sculptors,
         please try your best to parse all scultpors.
@@ -48,7 +62,7 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_scale(self, source: Source_T) -> Optional[int]:
+    def parse_scale(self) -> Optional[int]:
         """
         The result should be the denominator of scale:
 
@@ -60,19 +74,19 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_size(self, source: Source_T) -> Optional[int]:
+    def parse_size(self) -> Optional[int]:
         """The unit is `mm`"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_copyright(self, source: Source_T) -> Optional[str]:
+    def parse_copyright(self) -> Optional[str]:
         """Copyright would be something like this
         `© YYYY foo/bar All Rights Reserved.`
         """
         raise NotImplementedError
 
     @abstractmethod
-    def parse_releaser(self, source: Source_T) -> Optional[str]:
+    def parse_releaser(self) -> Optional[str]:
         """
         Parse the releaser
         Releaser is `発売元` in Japanese.
@@ -80,17 +94,17 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_rerelease(self, source: Source_T) -> bool:
+    def parse_rerelease(self) -> bool:
         """Parse the product is rerelease or not."""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_images(self, source: Source_T) -> List[str]:
+    def parse_images(self) -> List[str]:
         """Parse the images of the product."""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_releases(self, source: Source_T) -> List[Release]:
+    def parse_releases(self) -> List[Release]:
         """
         Focus on release dates.
         if prices is longer than dates, discard remaining data.
@@ -107,7 +121,7 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_distributer(self, source: Source_T) -> Optional[str]:
+    def parse_distributer(self) -> Optional[str]:
         """
         Parse the distributer.
         Distributer is `販売元` in Japanese.
@@ -115,18 +129,18 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_adult(self, source: Source_T) -> bool:
+    def parse_adult(self) -> bool:
         """Is the product is adult-only? ( ͡° ͜ʖ ͡°)
         """
         raise NotImplementedError
 
     @abstractmethod
-    def parse_order_period(self, source: Source_T) -> OrderPeriod:
+    def parse_order_period(self) -> OrderPeriod:
         """Parse order period"""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_paintworks(self, source: Source_T) -> List[str]:
+    def parse_paintworks(self) -> List[str]:
         """
         This project respect paintworks,
         please try your best to parse all of paintworks.
@@ -136,12 +150,12 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_JAN(self, source: Source_T) -> Optional[str]:
+    def parse_JAN(self) -> Optional[str]:
         """Parse the JAN code of the product."""
         raise NotImplementedError
 
     @abstractmethod
-    def parse_thumbnail(self, source: Source_T) -> Optional[str]:
+    def parse_thumbnail(self) -> Optional[str]:
         """
         Parse the thumbnail
         Most of them could be parsed from meta tag.
@@ -149,6 +163,6 @@ class AbstractProductParser(ABC, Generic[Source_T]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_og_image(self, source: Source_T) -> Optional[str]:
+    def parse_og_image(self) -> Optional[str]:
         """Parse open graph image from meta tag."""
         raise NotImplementedError

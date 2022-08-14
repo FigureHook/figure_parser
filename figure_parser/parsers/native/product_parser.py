@@ -10,38 +10,41 @@ from ..utils import price_parse, scale_parse, size_parse
 
 
 class NativeProductParser(AbstractBs4ProductParser):
-    def __init__(self, detail: Mapping[str, str]):
+    _detail: Mapping[str, str]
+
+    def __init__(self,  source: BeautifulSoup, detail: Mapping[str, str]):
         self._detail = detail
+        super().__init__(source)
 
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup) -> 'NativeProductParser':
         detail = parse_details(source)
-        return cls(detail=detail)
+        return cls(source=source, detail=detail)
 
     @property
     def detail(self):
         return self._detail
 
-    def parse_name(self, source: BeautifulSoup) -> str:
-        name_ele = source.select_one('article > header > h1')
+    def parse_name(self) -> str:
+        name_ele = self.source.select_one('article > header > h1')
         assert name_ele
         name = name_ele.text.strip()
         return name
 
-    def parse_adult(self, source: BeautifulSoup) -> bool:
+    def parse_adult(self) -> bool:
         return True
 
-    def parse_manufacturer(self, source: BeautifulSoup) -> str:
-        logo_image = source.select_one('.entryitem_detail .logo > img')
+    def parse_manufacturer(self) -> str:
+        logo_image = self.source.select_one('.entryitem_detail .logo > img')
         assert logo_image
         maker_name = logo_image.get('alt')
         assert type(maker_name) is str
         return maker_name
 
-    def parse_category(self, source: BeautifulSoup) -> str:
+    def parse_category(self) -> str:
         return "フィギュア"
 
-    def parse_prices(self, source: BeautifulSoup) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[Tuple[int, bool]]:
         prices = []
         price_text = self.detail.get('価格')
         if price_text:
@@ -53,7 +56,7 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return prices
 
-    def parse_release_dates(self, source: BeautifulSoup) -> List[date]:
+    def parse_release_dates(self) -> List[date]:
         """FIXME: This would be problem in future.
         """
         release_date_text = self.detail.get('発売')
@@ -70,11 +73,11 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return release_dates
 
-    def parse_series(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_series(self) -> Union[str, None]:
         series = self.detail.get('作品名')
         return series
 
-    def parse_paintworks(self, source: BeautifulSoup) -> List[str]:
+    def parse_paintworks(self) -> List[str]:
         paintworks_text = self.detail.get('彩色制作')
         if not paintworks_text:
             return []
@@ -82,7 +85,7 @@ class NativeProductParser(AbstractBs4ProductParser):
         paintworks = paintworks_text.split("\n")
         return paintworks
 
-    def parse_sculptors(self, source: BeautifulSoup) -> List[str]:
+    def parse_sculptors(self) -> List[str]:
         sculptors_text = self.detail.get('原型制作')
         if not sculptors_text:
             return []
@@ -98,35 +101,35 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return sculptors
 
-    def parse_scale(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_scale(self) -> Union[int, None]:
         spec_text = self.detail.get('サイズ')
         assert spec_text
         scale_text = spec_text.split("\n")[0]
         return scale_parse(scale_text)
 
-    def parse_size(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_size(self) -> Union[int, None]:
         spec_text = self.detail.get('サイズ')
         if spec_text:
             return size_parse(spec_text)
         return None
 
-    def parse_copyright(self, source: BeautifulSoup) -> Union[str, None]:
-        copyright_ele = source.select_one('.copyright')
+    def parse_copyright(self) -> Union[str, None]:
+        copyright_ele = self.source.select_one('.copyright')
         return copyright_ele.text.strip() if copyright_ele else None
 
-    def parse_releaser(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_releaser(self) -> Union[str, None]:
         releaser = self.detail.get('発売元')
         return releaser
 
-    def parse_distributer(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_distributer(self) -> Union[str, None]:
         distributer = self.detail.get('販売元')
         return distributer
 
-    def parse_rerelease(self, source: BeautifulSoup) -> bool:
+    def parse_rerelease(self) -> bool:
         return False
 
-    def parse_images(self, source: BeautifulSoup) -> List[str]:
-        slide_images = source.select('.swiper-slide > .img > img')
+    def parse_images(self) -> List[str]:
+        slide_images = self.source.select('.swiper-slide > .img > img')
 
         images = []
         for image in slide_images:
@@ -134,14 +137,14 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return images
 
-    def parse_thumbnail(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_thumbnail(self) -> Optional[str]:
         """
         Make
         'https://www.native-web.jp/wp-content/uploads/2013/03/img_gamergirl_01.jpg'
         to
         'https://www.native-web.jp/wp-content/uploads/2013/03/img_gamergirl_m.jpg'
         """
-        slide_image = source.select_one('.swiper-slide > .img > img')
+        slide_image = self.source.select_one('.swiper-slide > .img > img')
         assert slide_image
         image_src = slide_image.get('src')
         assert type(image_src) is str
@@ -153,7 +156,7 @@ class NativeProductParser(AbstractBs4ProductParser):
         )
         return thumbnail
 
-    def parse_order_period(self, source: BeautifulSoup) -> OrderPeriod:
+    def parse_order_period(self) -> OrderPeriod:
         order_period_text = self.detail.get('予約受付期間')
         pattern = r"\d+年\d+月\d+日\d+時"
         if order_period_text:
@@ -174,7 +177,7 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return OrderPeriod()
 
-    def parse_JAN(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_JAN(self) -> Optional[str]:
         return None
 
 

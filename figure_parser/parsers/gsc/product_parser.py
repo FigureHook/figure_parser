@@ -36,15 +36,16 @@ class GSCProductParser(AbstractBs4ProductParser):
     locale: str
     detail: Tag
 
-    def __init__(self, locale: str, detail: Tag):
+    def __init__(self, source: BeautifulSoup, locale: str, detail: Tag):
         self.locale = locale
         self.detail = detail
+        super().__init__(source)
 
     @classmethod
-    def create_parser(cls, url: str, source: BeautifulSoup) -> 'GSCProductParser':
+    def create_parser(cls, url: str, source: BeautifulSoup):
         locale = _extract_locale_from_url(url)
         detail = _extract_detail_from_source(source)
-        return GSCProductParser(locale=locale, detail=detail)
+        return cls(source=source, locale=locale, detail=detail)
 
     def _find_detail(self, name: str, text: str):
         target = self.detail.find(name=name, string=re.compile(text))
@@ -78,7 +79,7 @@ class GSCProductParser(AbstractBs4ProductParser):
                 dates.append(found_date)
         return dates
 
-    def parse_release_dates(self, source: BeautifulSoup) -> List[date]:
+    def parse_release_dates(self) -> List[date]:
         """
         If the product is re-saled,
         try to find past release-dates through `self._parse_resale_dates`.
@@ -92,7 +93,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         assert date_ele
         date_text = date_ele.text.strip()
 
-        if self.parse_rerelease(source):
+        if self.parse_rerelease():
             dates = self._parse_rerelease_dates()
             if dates:
                 return dates
@@ -133,7 +134,7 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return price_slot
 
-    def parse_prices(self, source: BeautifulSoup) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[Tuple[int, bool]]:
         price_slot = []
         tag = self._get_from_locale_dict("price")
         last_price_target = self._find_detail("dt", f"^{tag}")
@@ -149,7 +150,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         else:
             last_price = None
 
-        if self.parse_rerelease(source):
+        if self.parse_rerelease():
             price_slot = self._parse_resale_prices()
 
             if not price_slot and last_price:
@@ -165,15 +166,15 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return price_slot
 
-    def parse_name(self, source: BeautifulSoup) -> str:
-        name_ele = source.select_one(
+    def parse_name(self) -> str:
+        name_ele = self.source.select_one(
             "h1.title",
             {"itemprop": "price"}
         )
         assert name_ele
         return name_ele.text.strip()
 
-    def parse_series(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_series(self) -> Optional[str]:
         tag = self._get_from_locale_dict("series")
         series_targets = self._find_detail("dt", tag)
 
@@ -184,7 +185,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         series = series_ele.text.strip()
         return series
 
-    def parse_manufacturer(self, source: BeautifulSoup) -> str:
+    def parse_manufacturer(self) -> str:
         tag = self._get_from_locale_dict("manufacturer")
         manufacturer_targets = self._find_detail("dt", tag)
 
@@ -195,7 +196,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         manufacturer = manufacturer_ele.text.strip()
         return manufacturer
 
-    def parse_category(self, source: BeautifulSoup) -> str:
+    def parse_category(self) -> str:
         category_ele = self.detail.find("dd", {"itemprop": "category"})
         assert category_ele
         category = category_ele.text.strip()
@@ -206,7 +207,7 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return category
 
-    def parse_sculptors(self, source: BeautifulSoup) -> List[str]:
+    def parse_sculptors(self) -> List[str]:
         tag = self._get_from_locale_dict("sculptor")
         sculptor_info = self._find_detail("dt", tag)
 
@@ -219,7 +220,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         sulptors = parse_people(sculptor)
         return sulptors
 
-    def parse_scale(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_scale(self) -> Union[int, None]:
         tag = self._get_from_locale_dict("spec")
         spec_target = self._find_detail("dt", tag)
 
@@ -232,7 +233,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         scale = scale_parse(description)
         return scale
 
-    def parse_size(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_size(self) -> Union[int, None]:
         tag = self._get_from_locale_dict("spec")
         spec_target = self._find_detail("dt", tag)
 
@@ -245,31 +246,31 @@ class GSCProductParser(AbstractBs4ProductParser):
         size = size_parse(description)
         return size
 
-    def parse_releaser(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_releaser(self) -> Optional[str]:
         tag = self._get_from_locale_dict("releaser")
         detail_dd = self._find_detail("dt", tag)
 
         if not detail_dd:
-            return self.parse_manufacturer(source)
+            return self.parse_manufacturer()
 
         releaser_ele = detail_dd.find_next("dd")
         assert releaser_ele
         releaser = releaser_ele.text.strip()
         return releaser
 
-    def parse_distributer(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_distributer(self) -> Optional[str]:
         tag = self._get_from_locale_dict("distributer")
         detail_dd = self._find_detail("dt", tag)
 
         if not detail_dd:
-            return self.parse_manufacturer(source)
+            return self.parse_manufacturer()
 
         distributer_ele = detail_dd.find_next("dd")
         assert distributer_ele
         distributer = distributer_ele.text.strip()
         return distributer
 
-    def parse_copyright(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_copyright(self) -> Optional[str]:
         _copyright = self.detail.select_one(".itemCopy")
 
         if not _copyright:
@@ -283,12 +284,12 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return the_copyright
 
-    def parse_rerelease(self, source: BeautifulSoup) -> bool:
+    def parse_rerelease(self) -> bool:
         tag = self._get_from_locale_dict("resale")
         resale = self._find_detail("dt", tag)
         return bool(resale)
 
-    def parse_order_period(self, source: BeautifulSoup) -> OrderPeriod:
+    def parse_order_period(self) -> OrderPeriod:
         period = self.detail.select_one(".onlinedates")
 
         if not period:
@@ -312,16 +313,16 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return OrderPeriod(start=start, end=end)
 
-    def parse_adult(self, source: BeautifulSoup) -> bool:
+    def parse_adult(self) -> bool:
         rq_pattern = self._get_from_locale_dict("adult")
         keyword = re.compile(rq_pattern)
-        info = source.select_one(".itemInfo")
+        info = self.source.select_one(".itemInfo")
         assert info
         detaill_adult = info.find(text=keyword)
 
         return bool(detaill_adult)
 
-    def parse_paintworks(self, source: BeautifulSoup) -> List[str]:
+    def parse_paintworks(self) -> List[str]:
         tag: str = self._get_from_locale_dict("paintwork")
         paintwork_title = self._find_detail("dt", tag)
 
@@ -334,12 +335,12 @@ class GSCProductParser(AbstractBs4ProductParser):
         paintworks = parse_people(paintwork)
         return paintworks
 
-    def parse_images(self, source: BeautifulSoup) -> List[str]:
-        images_items = source.select(".itemImg")
+    def parse_images(self) -> List[str]:
+        images_items = self.source.select(".itemImg")
         images = [f'https://{item["src"][2:]}' for item in images_items]
         return images
 
-    def parse_JAN(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_JAN(self) -> Optional[str]:
         return None
 
 

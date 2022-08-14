@@ -1,9 +1,9 @@
 import re
 from datetime import date, datetime
-from typing import Dict, List, Optional, Tuple, Union
-from urllib.parse import urlparse, urlunparse
+from typing import Dict, List, Mapping, Optional, Tuple, Union
+from urllib.parse import ParseResult, urlparse, urlunparse
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from figure_parser.core.entity import OrderPeriod
 from figure_parser.parsers.base import AbstractBs4ProductParser
 
@@ -12,6 +12,7 @@ from ..utils import price_parse, scale_parse, size_parse
 
 def _parse_detail(source: BeautifulSoup):
     detail = source.select_one("#contents")
+    assert detail
     return detail
 
 
@@ -39,38 +40,43 @@ def _parse_spec(source: BeautifulSoup):
 
 
 class AlterProductParser(AbstractBs4ProductParser):
-    def __init__(self, detail, spec, parsed_url):
+    spec: Mapping[str, str]
+    detail: Tag
+    parsed_url: ParseResult
+
+    def __init__(self, source: BeautifulSoup, detail: Tag, spec: Mapping[str, str], parsed_url: ParseResult):
         self.detail = detail
         self.spec = spec
         self.parsed_url = parsed_url
+        super().__init__(source)
 
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup):
         detail = _parse_detail(source)
         spec = _parse_spec(source)
         parsed_url = urlparse(url)
-        return cls(spec=spec, detail=detail, parsed_url=parsed_url)
+        return cls(source=source, spec=spec, detail=detail, parsed_url=parsed_url)
 
-    def parse_name(self, source: BeautifulSoup) -> str:
-        name_ele = source.select_one("#contents h1")
+    def parse_name(self) -> str:
+        name_ele = self.source.select_one("#contents h1")
         assert name_ele
         name = name_ele.text.strip()
         return name
 
-    def parse_category(self, source: BeautifulSoup) -> str:
+    def parse_category(self) -> str:
         default_category = "フィギュア"
         transform_list = ["コラボ", "アルタイル", default_category]
-        category = source.select("#topicpath li > a")[1].text.strip()
+        category = self.source.select("#topicpath li > a")[1].text.strip()
 
         if category in transform_list:
             return default_category
 
         return category
 
-    def parse_manufacturer(self, source: BeautifulSoup) -> str:
+    def parse_manufacturer(self) -> str:
         return "アルター"
 
-    def parse_prices(self, source: BeautifulSoup) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[Tuple[int, bool]]:
         price_list: List[Tuple[int, bool]] = []
         price_text = self.spec["価格"]
         is_weird_price_text = re.findall(r"税抜", price_text)
@@ -84,18 +90,18 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         return price_list
 
-    def parse_release_dates(self, source: BeautifulSoup) -> List[date]:
+    def parse_release_dates(self) -> List[date]:
         date_text = self.spec["発売月"]
         matched_date = re.findall(r"\d+年\d+月", date_text)
         date_list = [datetime.strptime(date, "%Y年%m月").date()
                      for date in matched_date]
         return date_list
 
-    def parse_scale(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_scale(self) -> Union[int, None]:
         scale = scale_parse(self.spec["サイズ"])
         return scale
 
-    def parse_sculptors(self, source: BeautifulSoup) -> List[str]:
+    def parse_sculptors(self) -> List[str]:
         sculptor_text = self.spec["原型"]
 
         sculptors = []
@@ -109,15 +115,15 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         return sculptors
 
-    def parse_series(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_series(self) -> Union[str, None]:
         series = self.spec["作品名"]
         return series
 
-    def parse_size(self, source: BeautifulSoup) -> Union[int, None]:
+    def parse_size(self) -> Union[int, None]:
         size = size_parse(self.spec["サイズ"])
         return size
 
-    def parse_paintworks(self, source: BeautifulSoup) -> List[str]:
+    def parse_paintworks(self) -> List[str]:
         paintwork_texts = self.spec["彩色"]
         paintworks: List[str] = []
         for p in paintwork_texts:
@@ -129,7 +135,7 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         return paintworks
 
-    def parse_releaser(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_releaser(self) -> Union[str, None]:
         pattern = r"：(\S.+)"
 
         the_other_releaser = self.detail.find(
@@ -140,6 +146,7 @@ class AlterProductParser(AbstractBs4ProductParser):
         if not the_other_releaser:
             return "アルター"
 
+        assert the_other_releaser.parent
         releaser_text = the_other_releaser.parent.text
         matched_releaser = re.search(pattern, releaser_text)
         assert matched_releaser
@@ -147,7 +154,7 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         return releaser
 
-    def parse_distributer(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_distributer(self) -> Union[str, None]:
         pattern = r"：(\S.+)"
 
         the_other_releaser = self.detail.find(
@@ -158,30 +165,41 @@ class AlterProductParser(AbstractBs4ProductParser):
         if not the_other_releaser:
             return None
 
+        assert the_other_releaser.parent
         distributer_text = the_other_releaser.parent.text
         matched_distributer = re.search(pattern, distributer_text)
         assert matched_distributer
         distributer = matched_distributer.group(1).strip()
         return distributer
 
-    def parse_rerelease(self, source: BeautifulSoup) -> bool:
-        is_resale = bool(source.find(class_='resale'))
+    def parse_rerelease(self) -> bool:
+        is_resale = bool(self.source.find(class_='resale'))
         return is_resale
 
-    def parse_images(self, source: BeautifulSoup) -> List[str]:
+    def parse_images(self) -> List[str]:
         images_item = self.detail.select(".bxslider > li > img")
         images = []
         for img in images_item:
-            url_components = (self.parsed_url.scheme, self.parsed_url.netloc,
-                              img["src"], None, None, None)
+            image_source = img["src"]
+            if not type(image_source) is str:
+                image_source = image_source[0]
+
+            assert type(image_source) is str
+            url_components = (
+                self.parsed_url.scheme,
+                self.parsed_url.netloc,
+                image_source,
+                None, None, None)
             url = urlunparse(url_components)
             images.append(url)
 
         return images
 
-    def parse_copyright(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_copyright(self) -> Union[str, None]:
         pattern = r"(©.*)※"
-        copyright_info = self.detail.select_one(".copyright").text
+        copyright_ele = self.detail.select_one(".copyright")
+        assert copyright_ele
+        copyright_info = copyright_ele.text
         matched_copyright = re.search(
             pattern, copyright_info
         )
@@ -190,13 +208,13 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         return copyright_
 
-    def parse_JAN(self, source: BeautifulSoup) -> Optional[str]:
+    def parse_JAN(self) -> Optional[str]:
         return None
 
-    def parse_adult(self, source: BeautifulSoup) -> bool:
+    def parse_adult(self) -> bool:
         return False
 
-    def parse_order_period(self, source: BeautifulSoup) -> OrderPeriod:
+    def parse_order_period(self) -> OrderPeriod:
         return OrderPeriod()
 
 

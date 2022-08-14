@@ -15,7 +15,7 @@ class MockStrProductFactory(GenericProductFactory[str]):
 class MockStrProductParser(AbstractProductParser[str]):
     @classmethod
     def create_parser(cls, url: str, source: str) -> 'MockStrProductParser':
-        return cls()
+        return cls(source=source)
     pass
 
 

@@ -48,28 +48,28 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._sort_pipes()
         return self._pipes
 
-    def _create_product_by_parser(self, url: str, source: Source_T, parser: AbstractProductParser[Source_T]):
+    def _create_product_by_parser(self, url: str, parser: AbstractProductParser[Source_T]):
         return ProductBase(
             url=url,
-            name=parser.parse_name(source),
-            series=parser.parse_series(source),
-            manufacturer=parser.parse_manufacturer(source),
-            category=parser.parse_category(source),
-            releases=parser.parse_releases(source),
-            order_period=parser.parse_order_period(source),
-            size=parser.parse_size(source),
-            scale=parser.parse_scale(source),
-            sculptors=parser.parse_sculptors(source),
-            paintworks=parser.parse_paintworks(source),
-            rerelease=parser.parse_rerelease(source),
-            adult=parser.parse_adult(source),
-            copyright=parser.parse_copyright(source),
-            releaser=parser.parse_releaser(source),
-            distributer=parser.parse_distributer(source),
-            jan=parser.parse_JAN(source),
-            images=parser.parse_images(source),
-            thumbnail=parser.parse_thumbnail(source),
-            og_image=parser.parse_og_image(source),
+            name=parser.parse_name(),
+            series=parser.parse_series(),
+            manufacturer=parser.parse_manufacturer(),
+            category=parser.parse_category(),
+            releases=parser.parse_releases(),
+            order_period=parser.parse_order_period(),
+            size=parser.parse_size(),
+            scale=parser.parse_scale(),
+            sculptors=parser.parse_sculptors(),
+            paintworks=parser.parse_paintworks(),
+            rerelease=parser.parse_rerelease(),
+            adult=parser.parse_adult(),
+            copyright=parser.parse_copyright(),
+            releaser=parser.parse_releaser(),
+            distributer=parser.parse_distributer(),
+            jan=parser.parse_JAN(),
+            images=parser.parse_images(),
+            thumbnail=parser.parse_thumbnail(),
+            og_image=parser.parse_og_image(),
         )
 
     def create_product(
@@ -83,7 +83,7 @@ class GenericProductFactory(Generic[Source_T], ABC):
             raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
 
         parser = parser_cls.create_parser(url=url, source=source)
-        product = self._create_product_by_parser(url=url, source=source, parser=parser)
+        product = self._create_product_by_parser(url=url, parser=parser)
 
         for process, _ in self._pipes:
             product = process(product)

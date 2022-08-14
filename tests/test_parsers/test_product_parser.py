@@ -22,7 +22,6 @@ TEST_CASE_DIR = THIS_DIR.joinpath("product_case")
 @dataclass
 class ParserTestTarget:
     parser: AbstractBs4ProductParser
-    page: BeautifulSoup
     expected: Mapping
 
 
@@ -60,23 +59,23 @@ def get_html(url: str, headers={}, cookies={}) -> BeautifulSoup:
 
 class BaseTestCase:
     def test_name(self, target: ParserTestTarget):
-        name = target.parser.parse_name(target.page)
+        name = target.parser.parse_name()
         assert name == target.expected.get("name")
 
     def test_series(self, target: ParserTestTarget):
-        series = target.parser.parse_series(target.page)
+        series = target.parser.parse_series()
         assert series == target.expected.get("series")
 
     def test_category(self, target: ParserTestTarget):
-        category = target.parser.parse_category(target.page)
+        category = target.parser.parse_category()
         assert category == target.expected.get("category")
 
     def test_manufacturer(self, target: ParserTestTarget):
-        manufacturer = target.parser.parse_manufacturer(target.page)
+        manufacturer = target.parser.parse_manufacturer()
         assert manufacturer == target.expected.get("manufacturer")
 
     def test_order_period(self, target: ParserTestTarget):
-        order_period = target.parser.parse_order_period(target.page)
+        order_period = target.parser.parse_order_period()
         expected_order_period = target.expected.get("order_period")
         assert expected_order_period
         if not expected_order_period.get('start') and not expected_order_period.get('end'):
@@ -96,11 +95,11 @@ class BaseTestCase:
             assert end == target.expected["order_period"]["end"]
 
     def test_sculptor(self, target: ParserTestTarget):
-        sculptor = target.parser.parse_sculptors(target.page)
+        sculptor = target.parser.parse_sculptors()
         assert sorted(sculptor) == sorted(target.expected["sculptor"])
 
     def test_release_infos(self, target: ParserTestTarget):
-        release_infos: list[Release] = target.parser.parse_releases(target.page)
+        release_infos: list[Release] = target.parser.parse_releases()
         expected_release_infos: list[dict[str, Any]] = target.expected["release_infos"]
         assert len(release_infos) == len(expected_release_infos)
 
@@ -117,56 +116,56 @@ class BaseTestCase:
             assert r.tax_including is e_r['tax_including'], "Tax-including information didn't match."
 
     def test_scale(self, target: ParserTestTarget):
-        scale = target.parser.parse_scale(target.page)
+        scale = target.parser.parse_scale()
         assert scale == target.expected.get("scale")
 
     def test_size(self, target: ParserTestTarget):
-        size = target.parser.parse_size(target.page)
+        size = target.parser.parse_size()
         assert size == target.expected.get("size")
 
     def test_rerelease(self, target: ParserTestTarget):
-        rerelease = target.parser.parse_rerelease(target.page)
+        rerelease = target.parser.parse_rerelease()
         assert rerelease is target.expected.get("rerelease")
 
     def test_adult(self, target: ParserTestTarget):
-        adult = target.parser.parse_adult(target.page)
+        adult = target.parser.parse_adult()
         assert adult is target.expected.get("adult")
 
     def test_copyright(self, target: ParserTestTarget):
-        _copyright = target.parser.parse_copyright(target.page)
+        _copyright = target.parser.parse_copyright()
         assert _copyright == target.expected.get("copyright")
 
     def test_paintwork(self, target: ParserTestTarget):
-        paintwork = target.parser.parse_paintworks(target.page)
+        paintwork = target.parser.parse_paintworks()
         assert sorted(paintwork) == sorted(target.expected["paintwork"])
 
     def test_releaser(self, target: ParserTestTarget):
-        releaser = target.parser.parse_releaser(target.page)
+        releaser = target.parser.parse_releaser()
         assert releaser == target.expected.get("releaser")
 
     def test_distributer(self, target: ParserTestTarget):
-        distributer = target.parser.parse_distributer(target.page)
+        distributer = target.parser.parse_distributer()
         assert distributer == target.expected.get("distributer")
 
     def test_images(self, target: ParserTestTarget):
-        images = target.parser.parse_images(target.page)
+        images = target.parser.parse_images()
         assert type(images) is list
         assert target.expected.get("images") in images
 
     def test_thumbnail(self, target: ParserTestTarget):
-        thumbnail = target.parser.parse_thumbnail(target.page)
+        thumbnail = target.parser.parse_thumbnail()
         if thumbnail:
             assert isinstance(thumbnail, str)
         assert thumbnail == target.expected.get("thumbnail")
 
     def test_og_image(self, target: ParserTestTarget):
-        og_image = target.parser.parse_og_image(target.page)
+        og_image = target.parser.parse_og_image()
         if og_image:
             assert isinstance(og_image, str)
         assert og_image == target.expected.get("og_image")
 
     def test_jan(self, target: ParserTestTarget):
-        jan = target.parser.parse_JAN(target.page)
+        jan = target.parser.parse_JAN()
         expected_jan = target.expected.get("JAN")
 
         assert jan == expected_jan
@@ -184,7 +183,6 @@ class TestGSCParser(BaseTestCase):
         })
         return ParserTestTarget(
             parser=GSCProductParser.create_parser(url=request.param["url"], source=page),
-            page=page,
             expected=request.param
         )
 
@@ -219,7 +217,6 @@ class TestAlterParser(BaseTestCase):
         page = get_html(request.param["url"])
         return ParserTestTarget(
             parser=AlterProductParser.create_parser(request.param["url"], source=page),
-            page=page,
             expected=request.param
         )
 
@@ -237,6 +234,5 @@ class TestNativeParser(BaseTestCase):
         page = get_html(request.param["url"])
         return ParserTestTarget(
             parser=NativeProductParser.create_parser(request.param["url"], source=page),
-            page=page,
             expected=request.param
         )
