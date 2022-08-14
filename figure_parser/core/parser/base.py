@@ -24,10 +24,6 @@ class AbstractProductParser(ABC, Generic[Source_T]):
     def source(self):
         return self._source
 
-    @source.setter
-    def source(self, source: Source_T):
-        self._source = source
-
     @classmethod
     @abstractmethod
     def create_parser(cls: Type[Parser_T], url: str, source: Source_T) -> Parser_T:
