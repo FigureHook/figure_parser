@@ -10,7 +10,6 @@ from ..utils import price_parse, scale_parse, size_parse
 
 
 class NativeProductParser(AbstractBs4ProductParser):
-
     def __init__(self, detail: Mapping[str, str]):
         self._detail = detail
 
@@ -24,7 +23,9 @@ class NativeProductParser(AbstractBs4ProductParser):
         return self._detail
 
     def parse_name(self, source: BeautifulSoup) -> str:
-        name = source.select_one('article > header > h1').text.strip()
+        name_ele = source.select_one('article > header > h1')
+        assert name_ele
+        name = name_ele.text.strip()
         return name
 
     def parse_adult(self, source: BeautifulSoup) -> bool:
@@ -32,7 +33,9 @@ class NativeProductParser(AbstractBs4ProductParser):
 
     def parse_manufacturer(self, source: BeautifulSoup) -> str:
         logo_image = source.select_one('.entryitem_detail .logo > img')
-        maker_name = logo_image['alt']
+        assert logo_image
+        maker_name = logo_image.get('alt')
+        assert type(maker_name) is str
         return maker_name
 
     def parse_category(self, source: BeautifulSoup) -> str:
@@ -97,6 +100,7 @@ class NativeProductParser(AbstractBs4ProductParser):
 
     def parse_scale(self, source: BeautifulSoup) -> Union[int, None]:
         spec_text = self.detail.get('サイズ')
+        assert spec_text
         scale_text = spec_text.split("\n")[0]
         return scale_parse(scale_text)
 
@@ -130,10 +134,23 @@ class NativeProductParser(AbstractBs4ProductParser):
 
         return images
 
-    def parse_thumbnail(self, source: BeautifulSoup) -> Union[str, None]:
+    def parse_thumbnail(self, source: BeautifulSoup) -> Optional[str]:
+        """
+        Make
+        'https://www.native-web.jp/wp-content/uploads/2013/03/img_gamergirl_01.jpg'
+        to
+        'https://www.native-web.jp/wp-content/uploads/2013/03/img_gamergirl_m.jpg'
+        """
         slide_image = source.select_one('.swiper-slide > .img > img')
+        assert slide_image
+        image_src = slide_image.get('src')
+        assert type(image_src) is str
 
-        thumbnail = re.sub(r"\d+(?=[.jpg])", "m", slide_image['src'])
+        thumbnail = re.sub(
+            pattern=r'\d+(?=[.jpg])',
+            repl="m",
+            string=image_src
+        )
         return thumbnail
 
     def parse_order_period(self, source: BeautifulSoup) -> OrderPeriod:
