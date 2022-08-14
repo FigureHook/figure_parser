@@ -110,31 +110,15 @@ def test_factory_get_parser_by_domain():
 
 def test_factory_product_creation(mocker: MockerFixture, product: ProductBase):
     mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
-    mocker.patch.object(MockStrProductParser, "parse_name", new=lambda *a: product.name)
-    mocker.patch.object(MockStrProductParser, "parse_series", new=lambda *a: product.series)
-    mocker.patch.object(MockStrProductParser, "parse_manufacturer", new=lambda *a: product.manufacturer)
-    mocker.patch.object(MockStrProductParser, "parse_category", new=lambda *a: product.category)
-    mocker.patch.object(MockStrProductParser, "parse_releases", new=lambda *a: product.releases)
-    mocker.patch.object(MockStrProductParser, "parse_order_period", new=lambda *a: product.order_period)
-    mocker.patch.object(MockStrProductParser, "parse_size", new=lambda *a: product.size)
-    mocker.patch.object(MockStrProductParser, "parse_scale", new=lambda *a: product.scale)
-    mocker.patch.object(MockStrProductParser, "parse_sculptors", new=lambda *a: product.sculptors)
-    mocker.patch.object(MockStrProductParser, "parse_paintworks", new=lambda *a: product.paintworks)
-    mocker.patch.object(MockStrProductParser, "parse_rerelease", new=lambda *a: product.rerelease)
-    mocker.patch.object(MockStrProductParser, "parse_adult", new=lambda *a: product.adult)
-    mocker.patch.object(MockStrProductParser, "parse_copyright", new=lambda *a: product.copyright)
-    mocker.patch.object(MockStrProductParser, "parse_releaser", new=lambda *a: product.releaser)
-    mocker.patch.object(MockStrProductParser, "parse_distributer", new=lambda *a: product.distributer)
-    mocker.patch.object(MockStrProductParser, "parse_JAN", new=lambda *a: product.jan)
-    mocker.patch.object(MockStrProductParser, "parse_images", new=lambda *a: product.images)
-    mocker.patch.object(MockStrProductParser, "parse_thumbnail", new=lambda *a: product.thumbnail)
-    mocker.patch.object(MockStrProductParser, "parse_og_image", new=lambda *a: product.og_image)
-
     factory = MockStrProductFactory()
+    mock_product_create = mocker.MagicMock(return_value=product)
+    factory._create_product_by_parser = mock_product_create
+
     with pytest.raises(UnregisteredDomain):
         factory.create_product(url="https://foo.bar/114514", source="114514")
 
     factory.register_parser('foo.bar', MockStrProductParser)
     factory.add_pipe(lambda p: p, 1)
     p = factory.create_product(url="https://foo.bar/114514", source="114514")
+    assert mock_product_create.called
     assert type(p) is ProductBase

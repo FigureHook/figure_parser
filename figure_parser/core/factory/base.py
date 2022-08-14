@@ -48,18 +48,8 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._sort_pipes()
         return self._pipes
 
-    def create_product(
-        self,
-        url: str,
-        source: Source_T
-    ) -> ProductBase:
-        self._sort_pipes()
-        parser_cls = self.get_parser_by_url(url)
-        if not parser_cls:
-            raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
-
-        parser = parser_cls.create_parser(url=url, source=source)
-        product = ProductBase(
+    def _create_product_by_parser(self, url: str, source: Source_T, parser: AbstractProductParser[Source_T]):
+        return ProductBase(
             url=url,
             name=parser.parse_name(source),
             series=parser.parse_series(source),
@@ -81,6 +71,19 @@ class GenericProductFactory(Generic[Source_T], ABC):
             thumbnail=parser.parse_thumbnail(source),
             og_image=parser.parse_og_image(source),
         )
+
+    def create_product(
+        self,
+        url: str,
+        source: Source_T
+    ) -> ProductBase:
+        self._sort_pipes()
+        parser_cls = self.get_parser_by_url(url)
+        if not parser_cls:
+            raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
+
+        parser = parser_cls.create_parser(url=url, source=source)
+        product = self._create_product_by_parser(url=url, source=source, parser=parser)
 
         for process, _ in self._pipes:
             product = process(product)
