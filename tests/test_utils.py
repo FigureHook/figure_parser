@@ -38,9 +38,8 @@ def test_size_parser(faker: Faker):
 def test_scale_parser(faker: Faker):
     for _ in range(100):
         denominator = faker.random_digit_not_null()
-        scale_text = f"1/{denominator}"
-
-        assert scale_parse(scale_text) == denominator
+        assert scale_parse(f"1/{denominator}") == denominator
+        assert scale_parse(f"1:{denominator}") == denominator
 
 
 def test_last_element_filler():
