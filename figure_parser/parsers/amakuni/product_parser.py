@@ -55,7 +55,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
 
 class AmakuniFormalProductParser(AbstractBs4ProductParser):
-    def __init__(self,  source: BeautifulSoup):
+    def __init__(self, source: BeautifulSoup):
         super().__init__(source)
 
     @classmethod
@@ -104,11 +104,71 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
 class AmakuniProductParser(AbstractBs4ProductParser):
     _parser: AbstractBs4ProductParser
 
-    def __init__(self, source: Source_T) -> None:
+    def __init__(self, source: BeautifulSoup, parser: AbstractBs4ProductParser) -> None:
+        self._parser = parser
         super().__init__(source)
 
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup):
         if source.select_one(".name_waku"):
-            return AmakuniFormalProductParser(source=source)
-        return AmakuniLegacyProductParser(source=source)
+            parser = AmakuniFormalProductParser.create_parser(url=url, source=source)
+        else:
+            parser = AmakuniLegacyProductParser.create_parser(url=url, source=source)
+        return cls(source=source, parser=parser)
+
+    def parse_name(self) -> str:
+        return self._parser.parse_name()
+
+    def parse_adult(self) -> bool:
+        return self._parser.parse_adult()
+
+    def parse_manufacturer(self) -> str:
+        return self._parser.parse_manufacturer()
+
+    def parse_category(self) -> str:
+        return self._parser.parse_category()
+
+    def parse_prices(self) -> List[Tuple[int, bool]]:
+        return self._parser.parse_prices()
+
+    def parse_release_dates(self) -> List[date]:
+        return self._parser.parse_release_dates()
+
+    def parse_series(self) -> Optional[str]:
+        return self._parser.parse_series()
+
+    def parse_paintworks(self) -> List[str]:
+        return self._parser.parse_paintworks()
+
+    def parse_sculptors(self) -> List[str]:
+        return self._parser.parse_sculptors()
+
+    def parse_scale(self) -> Optional[int]:
+        return self._parser.parse_scale()
+
+    def parse_size(self) -> Optional[int]:
+        return self._parser.parse_size()
+
+    def parse_copyright(self) -> Optional[str]:
+        return self._parser.parse_copyright()
+
+    def parse_releaser(self) -> Optional[str]:
+        return self._parser.parse_releaser()
+
+    def parse_distributer(self) -> Optional[str]:
+        return self._parser.parse_distributer()
+
+    def parse_rerelease(self) -> bool:
+        return self._parser.parse_rerelease()
+
+    def parse_images(self) -> List[str]:
+        return self._parser.parse_images()
+
+    def parse_thumbnail(self) -> Optional[str]:
+        return self._parser.parse_thumbnail()
+
+    def parse_order_period(self) -> OrderPeriod:
+        return self._parser.parse_order_period()
+
+    def parse_JAN(self) -> Optional[str]:
+        return self._parser.parse_JAN()

@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 from figure_parser.core.entity import Release
 from figure_parser.core.pipe.sorting import _sort_release
 from figure_parser.parsers import (AlterProductParser, GSCProductParser,
-                                   NativeProductParser)
+                                   NativeProductParser, AmakuniProductParser)
 from figure_parser.parsers.base import AbstractBs4ProductParser
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
@@ -173,7 +173,7 @@ class BaseTestCase:
 
 class TestGSCParser(BaseTestCase):
     products = load_yaml(
-        TEST_CASE_DIR.joinpath("gsc_products.yml")
+        TEST_CASE_DIR.joinpath("gsc.yml")
     )
 
     @pytest.fixture(scope="class", params=products)
@@ -209,7 +209,7 @@ class TestGSCParser(BaseTestCase):
 
 class TestAlterParser(BaseTestCase):
     products = load_yaml(
-        TEST_CASE_DIR.joinpath("alter_products.yml")
+        TEST_CASE_DIR.joinpath("alter.yml")
     )
 
     @pytest.fixture(scope="class", params=products)
@@ -226,7 +226,7 @@ class TestAlterParser(BaseTestCase):
 
 class TestNativeParser(BaseTestCase):
     products = load_yaml(
-        TEST_CASE_DIR.joinpath("native_products.yml")
+        TEST_CASE_DIR.joinpath("native.yml")
     )
 
     @pytest.fixture(scope="class", params=products)
@@ -234,5 +234,19 @@ class TestNativeParser(BaseTestCase):
         page = get_html(request.param["url"])
         return ParserTestTarget(
             parser=NativeProductParser.create_parser(request.param["url"], source=page),
+            expected=request.param
+        )
+
+
+class TestAmakuniParser(BaseTestCase):
+    products = load_yaml(
+        TEST_CASE_DIR.joinpath("amakuni.yml")
+    )
+
+    @pytest.fixture(scope="class", params=products)
+    def target(self, request) -> ParserTestTarget:
+        page = get_html(request.param["url"])
+        return ParserTestTarget(
+            parser=AmakuniProductParser.create_parser(request.param["url"], source=page),
             expected=request.param
         )
