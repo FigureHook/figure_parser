@@ -121,7 +121,7 @@ class GSCProductParser(AbstractBs4ProductParser):
     def _parse_resale_prices(self) -> List[Tuple[int, bool]]:
         price_slot = []
         price_items = self.detail.find_all(
-            name="dt", text=re.compile(r"販(\w|)価格"))
+            name="dt", string=re.compile(r"販(\w|)価格"))
 
         for price_item in price_items:
             price_text: str = price_item.find_next("dd").text.strip()
@@ -318,7 +318,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         keyword = re.compile(rq_pattern)
         info = self.source.select_one(".itemInfo")
         assert info
-        detaill_adult = info.find(text=keyword)
+        detaill_adult = info.find(string=keyword)
 
         return bool(detaill_adult)
 

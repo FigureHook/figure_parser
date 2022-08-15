@@ -140,7 +140,7 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         the_other_releaser = self.detail.find(
             "span",
-            text=re.compile("発売元")
+            string=re.compile("発売元")
         )
 
         if not the_other_releaser:
@@ -159,7 +159,7 @@ class AlterProductParser(AbstractBs4ProductParser):
 
         the_other_releaser = self.detail.find(
             "span",
-            text=re.compile("販売元")
+            string=re.compile("販売元")
         )
 
         if not the_other_releaser:
