@@ -1,7 +1,7 @@
 import re
 from itertools import repeat
+import unicodedata
 from typing import Iterable, List, TypeVar, Union
-
 
 T = TypeVar('T')
 
@@ -31,6 +31,7 @@ def price_parse(text: str) -> int:
 
 
 def scale_parse(text: str) -> Union[int, None]:
+    text = unicodedata.normalize("NFKC", text)
     pattern = r"\d(\/|:)(\d+)"
     scale_text = re.search(pattern, text)
     scale = int(scale_text.group(2)) if scale_text else None

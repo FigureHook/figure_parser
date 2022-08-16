@@ -107,3 +107,58 @@
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2013/2013_006.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2014/004/004.jpg
+  manufacturer: AMAKUNI
+  name: レヴィアタン～嫉妬の像　紫ノ衣版
+  og_image: null
+  order_period:
+    end: 2013-12-02 23:59:59
+    start: 2013-09-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 8800
+      release_date: 2014-03-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - ひろし（桜前線）
+  series: 七つの大罪
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2014/004.php
+# - JAN: null
+#   adult: false
+#   category: フィギュア
+#   copyright:
+#   distributer:
+#   images:
+#   maker_id:
+#   manufacturer:
+#   name:
+#   og_image:
+#   order_period:
+#     end: 2000-00-00 00:00:00
+#     start: 2000-00-00 00:00:00
+#   paintwork:
+#     -
+#   release_infos:
+#     - price:
+#       release_date: 2000-00-01 00:00:00
+#       tax_including:
+#   releaser:
+#   rerelease:
+#   scale:
+#   sculptor:
+#     -
+#   series:
+#   size:
+#   thumbnail:
+#   url:

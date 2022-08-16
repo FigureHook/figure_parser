@@ -16,6 +16,43 @@ class LegacyProductInfo(BaseModel):
     info_text: str
 
 
+def parse_legacy_info(source: BeautifulSoup) -> str:
+    if source.select_one("#contents_right > .hidden"):
+        info_text_ele = source.select_one("#contents_right > .hidden > p:nth-last-child(1)")
+        if info_text_ele:
+            info_text = info_text_ele.text.strip().replace("\n", "").replace("\t", "")
+            return info_text
+    else:
+        info_text_ele = source.select_one("#contents_right > img:nth-last-child(1)")
+        if info_text_ele:
+            info_text = info_text_ele.get('alt')
+            if type(info_text) is str:
+                return info_text
+
+    raise ParserInitializationFailed
+
+
+def parse_legacy_title(source: BeautifulSoup) -> str:
+    title = source.select_one("title")
+    if title:
+        title_text = title.text.strip()
+        if title_text != "AMAKUNI":
+            sub_pattern = r"\s\|.+$"
+            return re.sub(sub_pattern, "", title_text)
+
+    hidden_title = source.select_one("#contents_right > .hidden > h3")
+    if hidden_title:
+        return hidden_title.text.strip()
+
+    midashi_image_alt = source.select_one("#item_midashi > img")
+    if midashi_image_alt:
+        the_alt = midashi_image_alt.get('alt')
+        if type(the_alt) is str:
+            return the_alt
+
+    raise ParserInitializationFailed
+
+
 class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     _info: LegacyProductInfo
 
@@ -94,8 +131,9 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_scale(self) -> Optional[int]:
         pattern = r"●仕様／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
-        assert matched
-        return scale_parse(matched.group(1))
+        if matched:
+            return scale_parse(matched.group(1))
+        return None
 
     def parse_size(self) -> Optional[int]:
         return None
@@ -103,8 +141,9 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_copyright(self) -> Optional[str]:
         pattern = r"(©.+)"
         matched = re.search(pattern, self._info.info_text)
-        assert matched
-        return matched.group(0)
+        if matched:
+            return matched.group(0)
+        return None
 
     def parse_releaser(self) -> Optional[str]:
         return "ホビージャパン"
@@ -269,33 +308,3 @@ class AmakuniProductParser(AbstractBs4ProductParser):
 
     def parse_JAN(self) -> Optional[str]:
         return self._parser.parse_JAN()
-
-
-def parse_legacy_info(source: BeautifulSoup) -> str:
-    if source.select_one("#contents_right > .hidden"):
-        info_text_ele = source.select_one("#contents_right > .hidden > p:nth-last-child(1)")
-        if info_text_ele:
-            info_text = info_text_ele.text.strip().replace("\n", "").replace("\t", "")
-            return info_text
-    raise ParserInitializationFailed
-
-
-def parse_legacy_title(source: BeautifulSoup) -> str:
-    title = source.select_one("title")
-    if title:
-        title_text = title.text.strip()
-        if title_text != "AMAKUNI":
-            sub_pattern = r"\s\|.+$"
-            return re.sub(sub_pattern, "", title_text)
-
-    hidden_title = source.select_one("#contents_right > .hidden > h3")
-    if hidden_title:
-        return hidden_title.text.strip()
-
-    midashi_image_alt = source.select_one("#item_midashi > img")
-    if midashi_image_alt:
-        the_alt = midashi_image_alt.get('alt')
-        if type(the_alt) is str:
-            return the_alt
-
-    raise ParserInitializationFailed
