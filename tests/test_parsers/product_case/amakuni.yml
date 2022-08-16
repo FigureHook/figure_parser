@@ -134,31 +134,29 @@
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2014/004.php
-# - JAN: null
-#   adult: false
-#   category: フィギュア
-#   copyright:
-#   distributer:
-#   images:
-#   maker_id:
-#   manufacturer:
-#   name:
-#   og_image:
-#   order_period:
-#     end: 2000-00-00 00:00:00
-#     start: 2000-00-00 00:00:00
-#   paintwork:
-#     -
-#   release_infos:
-#     - price:
-#       release_date: 2000-00-01 00:00:00
-#       tax_including:
-#   releaser:
-#   rerelease:
-#   scale:
-#   sculptor:
-#     -
-#   series:
-#   size:
-#   thumbnail:
-#   url:
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2018/001/005.jpg
+  manufacturer: AMAKUNI
+  name: Libeccio(リベッチオ)
+  og_image: null
+  order_period:
+    end: 2017-06-12 23:59:59
+    start: 2017-04-25 00:00:00
+  paintwork: []
+  release_infos:
+    - price: 15800
+      release_date: 2018-01-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 緋路
+  series: 艦隊これくしょん -艦これ-
+  size: 220
+  thumbnail: null
+  url: http://amakuni.info/item/2018/001.php

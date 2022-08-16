@@ -72,7 +72,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return cls(url=url, source=source, info=product_info)
 
     def parse_name(self) -> str:
-        pattern = r"(【|\s).+"
+        pattern = r"(【|　).+"
         matched = re.search(pattern, self._info.title_text)
         if matched:
             return matched.group(0).strip()
@@ -111,7 +111,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return [release_date]
 
     def parse_series(self) -> Optional[str]:
-        pattern = r"^(.+?)(\s|【)"
+        pattern = r"^(.+?)(　|【)"
         matched = re.search(pattern, self._info.title_text)
         if matched:
             return matched.group(1)
@@ -136,6 +136,10 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
     def parse_size(self) -> Optional[int]:
+        pattern = r"●仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            return size_parse(matched.group(1))
         return None
 
     def parse_copyright(self) -> Optional[str]:
@@ -155,19 +159,13 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return False
 
     def parse_images(self) -> List[str]:
-        images = []
-        main_image = self.source.select_one("#gallery_main")
-        assert main_image
-        main_image_src = main_image.get('src')
-        assert type(main_image_src) is str
-        images.append(urljoin(self._source_url, main_image_src))
-
-        image_anchors = self.source.select("#garrely_sum > a")
-        for anchor in image_anchors:
-            image_src = anchor.get('href')
-            assert type(image_src) is str
-            images.append(urljoin(self._source_url, image_src))
-
+        images: List[str] = []
+        image_anchors = self.source.select("#garrely_sum > a") or self.source.select("#contents_right .item_right a")
+        if image_anchors:
+            for anchor in image_anchors:
+                image_src = anchor.get('href')
+                if type(image_src) is str:
+                    images.append(urljoin(self._source_url, image_src))
         return images
 
     def parse_thumbnail(self) -> Optional[str]:
