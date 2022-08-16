@@ -1,57 +1,154 @@
-from datetime import date
+import re
+from datetime import date, datetime
 from typing import List, Optional, Tuple
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from figure_parser.entities import OrderPeriod
+from figure_parser.exceptions import ParserInitializationFailed
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
+from pydantic import BaseModel
+
+
+class LegacyProductInfo(BaseModel):
+    title_text: str
+    info_text: str
 
 
 class AmakuniLegacyProductParser(AbstractBs4ProductParser):
-    def __init__(self, source: BeautifulSoup):
+    _info: LegacyProductInfo
+
+    def __init__(self, url: str, source: BeautifulSoup, info: LegacyProductInfo):
+        self._source_url = url
+        self._info = info
         super().__init__(source)
 
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup):
-        return cls(source=source)
+        title_text = parse_legacy_title(source)
+        info_text = parse_legacy_info(source)
+        product_info = LegacyProductInfo(
+            title_text=title_text,
+            info_text=info_text
+        )
+        return cls(url=url, source=source, info=product_info)
 
-    def parse_name(self) -> str: ...
+    def parse_name(self) -> str:
+        pattern = r"(【|\s).+"
+        matched = re.search(pattern, self._info.title_text)
+        if matched:
+            return matched.group(0).strip()
+        # assert matched
+        name_candidate = self._info.title_text.split(u"\u3000")
+        if len(name_candidate) > 1:
+            return " ".join(name_candidate[1:])
+        return name_candidate[0]
 
-    def parse_adult(self) -> bool: ...
+    def parse_adult(self) -> bool:
+        return False
 
-    def parse_manufacturer(self) -> str: ...
+    def parse_manufacturer(self) -> str:
+        return "AMAKUNI"
 
-    def parse_category(self) -> str: ...
+    def parse_category(self) -> str:
+        return "フィギュア"
 
-    def parse_prices(self) -> List[Tuple[int, bool]]: ...
+    def parse_prices(self) -> List[Tuple[int, bool]]:
+        prices = []
+        price_pattern = r"●(価格.+?)●"
+        matched = re.search(price_pattern, self._info.info_text)
+        assert matched
+        price = price_parse(matched.group(1))
+        tax_including = "税込" in matched.group(1)
+        prices.append((price, tax_including))
+        return prices
 
-    def parse_release_dates(self) -> List[date]: ...
+    def parse_release_dates(self) -> List[date]:
+        # pattern = r"●発売／(.+?)●"
+        # matched = re.search(pattern, self._info.info_text)
+        date_pattern = r"●(発送予定|発売|発送)／(\d+)年(\d+)月"
+        date_matched = re.search(date_pattern, self._info.info_text)
+        assert date_matched
+        release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
+        return [release_date]
 
-    def parse_series(self) -> Optional[str]: ...
+    def parse_series(self) -> Optional[str]:
+        pattern = r"^(.+?)(\s|【)"
+        matched = re.search(pattern, self._info.title_text)
+        if matched:
+            return matched.group(1)
+        return self._info.title_text.split()[0]
 
-    def parse_paintworks(self) -> List[str]: ...
+    def parse_paintworks(self) -> List[str]:
+        pattern = r"●彩色見本製作／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        return [matched.group(1)] if matched else []
 
-    def parse_sculptors(self) -> List[str]: ...
+    def parse_sculptors(self) -> List[str]:
+        pattern = r"●原型製作／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        assert matched
+        return [matched.group(1)]
 
-    def parse_scale(self) -> Optional[int]: ...
+    def parse_scale(self) -> Optional[int]:
+        pattern = r"●仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        assert matched
+        return scale_parse(matched.group(1))
 
-    def parse_size(self) -> Optional[int]: ...
+    def parse_size(self) -> Optional[int]:
+        return None
 
-    def parse_copyright(self) -> Optional[str]: ...
+    def parse_copyright(self) -> Optional[str]:
+        pattern = r"(©.+)"
+        matched = re.search(pattern, self._info.info_text)
+        assert matched
+        return matched.group(0)
 
-    def parse_releaser(self) -> Optional[str]: ...
+    def parse_releaser(self) -> Optional[str]:
+        return "ホビージャパン"
 
-    def parse_distributer(self) -> Optional[str]: ...
+    def parse_distributer(self) -> Optional[str]:
+        return "ホビージャパン"
 
-    def parse_rerelease(self) -> bool: ...
+    def parse_rerelease(self) -> bool:
+        return False
 
-    def parse_images(self) -> List[str]: ...
+    def parse_images(self) -> List[str]:
+        images = []
+        main_image = self.source.select_one("#gallery_main")
+        assert main_image
+        main_image_src = main_image.get('src')
+        assert type(main_image_src) is str
+        images.append(urljoin(self._source_url, main_image_src))
 
-    def parse_thumbnail(self) -> Optional[str]: ...
+        image_anchors = self.source.select("#garrely_sum > a")
+        for anchor in image_anchors:
+            image_src = anchor.get('href')
+            assert type(image_src) is str
+            images.append(urljoin(self._source_url, image_src))
 
-    def parse_order_period(self) -> OrderPeriod: ...
+        return images
 
-    def parse_JAN(self) -> Optional[str]: ...
+    def parse_thumbnail(self) -> Optional[str]:
+        return None
+
+    def parse_order_period(self) -> OrderPeriod:
+        pattern = r"●受注期間／(?P<start>(\d+)年(\d+)月(\d+)日)～(?P<end>(\d+)年(\d+)月(\d+)日)"
+        date_format = "%Y年%m月%d日"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            start_str = matched.group('start')
+            end_str = matched.group('end')
+            start_date = datetime.strptime(start_str, date_format)
+            end_date = datetime.strptime(end_str, date_format)
+            end_date = datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
+            return OrderPeriod(start=start_date, end=end_date)
+        return OrderPeriod()
+
+    def parse_JAN(self) -> Optional[str]:
+        return None
 
 
 class AmakuniFormalProductParser(AbstractBs4ProductParser):
@@ -172,3 +269,33 @@ class AmakuniProductParser(AbstractBs4ProductParser):
 
     def parse_JAN(self) -> Optional[str]:
         return self._parser.parse_JAN()
+
+
+def parse_legacy_info(source: BeautifulSoup) -> str:
+    if source.select_one("#contents_right > .hidden"):
+        info_text_ele = source.select_one("#contents_right > .hidden > p:nth-last-child(1)")
+        if info_text_ele:
+            info_text = info_text_ele.text.strip().replace("\n", "").replace("\t", "")
+            return info_text
+    raise ParserInitializationFailed
+
+
+def parse_legacy_title(source: BeautifulSoup) -> str:
+    title = source.select_one("title")
+    if title:
+        title_text = title.text.strip()
+        if title_text != "AMAKUNI":
+            sub_pattern = r"\s\|.+$"
+            return re.sub(sub_pattern, "", title_text)
+
+    hidden_title = source.select_one("#contents_right > .hidden > h3")
+    if hidden_title:
+        return hidden_title.text.strip()
+
+    midashi_image_alt = source.select_one("#item_midashi > img")
+    if midashi_image_alt:
+        the_alt = midashi_image_alt.get('alt')
+        if type(the_alt) is str:
+            return the_alt
+
+    raise ParserInitializationFailed

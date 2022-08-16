@@ -11,8 +11,8 @@ import yaml
 from bs4 import BeautifulSoup
 from figure_parser.core.entity import Release
 from figure_parser.core.pipe.sorting import _sort_release
-from figure_parser.parsers import (AlterProductParser, GSCProductParser,
-                                   NativeProductParser, AmakuniProductParser)
+from figure_parser.parsers import (AlterProductParser, AmakuniProductParser,
+                                   GSCProductParser, NativeProductParser)
 from figure_parser.parsers.base import AbstractBs4ProductParser
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
