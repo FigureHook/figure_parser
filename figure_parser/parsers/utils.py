@@ -31,9 +31,9 @@ def price_parse(text: str) -> int:
 
 
 def scale_parse(text: str) -> Union[int, None]:
-    pattern = r"\d\/?:?(\d+)"
+    pattern = r"\d(\/|:)(\d+)"
     scale_text = re.search(pattern, text)
-    scale = int(scale_text.group(1)) if scale_text else None
+    scale = int(scale_text.group(2)) if scale_text else None
     return scale
 
 
