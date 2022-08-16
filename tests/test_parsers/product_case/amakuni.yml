@@ -13,10 +13,10 @@
   paintwork: []
   release_infos:
     - price: 7980
-      release_date: 2012-04-01 00:00:00
+      release_date: 2012-03-01 00:00:00
       tax_including: true
   releaser: ホビージャパン
-  resale: false
+  rerelease: false
   scale: 8
   sculptor:
     - ひろし(桜前線)
@@ -24,3 +24,86 @@
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2012/2012_003.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©HOBBY JAPAN/Niθ
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2013/001/003l.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: レヴィアタン～嫉妬の像
+  og_image: null
+  order_period:
+    end: null
+    start: null
+  paintwork: []
+  release_infos:
+    - price: 8800
+      release_date: 2013-03-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - ひろし(桜前線)
+  series: 七つの大罪
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2013/2013_001.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©HOBBY JAPAN/Niθ
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2014/003/003.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 傲慢ノ章 ～スイカ割りノ節
+  og_image: null
+  order_period:
+    end: 2013-11-11 23:59:59
+    start: 2013-09-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 9500
+      release_date: 2014-03-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 遠那かんし（りゅんりゅん亭）
+  series: 魔王黙示録
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2014/003.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©Cygames, Inc.
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2013/006/002l.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 【魔帥】ダークジェネラル
+  og_image: null
+  order_period:
+    end: 2013-08-12 23:59:59
+    start: 2013-06-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 11000
+      release_date: 2013-10-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - 竜崎 理
+  series: 神撃のバハムート
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2013/2013_006.php
