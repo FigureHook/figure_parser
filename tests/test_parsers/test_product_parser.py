@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from hashlib import md5
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, Optional
 
 import pytest
 import yaml
@@ -220,8 +220,8 @@ class TestAlterParser(BaseTestCase):
             expected=request.param
         )
 
-    def test_order_period(self, *args):
-        pytest.skip("Alter doesn't provide order_period.")
+    @pytest.mark.skip(reason="Alter doesn't provide order_period.")
+    def test_order_period(self, *args): ...
 
 
 class TestNativeParser(BaseTestCase):
