@@ -37,7 +37,7 @@ def parse_legacy_title(source: BeautifulSoup) -> str:
     if title:
         title_text = title.text.strip()
         if title_text != "AMAKUNI":
-            sub_pattern = r"\s\|.+$"
+            sub_pattern = r"\s?\|.+$"
             return re.sub(sub_pattern, "", title_text)
 
     hidden_title = source.select_one("#contents_right > .hidden > h3")
@@ -120,7 +120,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_paintworks(self) -> List[str]:
         pattern = r"●彩色見本製作／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
-        return [matched.group(1)] if matched else []
+        return [matched.group(1).strip()] if matched else []
 
     def parse_sculptors(self) -> List[str]:
         pattern = r"●原型製作／(.+?)●"
@@ -129,6 +129,10 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return [matched.group(1)]
 
     def parse_scale(self) -> Optional[int]:
+        pattern = r"●フィギュア仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            return scale_parse(matched.group(1))
         pattern = r"●仕様／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
         if matched:
@@ -136,6 +140,10 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
     def parse_size(self) -> Optional[int]:
+        pattern = r"●フィギュア仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            return size_parse(matched.group(1))
         pattern = r"●仕様／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
         if matched:
@@ -143,7 +151,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
     def parse_copyright(self) -> Optional[str]:
-        pattern = r"(©.+)"
+        pattern = r"((©|\(C\)).+)"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return matched.group(0)

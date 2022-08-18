@@ -160,3 +160,30 @@
   size: 220
   thumbnail: null
   url: http://amakuni.info/item/2018/001.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: (C)HOBBY JAPAN/Niθ
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2016/002/004.jpg
+  manufacturer: AMAKUNI
+  name: 七つの大罪 ベルゼバブ ～蒼ノ衣版 地獄の禍虎璃(カトラリー)付き限定版
+  og_image: null
+  order_period:
+    end: 2015-06-30 23:59:59
+    start: 2015-04-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 14800
+      release_date: 2016-01-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - ひろし(桜前線)
+  series: フィギュアJAPAN 『七つの大罪』編特別付録
+  size: 210
+  thumbnail: null
+  url: http://amakuni.info/item/2016/002.php
