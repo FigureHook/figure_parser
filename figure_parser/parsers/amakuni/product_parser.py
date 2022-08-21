@@ -24,7 +24,7 @@ def parse_legacy_info(source: BeautifulSoup) -> str:
             info_text = info_text_ele.text.strip().replace("\n", "").replace("\t", "")
             return info_text
     else:
-        info_text_ele = source.select_one("#contents_right > img:nth-last-child(1)")
+        info_text_ele = source.select_one("#contents_right > img:nth-of-type(3)")
         if info_text_ele:
             info_text = info_text_ele.get('alt')
             if type(info_text) is str:
@@ -175,7 +175,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return series
 
     def parse_paintworks(self) -> List[str]:
-        pattern = r"●彩色見本製作／(.+?)●"
+        pattern = r"彩色見本製作／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
         return [matched.group(1).strip()] if matched else []
 
@@ -208,7 +208,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
     def parse_copyright(self) -> Optional[str]:
-        pattern = r"((©|\(C\)).+)"
+        pattern = r"((©|\(C\)|\(c\)).+)"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return matched.group(0)

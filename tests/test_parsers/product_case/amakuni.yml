@@ -230,7 +230,7 @@
     - ピンポイント
   release_infos:
     - price: 12960
-      release_date: 2014-07-01 00:00:00
+      release_date: 2015-07-01 00:00:00
       tax_including: true
   releaser: ホビージャパン
   rerelease: false
@@ -252,8 +252,8 @@
   name: 傲慢の章 ～スイカ割りノ節 金色ノ項
   og_image: null
   order_period:
-    end: 2013-11-11 23:59:59
-    start: 2013-09-25 00:00:00
+    end: 2015-02-10 23:59:59
+    start: 2014-12-25 00:00:00
   paintwork:
     - ピンポイント
   release_infos:
@@ -280,7 +280,7 @@
   name: 紺菊 -湯煙温泉三昧Ver.-
   og_image: null
   order_period:
-    end: 2016-06-10 00:00:00
+    end: 2016-06-10 23:59:59
     start: 2016-04-25 00:00:00
   paintwork:
     - ピンポイント
@@ -300,7 +300,7 @@
 - JAN: null
   adult: false
   category: フィギュア
-  copyright: c)2009-2014 Nitroplus co.,ltd. All rights reserved.
+  copyright: (c)2009-2014 Nitroplus co.,ltd. All rights reserved.
   distributer: ホビージャパン
   images: http://amakuni.info/images/item/2015/001/004.jpg
   maker_id: null
@@ -308,7 +308,7 @@
   name: 三世村正 オアシスVer.
   og_image: null
   order_period:
-    end: 2014-07-10 00:00:00
+    end: 2014-07-10 23:59:59
     start: 2014-05-25 00:00:00
   paintwork: []
   release_infos:
