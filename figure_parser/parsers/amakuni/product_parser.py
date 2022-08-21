@@ -115,7 +115,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     def parse_name(self) -> str:
         name: str = ""
-        pattern = r"(【|　).+"
+        pattern = r"(【|\u3000).+"
         matched = re.search(pattern, self._info.title_text)
         name_candidate = self._info.title_text.split(u"\u3000")
 
@@ -153,7 +153,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_release_dates(self) -> List[date]:
         # pattern = r"●発売／(.+?)●"
         # matched = re.search(pattern, self._info.info_text)
-        date_pattern = r"●(発送予定|発売|発送)／(\d+)年(\d+)月"
+        date_pattern = r"●(発送予定|発売|発送)\uff0f(\d+)年(\d+)月"
         date_matched = re.search(date_pattern, self._info.info_text)
         assert date_matched
         release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
@@ -161,7 +161,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     @cache
     def parse_series(self) -> Optional[str]:
-        pattern = r"^(.+?)(　|【)"
+        pattern = r"^(.+?)(\u3000|【)"
         matched = re.search(pattern, self._info.title_text)
         if matched:
             series = matched.group(1)
