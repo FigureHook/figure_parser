@@ -114,7 +114,7 @@
   distributer: ホビージャパン
   images: http://amakuni.info/images/item/2014/004/004.jpg
   manufacturer: AMAKUNI
-  name: レヴィアタン～嫉妬の像　紫ノ衣版
+  name: レヴィアタン～嫉妬の像 紫ノ衣版
   og_image: null
   order_period:
     end: 2013-12-02 23:59:59
@@ -213,3 +213,114 @@
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2012/2012_004.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2015/010/005.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 憤怒の章 羞恥サタンクロースノ節
+  og_image: null
+  order_period:
+    end: 2014-12-10 23:59:59
+    start: 2014-10-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 12960
+      release_date: 2014-07-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 間崎祐介
+  series: 七つの大罪 魔王黙示録
+  size: 260
+  thumbnail: null
+  url: http://amakuni.info/item/2015/010.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2015/013/005.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 傲慢の章 ～スイカ割りノ節 金色ノ項
+  og_image: null
+  order_period:
+    end: 2013-11-11 23:59:59
+    start: 2013-09-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 9800
+      release_date: 2015-08-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 遠那かんし（りゅんりゅん亭）
+  series: 七つの大罪 魔王黙示録
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2015/013.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2017/002/006.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 紺菊 -湯煙温泉三昧Ver.-
+  og_image: null
+  order_period:
+    end: 2016-06-10 00:00:00
+    start: 2016-04-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 10800
+      release_date: 2017-01-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - あきもふ
+  series: 朧村正
+  size: 300
+  thumbnail: null
+  url: http://amakuni.info/item/2017/002.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: c)2009-2014 Nitroplus co.,ltd. All rights reserved.
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2015/001/004.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: 三世村正 オアシスVer.
+  og_image: null
+  order_period:
+    end: 2014-07-10 00:00:00
+    start: 2014-05-25 00:00:00
+  paintwork: []
+  release_infos:
+    - price: 9720
+      release_date: 2015-01-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - モヒヲ
+  series: 装甲悪鬼村正
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2015/001.php

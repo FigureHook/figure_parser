@@ -63,7 +63,9 @@ legacy_series_mapping: Mapping[str, str] = {
 
 
 legacy_title_is_lack_of_series: Mapping[str, str] = {
-    "三世村正　オアシスVer.": "装甲悪鬼村正"
+    "三世村正　オアシスVer.": "装甲悪鬼村正",
+    "魔王黙示録　傲慢ノ章 ～スイカ割りノ節": "七つの大罪",
+    "魔王黙示録 憤怒の章 羞恥サタンクロースノ節": "七つの大罪"
 }
 
 
@@ -79,7 +81,7 @@ def legacy_get_series_by_keyword(keyword: str) -> Optional[str]:
     for key in legacy_series_mapping:
         if key in keyword:
             return legacy_series_mapping.get(key)
-    return keyword
+    return None
 
 
 def remove_series(series: str, name: str) -> str:
@@ -119,15 +121,16 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         matched = re.search(pattern, self._info.title_text)
         name_candidate = self._info.title_text.split(u"\u3000")
 
-        if matched:
-            name = matched.group(0).strip()
-        elif len(name_candidate) > 1:
-            name = " ".join(name_candidate[1:])
-        else:
-            name = name_candidate[0]
+        # if matched:
+        #     name = matched.group(0).strip()
+        # elif len(name_candidate) > 1:
+        #     name = " ".join(name_candidate[1:])
+        # else:
+        #     name = name_candidate[0]
 
         series = self.parse_series()
         if series:
+            name = self._info.title_text.replace(u"\u3000", " ")
             name = remove_series(series, name)
         return name.strip()
 
@@ -161,12 +164,15 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     @cache
     def parse_series(self) -> Optional[str]:
-        pattern = r"^(.+?)(\u3000|【)"
-        matched = re.search(pattern, self._info.title_text)
-        if matched:
-            series = matched.group(1)
-            return legacy_get_series_by_keyword(series)
-        return legacy_get_series_by_keyword(self._info.title_text)
+        series = legacy_get_series_by_keyword(self._info.title_text)
+
+        if not series:
+            pattern = r"^(.+?)(\u3000|【)"
+            matched = re.search(pattern, self._info.title_text)
+            if matched:
+                series = matched.group(1)
+
+        return series
 
     def parse_paintworks(self) -> List[str]:
         pattern = r"●彩色見本製作／(.+?)●"
