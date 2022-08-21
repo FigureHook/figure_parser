@@ -75,7 +75,7 @@
   scale: 7
   sculptor:
     - 遠那かんし（りゅんりゅん亭）
-  series: 魔王黙示録
+  series: 七つの大罪 魔王黙示録
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2014/003.php
@@ -167,7 +167,7 @@
   distributer: ホビージャパン
   images: http://amakuni.info/images/item/2016/002/004.jpg
   manufacturer: AMAKUNI
-  name: 七つの大罪 ベルゼバブ ～蒼ノ衣版 地獄の禍虎璃(カトラリー)付き限定版
+  name: ベルゼバブ ～蒼ノ衣版 地獄の禍虎璃(カトラリー)付き限定版
   og_image: null
   order_period:
     end: 2015-06-30 23:59:59
@@ -183,7 +183,33 @@
   scale: 8
   sculptor:
     - ひろし(桜前線)
-  series: フィギュアJAPAN 『七つの大罪』編特別付録
+  series: 七つの大罪
   size: 210
   thumbnail: null
   url: http://amakuni.info/item/2016/002.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©HobbyJAPAN
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2012/004/004l.jpg
+  manufacturer: AMAKUNI
+  name: 調教師ドグラ
+  og_image: null
+  order_period:
+    end: null
+    start: null
+  paintwork: []
+  release_infos:
+    - price: 4500
+      release_date: 2012-07-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - 中島しゅーじ(秀吉)
+  series: クイーンズブレイド リベリオン
+  size: null
+  thumbnail: null
+  url: http://amakuni.info/item/2012/2012_004.php

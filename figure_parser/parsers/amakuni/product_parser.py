@@ -1,6 +1,7 @@
 import re
 from datetime import date, datetime
-from typing import List, Optional, Tuple
+from functools import cache
+from typing import List, Mapping, Optional, Tuple
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
@@ -53,17 +54,58 @@ def parse_legacy_title(source: BeautifulSoup) -> str:
     raise ParserInitializationFailed
 
 
+legacy_series_mapping: Mapping[str, str] = {
+    "魔王黙示録": "七つの大罪 魔王黙示録",
+    "クイーンズブレイド リベリオン": "クイーンズブレイド リベリオン",
+    "『七つの大罪』編特別付録": "七つの大罪",
+    "朧村正": "朧村正"
+}
+
+
+legacy_title_is_lack_of_series: Mapping[str, str] = {
+    "三世村正　オアシスVer.": "装甲悪鬼村正"
+}
+
+
+def append_the_lack_series(title: str) -> str:
+    if title in legacy_title_is_lack_of_series:
+        series = legacy_title_is_lack_of_series[title]
+        title = title.replace(u"\u3000", " ")
+        title = series + u"\u3000" + title
+    return title
+
+
+def legacy_get_series_by_keyword(keyword: str) -> Optional[str]:
+    for key in legacy_series_mapping:
+        if key in keyword:
+            return legacy_series_mapping.get(key)
+    return keyword
+
+
+def remove_series(series: str, name: str) -> str:
+    series_pattern = r"^.+(?<={})".format(series)
+    name = re.sub(series_pattern, "", name)
+    if series in name:
+        name = remove_series(series, name.strip())
+    return name
+
+
 class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     _info: LegacyProductInfo
+    _name: Optional[str]
+    _series: Optional[str]
 
     def __init__(self, url: str, source: BeautifulSoup, info: LegacyProductInfo):
         self._source_url = url
         self._info = info
+        self._name = None
+        self._series = None
         super().__init__(source)
 
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup):
         title_text = parse_legacy_title(source)
+        title_text = append_the_lack_series(title_text)
         info_text = parse_legacy_info(source)
         product_info = LegacyProductInfo(
             title_text=title_text,
@@ -72,15 +114,22 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return cls(url=url, source=source, info=product_info)
 
     def parse_name(self) -> str:
+        name: str = ""
         pattern = r"(【|　).+"
         matched = re.search(pattern, self._info.title_text)
-        if matched:
-            return matched.group(0).strip()
-        # assert matched
         name_candidate = self._info.title_text.split(u"\u3000")
-        if len(name_candidate) > 1:
-            return " ".join(name_candidate[1:])
-        return name_candidate[0]
+
+        if matched:
+            name = matched.group(0).strip()
+        elif len(name_candidate) > 1:
+            name = " ".join(name_candidate[1:])
+        else:
+            name = name_candidate[0]
+
+        series = self.parse_series()
+        if series:
+            name = remove_series(series, name)
+        return name.strip()
 
     def parse_adult(self) -> bool:
         return False
@@ -110,12 +159,14 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
         return [release_date]
 
+    @cache
     def parse_series(self) -> Optional[str]:
         pattern = r"^(.+?)(　|【)"
         matched = re.search(pattern, self._info.title_text)
         if matched:
-            return matched.group(1)
-        return self._info.title_text.split()[0]
+            series = matched.group(1)
+            return legacy_get_series_by_keyword(series)
+        return legacy_get_series_by_keyword(self._info.title_text)
 
     def parse_paintworks(self) -> List[str]:
         pattern = r"●彩色見本製作／(.+?)●"
@@ -126,7 +177,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         pattern = r"●原型製作／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
         assert matched
-        return [matched.group(1)]
+        return [matched.group(1).strip()]
 
     def parse_scale(self) -> Optional[int]:
         pattern = r"●フィギュア仕様／(.+?)●"
