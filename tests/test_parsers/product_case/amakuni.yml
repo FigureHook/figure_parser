@@ -324,3 +324,31 @@
   size: 230
   thumbnail: null
   url: http://amakuni.info/item/2015/001.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2018/011/004.jpg
+  maker_id: null
+  manufacturer: AMAKUNI
+  name: レーシングミク2017Ver.
+  og_image: null
+  order_period:
+    end: 2017-11-27 23:59:59
+    start: 2017-09-25 00:00:00
+  paintwork: []
+  release_infos:
+    - price: 13800
+      release_date: 2018-07-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 1
+  sculptor:
+    - リラ
+    - ピンポイント
+  series: 初音ミク GTプロジェクト
+  size: 250
+  thumbnail: null
+  url: http://amakuni.info/item/2018/011.php

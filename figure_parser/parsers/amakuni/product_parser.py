@@ -65,7 +65,8 @@ legacy_series_mapping: Mapping[str, str] = {
 legacy_title_is_lack_of_series: Mapping[str, str] = {
     "三世村正　オアシスVer.": "装甲悪鬼村正",
     "魔王黙示録　傲慢ノ章 ～スイカ割りノ節": "七つの大罪",
-    "魔王黙示録 憤怒の章 羞恥サタンクロースノ節": "七つの大罪"
+    "魔王黙示録 憤怒の章 羞恥サタンクロースノ節": "七つの大罪",
+    "レーシングミク2017Ver.": "初音ミク GTプロジェクト"
 }
 
 
@@ -92,6 +93,10 @@ def remove_series(series: str, name: str) -> str:
     return name
 
 
+def parse_workers(workers_text: str) -> List[str]:
+    return workers_text.split("、")
+
+
 class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     _info: LegacyProductInfo
     _name: Optional[str]
@@ -116,10 +121,10 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return cls(url=url, source=source, info=product_info)
 
     def parse_name(self) -> str:
-        name: str = ""
-        pattern = r"(【|\u3000).+"
-        matched = re.search(pattern, self._info.title_text)
-        name_candidate = self._info.title_text.split(u"\u3000")
+        name = self._info.title_text
+        # pattern = r"(【|\u3000).+"
+        # matched = re.search(pattern, self._info.title_text)
+        # name_candidate = self._info.title_text.split(u"\u3000")
 
         # if matched:
         #     name = matched.group(0).strip()
@@ -130,7 +135,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
         series = self.parse_series()
         if series:
-            name = self._info.title_text.replace(u"\u3000", " ")
+            name = name.replace(u"\u3000", " ")
             name = remove_series(series, name)
         return name.strip()
 
@@ -177,16 +182,15 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_paintworks(self) -> List[str]:
         pattern = r"彩色見本製作／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
-        return [matched.group(1).strip()] if matched else []
+        return parse_workers(matched.group(1).strip()) if matched else []
 
     def parse_sculptors(self) -> List[str]:
-        pattern = r"●原型製作／(.+?)●"
+        pattern = r"●原型製作／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
-        assert matched
-        return [matched.group(1).strip()]
+        return parse_workers(matched.group(1).strip()) if matched else []
 
     def parse_scale(self) -> Optional[int]:
-        pattern = r"●フィギュア仕様／(.+?)●"
+        pattern = r"●フィギュア仕様／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return scale_parse(matched.group(1))
