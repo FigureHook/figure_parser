@@ -150,12 +150,14 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     def parse_prices(self) -> List[Tuple[int, bool]]:
         prices = []
-        price_pattern = r"●(価格.+?)●"
+        price_pattern = r"●価格(.+?)税(抜|込)"
         matched = re.search(price_pattern, self._info.info_text)
-        assert matched
-        price = price_parse(matched.group(1))
-        tax_including = "税込" in matched.group(1)
-        prices.append((price, tax_including))
+        if matched:
+            price = price_parse(matched.group(0))
+            tax_including = "税込" in matched.group(0)
+            prices.append((price, tax_including))
+        else:
+            prices.append((None, False))
         return prices
 
     def parse_release_dates(self) -> List[date]:
@@ -241,14 +243,17 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
     def parse_order_period(self) -> OrderPeriod:
-        pattern = r"●受注期間／(?P<start>(\d+)年(\d+)月(\d+)日)～(?P<end>(\d+)年(\d+)月(\d+)日)"
+        pattern = r"●受注期間／(?P<start>(\d+)年(\d+)月(\d+)日)\uff5e(?P<end>((\d+)年)?(\d+)月(\d+)日)"
         date_format = "%Y年%m月%d日"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             start_str = matched.group('start')
             end_str = matched.group('end')
             start_date = datetime.strptime(start_str, date_format)
-            end_date = datetime.strptime(end_str, date_format)
+            try:
+                end_date = datetime.strptime(end_str, date_format)
+            except ValueError:
+                end_date = datetime.strptime(f"{start_date.year}年" + end_str, date_format)
             end_date = datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
             return OrderPeriod(start=start_date, end=end_date)
         return OrderPeriod()

@@ -352,3 +352,30 @@
   size: 250
   thumbnail: null
   url: http://amakuni.info/item/2018/011.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer:  ホビージャパン
+  images: http://amakuni.info/images/item/2017/009/005.jpg
+  manufacturer: AMAKUNI
+  name: 足利茶々丸 ウェディングVer.
+  og_image: null
+  order_period:
+    end: 2016-11-28 23:59:59
+    start: 2016-09-24 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 12981
+      release_date: 2017-06-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - Vispo
+  series: 装甲悪鬼村正
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2017/009.php
