@@ -423,7 +423,7 @@
   release_infos:
     - price: 10800
       release_date: 2018-10-01 00:00:00
-      tax_including: truep
+      tax_including: true
   releaser: ホビージャパン
   rerelease: false
   scale: 7
@@ -461,3 +461,31 @@
   size: 230
   thumbnail: null
   url: http://amakuni.info/item/2018/017.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©TYPE-MOON / FGO PROJECT
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2019/018/005.jpg
+  manufacturer: AMAKUNI
+  name: キャスター／ニトクリス
+  og_image: null
+  order_period:
+    end: 2019-05-29 23:59:59
+    start: 2019-03-25 00:00:00
+  paintwork:
+    - taumokei
+  release_infos:
+    - price: 17900
+      release_date: 2019-10-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - makoto（エムアイシー）
+  series: Fate/Grand Order
+  size: 265
+  thumbnail: null
+  url: http://amakuni.info/item/2019/018.php
+

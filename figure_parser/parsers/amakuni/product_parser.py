@@ -275,6 +275,11 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         return None
 
 
+def is_name_with_series(text: str) -> bool:
+    splits = text.split(u"\u3000")
+    return len(splits) > 1
+
+
 class AmakuniFormalProductParser(AbstractBs4ProductParser):
     _detail_text: str
     _source_url: str
@@ -293,9 +298,13 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
         return cls(url=url, source=source, detail_text=detail_text)
 
     def parse_name(self) -> str:
-        name_ele = self.source.select_one(".product_name > span:nth-last-child(1)") or self.source.select_one(".product_name")
+        name_ele = self.source.select_one(
+            ".product_name > span:nth-last-child(1)"
+        ) or self.source.select_one(".product_name")
         assert name_ele
         name = name_ele.text.strip()
+        if is_name_with_series(name):
+            return name.split(u"\u3000")[1]
         return name
 
     def parse_adult(self) -> bool:
@@ -320,10 +329,17 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
         if series_ele:
             series = series_ele.text.strip()
             return series
+
+        possible_series_ele = self.source.select_one(
+            ".product_name > span:nth-last-child(1)"
+        ) or self.source.select_one(".product_name")
+        if possible_series_ele:
+            if is_name_with_series(possible_series_ele.text.strip()):
+                return possible_series_ele.text.strip().split(u"\u3000")[0]
         return None
 
     def parse_paintworks(self) -> List[str]:
-        pattern = r"彩色見本製作／(.+)"
+        pattern = r"彩色見本(?:製作)?／(.+)"
         matched = re.search(pattern, self._detail_text)
         return parse_workers(matched.group(1).strip()) if matched else []
 
