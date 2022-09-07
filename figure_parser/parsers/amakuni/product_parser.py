@@ -94,7 +94,8 @@ def remove_series(series: str, name: str) -> str:
 
 
 def parse_workers(workers_text: str) -> List[str]:
-    return workers_text.split("、")
+    pattern = r"[、|・]"
+    return re.split(pattern=pattern, string=workers_text)
 
 
 def _parse_order_period(text: str) -> OrderPeriod:
@@ -254,7 +255,9 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     def parse_images(self) -> List[str]:
         images: List[str] = []
-        image_anchors = self.source.select("#garrely_sum > a") or self.source.select("#contents_right .item_right a")
+        image_anchors = self.source.select(
+            "#garrely_sum > a"
+        ) or self.source.select("#contents_right .item_right a")
         if image_anchors:
             for anchor in image_anchors:
                 image_src = anchor.get('href')
@@ -290,7 +293,7 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
         return cls(url=url, source=source, detail_text=detail_text)
 
     def parse_name(self) -> str:
-        name_ele = self.source.select_one(".product_name > span:nth-last-child(1)")
+        name_ele = self.source.select_one(".product_name > span:nth-last-child(1)") or self.source.select_one(".product_name")
         assert name_ele
         name = name_ele.text.strip()
         return name
@@ -311,7 +314,9 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
         return _parse_release_dates(self._detail_text)
 
     def parse_series(self) -> Optional[str]:
-        series_ele = self.source.select_one(".product_name > span:nth-child(1)")
+        series_ele = self.source.select_one(
+            ".product_name > span:nth-child(1)"
+        ) or self.source.select_one(".sakuhin_mei")
         if series_ele:
             series = series_ele.text.strip()
             return series

@@ -406,3 +406,58 @@
   size: 260
   thumbnail: null
   url: http://amakuni.info/item/2023/019.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©2009-2018 Nitroplus co.,ltd. All rights reserved.
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2018/018/007.jpg
+  manufacturer: AMAKUNI
+  name: 三世村正 オアシスVer.【リニューアル版】
+  og_image: null
+  order_period:
+    end: 2018-03-13 23:59:59
+    start: 2018-01-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 10800
+      release_date: 2018-10-01 00:00:00
+      tax_including: truep
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - モヒヲ
+    - ピンポイント
+  series: 装甲悪鬼村正
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2018/018.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©ATLUS ©SEGA All rights reserved.
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2018/017/004.jpg
+  manufacturer: AMAKUNI
+  name: 佐倉双葉 怪盗 Ver.
+  og_image: null
+  order_period:
+    end: 2018-03-13 23:59:59
+    start: 2018-01-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 14800
+      release_date: 2018-11-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 真辺 菜月（CREA MODE）
+  series: ペルソナ５
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2018/017.php
