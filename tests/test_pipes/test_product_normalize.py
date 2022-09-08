@@ -1,4 +1,3 @@
-import pytest
 from figure_parser.core.entity.product import ProductBase
 from figure_parser.core.pipe.nomalization import (_normalize,
                                                   general_normalize,
@@ -45,7 +44,3 @@ class TestProductTextUtils:
 
         value = None
         assert _normalize(value, lambda x: x) == value  # type: ignore
-
-    def test_raise_type_error(self):
-        with pytest.raises(TypeError):
-            _normalize(123, lambda x: x)  # type: ignore

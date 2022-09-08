@@ -1,12 +1,11 @@
 import re
 import unicodedata
-from functools import wraps
-from typing import Callable, Union, overload
+from typing import Any, Callable, TypeVar, overload
 
 from figure_parser.core.entity import ProductBase
 
-
-NormalizeFunc = Callable[[str], str]
+T = TypeVar('T')
+NormalizeFunc = Callable[[T], T]
 
 
 def normalize_general_fields(product_item: ProductBase) -> ProductBase:
@@ -23,38 +22,19 @@ def normalize_worker_fields(product_item: ProductBase) -> ProductBase:
     return product_item
 
 
-def _validate_field_value(func):
-    @wraps(func)
-    def wrapper(value, normalize_func: Callable):
-        if type(value) is str:
-            return func(value, normalize_func)
-        elif type(value) is list:
-            if all([type(v) is str for v in value]):
-                return func(value, normalize_func)
-        elif value is None:
-            return None
-        else:
-            raise TypeError(
-                f"value can't be {type(value)} should be `{str}` or `{list[str]}`. (value: {value})"
-            )
-    return wrapper
-
-
 @overload
 def _normalize(value: str, normalize_func: NormalizeFunc) -> str: ...
 @overload
 def _normalize(value: list[str], normalize_func: NormalizeFunc) -> list[str]: ...
 
 
-@_validate_field_value
-def _normalize(value: Union[str, list[str], None], normalize_func: NormalizeFunc) -> Union[str, list[str], None]:
-    if not value:
-        return value
+def _normalize(value: Any, normalize_func: NormalizeFunc[Any]) -> Any:
     if isinstance(value, str):
         return normalize_func(value)
     if isinstance(value, list):
         if all([type(v) is str for v in value]):
             return [normalize_func(v) for v in value]
+    return value
 
 
 def general_normalize(value: str) -> str:
