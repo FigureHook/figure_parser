@@ -303,7 +303,7 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
             ".product_name > span:nth-last-child(1)"
         ) or self.source.select_one(".product_name")
         assert name_ele
-        name = name_ele.text.strip()
+        name = name_ele.contents[-1].text.strip()
         if is_name_with_series(name):
             return name.split(u"\u3000")[1]
         return name
@@ -332,11 +332,12 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
             return series
 
         possible_series_ele = self.source.select_one(
-            ".product_name > span:nth-last-child(1)"
+            ".product_name"
         ) or self.source.select_one(".product_name")
         if possible_series_ele:
             if is_name_with_series(possible_series_ele.text.strip()):
                 return possible_series_ele.text.strip().split(u"\u3000")[0]
+            return possible_series_ele.contents[0].text.strip()
         return None
 
     def parse_paintworks(self) -> List[str]:

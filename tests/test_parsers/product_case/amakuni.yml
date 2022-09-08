@@ -488,4 +488,30 @@
   size: 265
   thumbnail: null
   url: http://amakuni.info/item/2019/018.php
-
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©ERP
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2019/015/003.jpg
+  manufacturer: AMAKUNI
+  name: ユーシャ（ユーリア・シャルデット）
+  og_image: null
+  order_period:
+    end: 2019-04-10 23:59:59
+    start: 2019-02-25 00:00:00
+  paintwork:
+    - 星名詠美
+  release_infos:
+    - price: 15980
+      release_date: 2019-09-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - グリズリーパンダ
+  series: えんどろ～！
+  size: 225
+  thumbnail: null
+  url: http://amakuni.info/item/2019/015.php
