@@ -131,9 +131,10 @@ def _parse_prices(text: str) -> List[Tuple[int, bool]]:
 def _parse_release_dates(text: str) -> List[date]:
     date_pattern = r"●(発送予定|発売|発送)\uff0f(\d+)年(\d+)月"
     date_matched = re.search(date_pattern, text)
-    assert date_matched
-    release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
-    return [release_date]
+    if date_matched:
+        release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
+        return [release_date]
+    return []
 
 
 class AmakuniLegacyProductParser(AbstractBs4ProductParser):
