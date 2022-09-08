@@ -126,7 +126,7 @@ class AbstractProductParser(ABC, Generic[Source_T]):
 
     @abstractmethod
     def parse_adult(self) -> bool:
-        """Is the product is adult-only? ( ͡° ͜ʖ ͡°)
+        """Is the product adult-only? ( ͡° ͜ʖ ͡°)
         """
         raise NotImplementedError
 
