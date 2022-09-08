@@ -1,11 +1,11 @@
 import re
 from datetime import date, datetime
 from functools import cache
-from typing import List, Mapping, Optional, Tuple
+from typing import List, Mapping, Optional
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
-from figure_parser.entities import OrderPeriod
+from figure_parser.entities import OrderPeriod, PriceTag
 from figure_parser.exceptions import ParserInitializationFailed
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
@@ -26,9 +26,9 @@ def parse_legacy_info(source: BeautifulSoup) -> str:
     else:
         info_text_ele = source.select_one("#contents_right > img:nth-of-type(3)")
         if info_text_ele:
-            info_text = info_text_ele.get('alt')
-            if type(info_text) is str:
-                return info_text
+            possible_info_text = info_text_ele.get('alt')
+            if type(possible_info_text) is str:
+                return possible_info_text
 
     raise ParserInitializationFailed
 
@@ -115,16 +115,16 @@ def _parse_order_period(text: str) -> OrderPeriod:
     return OrderPeriod()
 
 
-def _parse_prices(text: str) -> List[Tuple[int, bool]]:
+def _parse_prices(text: str) -> List[PriceTag]:
     prices = []
     price_pattern = r"●価格(.+?)税(抜|込)"
     matched = re.search(price_pattern, text)
     if matched:
         price = price_parse(matched.group(0))
         tax_including = "税込" in matched.group(0)
-        prices.append((price, tax_including))
+        prices.append(PriceTag(price, tax_including))
     else:
-        prices.append((None, False))
+        prices.append(PriceTag())
     return prices
 
 
@@ -188,7 +188,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
     def parse_category(self) -> str:
         return "フィギュア"
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         return _parse_prices(self._info.info_text)
 
     def parse_release_dates(self) -> List[date]:
@@ -317,7 +317,7 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
     def parse_category(self) -> str:
         return "フィギュア"
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         return _parse_prices(self._detail_text)
 
     def parse_release_dates(self) -> List[date]:
@@ -432,7 +432,7 @@ class AmakuniProductParser(AbstractBs4ProductParser):
     def parse_category(self) -> str:
         return self._parser.parse_category()
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         return self._parser.parse_prices()
 
     def parse_release_dates(self) -> List[date]:

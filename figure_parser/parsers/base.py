@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from datetime import date
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from bs4 import BeautifulSoup
-from figure_parser.core.entity import Release
+from figure_parser.core.entity import PriceTag, Release
 from figure_parser.core.parser.base import AbstractProductParser
 
 from .utils import make_last_element_filler
@@ -15,7 +15,7 @@ class AbstractBs4ProductParser(AbstractProductParser[BeautifulSoup]):
         raise NotImplementedError
 
     @abstractmethod
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         raise NotImplementedError
 
     def parse_releases(self) -> List[Release]:
@@ -39,7 +39,7 @@ class AbstractBs4ProductParser(AbstractProductParser[BeautifulSoup]):
         prices_len = len(prices)
 
         if not prices:
-            prices = [(None, False)] * dates_len
+            prices = [PriceTag()] * dates_len
 
         elif not dates:
             dates = [None] * prices_len

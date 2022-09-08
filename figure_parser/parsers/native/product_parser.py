@@ -1,9 +1,9 @@
 import re
 from datetime import date, datetime
-from typing import Dict, List, Mapping, Optional, Tuple, Union
+from typing import Dict, List, Mapping, Optional, Union
 
 from bs4 import BeautifulSoup
-from figure_parser.entities import OrderPeriod
+from figure_parser.entities import OrderPeriod, PriceTag
 
 from ..base import AbstractBs4ProductParser
 from ..utils import price_parse, scale_parse, size_parse
@@ -44,15 +44,14 @@ class NativeProductParser(AbstractBs4ProductParser):
     def parse_category(self) -> str:
         return "フィギュア"
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         prices = []
         price_text = self.detail.get('価格')
         if price_text:
             tax_including = "税込" in price_text
             price_text = price_text.split("\n")[0]
             price = price_parse(price_text)
-            price = (price, tax_including)
-            prices.append(price)
+            prices.append(PriceTag(price, tax_including))
 
         return prices
 
@@ -182,7 +181,7 @@ class NativeProductParser(AbstractBs4ProductParser):
 
 
 def parse_details(page: BeautifulSoup) -> Dict[str, str]:
-    details = {}
+    details: Dict[str, str] = {}
 
     dts = page.select('dt')
     dds = page.select('dd')

@@ -1,11 +1,17 @@
 from datetime import date
-from typing import Optional
+from typing import NamedTuple, Optional
 
 from pydantic import BaseModel, NonNegativeInt
 
 __all__ = (
     'Release',
+    'PriceTag'
 )
+
+
+class PriceTag(NamedTuple):
+    price: Optional[int] = None
+    tax_including: bool = False
 
 
 class Release(BaseModel):

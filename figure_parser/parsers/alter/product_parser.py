@@ -1,10 +1,10 @@
 import re
 from datetime import date, datetime
-from typing import Dict, List, Mapping, Optional, Tuple, Union
+from typing import Dict, List, Mapping, Optional, Union
 from urllib.parse import ParseResult, urlparse, urlunparse
 
 from bs4 import BeautifulSoup, Tag
-from figure_parser.core.entity import OrderPeriod
+from figure_parser.entities import OrderPeriod, PriceTag
 from figure_parser.parsers.base import AbstractBs4ProductParser
 
 from ..utils import price_parse, scale_parse, size_parse
@@ -76,17 +76,17 @@ class AlterProductParser(AbstractBs4ProductParser):
     def parse_manufacturer(self) -> str:
         return "アルター"
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
-        price_list: List[Tuple[int, bool]] = []
+    def parse_prices(self) -> List[PriceTag]:
+        price_list: List[PriceTag] = []
         price_text = self.spec["価格"]
         is_weird_price_text = re.findall(r"税抜", price_text)
         tax_including = "税込" in price_text
         price_pattern = r"税抜\d\S+?円" if is_weird_price_text else r"\d\S+?円"
-        price_text = re.findall(price_pattern, price_text)
-        for p in price_text:
+        all_price_text = re.findall(price_pattern, price_text)
+        for p in all_price_text:
             price = price_parse(p)
             if price:
-                price_list.append((price, tax_including))
+                price_list.append(PriceTag(price, tax_including))
 
         return price_list
 

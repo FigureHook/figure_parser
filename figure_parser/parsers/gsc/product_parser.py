@@ -1,13 +1,13 @@
 import re
 from datetime import date, datetime
 from pathlib import Path
-from typing import Any, List, Match, Optional, Pattern, Tuple, Union
+from typing import Any, List, Match, Optional, Pattern, Union
 from urllib.parse import urlparse
 
 import yaml
 from bs4 import BeautifulSoup
 from bs4.element import ResultSet, Tag
-from figure_parser.core.entity import OrderPeriod
+from figure_parser.entities import OrderPeriod, PriceTag
 from figure_parser.exceptions import ParserInitializationFailed
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
@@ -118,8 +118,8 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         return date_list
 
-    def _parse_resale_prices(self) -> List[Tuple[int, bool]]:
-        price_slot = []
+    def _parse_resale_prices(self) -> List[PriceTag]:
+        price_slot: List[PriceTag] = []
         price_items = self.detail.find_all(
             name="dt", string=re.compile(r"販(\w|)価格"))
 
@@ -128,13 +128,13 @@ class GSCProductParser(AbstractBs4ProductParser):
             tax_feature = self._get_from_locale_dict("tax")
             tax_including = bool(re.search(f"{tax_feature}", price_text))
             price = price_parse(price_text)
-            price = (price, tax_including)
+            price_tag = PriceTag(price, tax_including)
             if price:
-                price_slot.append(price)
+                price_slot.append(price_tag)
 
         return price_slot
 
-    def parse_prices(self) -> List[Tuple[int, bool]]:
+    def parse_prices(self) -> List[PriceTag]:
         price_slot = []
         tag = self._get_from_locale_dict("price")
         last_price_target = self._find_detail("dt", f"^{tag}")
@@ -146,23 +146,24 @@ class GSCProductParser(AbstractBs4ProductParser):
             last_price_text = last_price_ele.text.strip()
             tax_including = bool(re.search(f"{tax_feature}", last_price_text))
             last_price = price_parse(last_price_text)
-            last_price = (last_price, tax_including)
+            last_price_tag = PriceTag(last_price, tax_including)
         else:
-            last_price = None
+            last_price_tag = PriceTag()
 
         if self.parse_rerelease():
             price_slot = self._parse_resale_prices()
 
-            if not price_slot and last_price:
-                price_slot.append(last_price)
+            if not price_slot and last_price_tag:
+                price_slot.append(last_price_tag)
 
-            if price_slot and last_price != price_slot[-1] and last_price:
-                price_slot.append(last_price)
+            if price_slot and last_price_tag != price_slot[-1] and last_price_tag:
+                price_slot.append(last_price_tag)
 
             return price_slot
 
-        if last_price is not None and last_price[0] >= 0:
-            price_slot.append(last_price)
+        if last_price_tag.price is not None:
+            if last_price_tag.price >= 0:
+                price_slot.append(last_price_tag)
 
         return price_slot
 
