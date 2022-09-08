@@ -23,3 +23,15 @@ class UnregisteredDomain(DomainException):
     Exception which is thrown when the given url is from a unsupported domain.
     """
     pass
+
+
+class FailedToCreateProduct(FigureParserException):
+    """
+    Exception thrown when faild to create product.
+    """
+
+
+class FailedToProcessProduct(FigureParserException):
+    """
+    Exception thrown when faild to process product with pipe.
+    """

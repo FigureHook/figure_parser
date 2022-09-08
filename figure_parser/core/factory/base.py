@@ -8,6 +8,7 @@ from figure_parser.core.entity import ProductBase
 from figure_parser.core.parser.base import AbstractProductParser
 
 from .exceptions import (DomainInvalid, DuplicatedDomainRegistration,
+                         FailedToCreateProduct, FailedToProcessProduct,
                          UnregisteredDomain)
 
 __all__ = (
@@ -48,45 +49,55 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._sort_pipes()
         return self._pipes
 
-    def _create_product_by_parser(self, url: str, parser: AbstractProductParser[Source_T]):
-        return ProductBase(
-            url=url,
-            name=parser.parse_name(),
-            series=parser.parse_series(),
-            manufacturer=parser.parse_manufacturer(),
-            category=parser.parse_category(),
-            releases=parser.parse_releases(),
-            order_period=parser.parse_order_period(),
-            size=parser.parse_size(),
-            scale=parser.parse_scale(),
-            sculptors=parser.parse_sculptors(),
-            paintworks=parser.parse_paintworks(),
-            rerelease=parser.parse_rerelease(),
-            adult=parser.parse_adult(),
-            copyright=parser.parse_copyright(),
-            releaser=parser.parse_releaser(),
-            distributer=parser.parse_distributer(),
-            jan=parser.parse_JAN(),
-            images=parser.parse_images(),
-            thumbnail=parser.parse_thumbnail(),
-            og_image=parser.parse_og_image(),
-        )
+    def _create_product_by_parser(self, url: str, parser: AbstractProductParser[Source_T]) -> ProductBase:
+        try:
+            return ProductBase(
+                url=url,
+                name=parser.parse_name(),
+                series=parser.parse_series(),
+                manufacturer=parser.parse_manufacturer(),
+                category=parser.parse_category(),
+                releases=parser.parse_releases(),
+                order_period=parser.parse_order_period(),
+                size=parser.parse_size(),
+                scale=parser.parse_scale(),
+                sculptors=parser.parse_sculptors(),
+                paintworks=parser.parse_paintworks(),
+                rerelease=parser.parse_rerelease(),
+                adult=parser.parse_adult(),
+                copyright=parser.parse_copyright(),
+                releaser=parser.parse_releaser(),
+                distributer=parser.parse_distributer(),
+                jan=parser.parse_JAN(),
+                images=parser.parse_images(),
+                thumbnail=parser.parse_thumbnail(),
+                og_image=parser.parse_og_image(),
+            )
+        except Exception:
+            raise FailedToCreateProduct(f"{parser.__class__} failed to parse the product. (url: {url})")
 
     def create_product(
         self,
         url: str,
         source: Source_T
     ) -> ProductBase:
-        self._sort_pipes()
         parser_cls = self.get_parser_by_url(url)
         if not parser_cls:
             raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
 
         parser = parser_cls.create_parser(url=url, source=source)
         product = self._create_product_by_parser(url=url, parser=parser)
+        product = self.process_product_with_pipes(product)
+        return product
 
+    def process_product_with_pipes(self, product: ProductBase) -> ProductBase:
+        self._sort_pipes()
         for process, _ in self._pipes:
-            product = process(product)
+            try:
+                product = process(product)
+            except Exception:
+                raise FailedToProcessProduct(
+                    f"Error occured when {process.__qualname__} is processing the product. (product_url: {product.url})")
 
         return product
 

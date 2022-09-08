@@ -1,9 +1,11 @@
 import pytest
 from figure_parser.core.entity import ProductBase
 from figure_parser.core.factory.base import GenericProductFactory
+from figure_parser.core.factory.exceptions import FailedToProcessProduct
 from figure_parser.core.parser.base import AbstractProductParser
 from figure_parser.exceptions import (DomainInvalid,
                                       DuplicatedDomainRegistration,
+                                      FailedToCreateProduct,
                                       UnregisteredDomain)
 from pytest_mock import MockerFixture
 
@@ -122,3 +124,29 @@ def test_factory_product_creation(mocker: MockerFixture, product: ProductBase):
     p = factory.create_product(url="https://foo.bar/114514", source="114514")
     assert mock_product_create.called
     assert type(p) is ProductBase
+
+
+def test_factory_product_creation_failed(mocker: MockerFixture, product: ProductBase):
+    mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
+    factory = MockStrProductFactory()
+
+    factory.register_parser('foo.bar', MockStrProductParser)
+    with pytest.raises(FailedToCreateProduct):
+        factory.create_product(url="https://foo.bar/114514", source="114514")
+
+
+def test_factory__failed_to_process_product_with_pipe(mocker: MockerFixture, product: ProductBase):
+    mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
+    factory = MockStrProductFactory()
+    mock_product_create = mocker.MagicMock(return_value=product)
+    factory._create_product_by_parser = mock_product_create
+
+    factory.register_parser('foo.bar', MockStrProductParser)
+
+    def bad_process(p: ProductBase) -> ProductBase:
+        assert None
+        return p
+
+    factory.add_pipe(bad_process, 1)
+    with pytest.raises(FailedToProcessProduct):
+        factory.create_product(url="https://foo.bar/114514", source="114514")
