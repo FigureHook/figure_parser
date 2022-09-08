@@ -7,6 +7,12 @@ help: # Show this help message.
 install: # Install requirements of project.
 	poetry install
 
+lint: # Lint the code.
+	flake8
+
+type-check: # Type check with mypy.
+	mypy
+
 test: # Run the tests.
 	coverage run -m pytest
 

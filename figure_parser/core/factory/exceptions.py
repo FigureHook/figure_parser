@@ -7,7 +7,8 @@ class DomainException(FigureParserException):
 
 class DuplicatedDomainRegistration(DomainException):
     """
-    Exception which is thrown when register duplicated domain in :class:`figure_parser.core.factory.base_factory.BaseProductFactory.
+    Exception which is thrown when register duplicated domain in
+    :class:`figure_parser.core.factory.base_factory.BaseProductFactory.
     """
     pass
 

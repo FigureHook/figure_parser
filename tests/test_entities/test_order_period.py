@@ -33,7 +33,7 @@ class TestOrderPeriod:
         now = datetime(2025, 3, 2, 23, 0)
         order_period = OrderPeriod()
         assert not order_period.is_available_at(now)
-        assert not now in order_period
+        assert now not in order_period
 
     def test_default_value(self):
         order_period = OrderPeriod()

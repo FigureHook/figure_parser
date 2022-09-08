@@ -1,3 +1,4 @@
+# flake8: noqa
 from .core.entity.exceptions import FigureParserException
 from .core.factory.exceptions import (DomainException, DomainInvalid,
                                       DuplicatedDomainRegistration,
