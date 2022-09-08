@@ -21,7 +21,7 @@ cov-report: # Show the coverage of tests.
 	coverage report -m
 
 freeze: # Export the requirements.txt file.
-	poetry export --without-hashes -f requirements.txt --output requirements.txt
+	poetry export --without-hashes --dev -f requirements.txt --output requirements.txt
 
 freeze-doc: # Export the requirements.txt for docs.
 	poetry export -E "docs" --without-hashes -f requirements.txt --output docs/source/requirements.txt
