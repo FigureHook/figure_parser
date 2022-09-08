@@ -1,6 +1,6 @@
 import re
-from itertools import repeat
 import unicodedata
+from itertools import repeat
 from typing import Iterable, List, TypeVar, Union
 
 T = TypeVar('T')
@@ -42,14 +42,19 @@ def size_parse(text: str) -> Union[int, None]:
     text = text.replace(",", "")
     pattern = r"([\d\.?]+)\s?[㎜|mm|ｍｍ|cm|㎝|ｃｍ]"
     is_cm = any(("cm" in text, "㎝" in text, "ｃｍ" in text))
-    size_text = re.search(pattern, text)
+    size_matches = re.findall(pattern, text)
 
-    if not size_text:
+    if not size_matches:
         return None
 
-    size = size_text.group(1)
+    size_slots = [
+        int(float(size) * 10) if is_cm else int(float(size))
+        for size in size_matches
+    ]
+    return max(size_slots)
+    # size = size_text.group(1)
 
-    if is_cm:
-        return int(float(size) * 10)
+    # if is_cm:
+    #     return int(float(size) * 10)
 
-    return int(float(size))
+    # return int(float(size))

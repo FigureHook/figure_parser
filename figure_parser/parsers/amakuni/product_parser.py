@@ -303,7 +303,11 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
             ".product_name > span:nth-last-child(1)"
         ) or self.source.select_one(".product_name")
         assert name_ele
-        name = name_ele.contents[-1].text.strip()
+        name = " ".join([
+            content.text.strip()
+            for content in name_ele.contents
+            if content.text
+        ]) if self.source.select_one(".sakuhin_mei") else name_ele.contents[-1].text.strip()
         if is_name_with_series(name):
             return name.split(u"\u3000")[1]
         return name

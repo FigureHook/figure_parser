@@ -515,3 +515,30 @@
   size: 225
   thumbnail: null
   url: http://amakuni.info/item/2019/015.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©TRIGGER・中島かずき／キルラキル製作委員会
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2018/022/001.jpg
+  manufacturer: AMAKUNI
+  name: 流子＆皐月 温泉三昧姉妹セット
+  og_image: null
+  order_period:
+    end: 2018-05-15 23:59:59
+    start: 2018-03-23 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 22760
+      release_date: 2018-11-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - あきもふ
+  series: キルラキル
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2018/023.php
