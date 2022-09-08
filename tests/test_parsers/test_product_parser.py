@@ -1,19 +1,21 @@
 import os
 import urllib.request
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 from hashlib import md5
 from pathlib import Path
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping
 
 import pytest
 import yaml
 from bs4 import BeautifulSoup
 from figure_parser.core.entity import Release
 from figure_parser.core.pipe.sorting import _sort_release
+from figure_parser.entities import PriceTag
 from figure_parser.parsers import (AlterProductParser, AmakuniProductParser,
                                    GSCProductParser, NativeProductParser)
 from figure_parser.parsers.base import AbstractBs4ProductParser
+from pytest_mock import MockerFixture
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
 TEST_CASE_DIR = THIS_DIR.joinpath("product_case")
@@ -250,3 +252,67 @@ class TestAmakuniParser(BaseTestCase):
             parser=AmakuniProductParser.create_parser(request.param["url"], source=page),
             expected=request.param
         )
+
+
+class MockStrProductParser(AbstractBs4ProductParser):
+    ...
+
+
+def test_releases_base_parsing(mocker: MockerFixture):
+    mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
+    parser = MockStrProductParser(source='kappa')  # type: ignore
+
+    # dates is empty.
+    # fill the dates with None to fit the prices.
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])
+    parser.parse_release_dates = mocker.MagicMock(return_value=[])
+    releases = parser.parse_releases()
+    assert len(releases) == 1
+    assert releases[0].release_date is None
+    assert releases[0].price == 100
+
+    # prices is empty.
+    # fill the dates with None to fit the prices.
+    parser.parse_prices = mocker.MagicMock(return_value=[])
+    parser.parse_release_dates = mocker.MagicMock(return_value=[date(2023, 2, 2)])
+    releases = parser.parse_releases()
+    assert len(releases) == 1
+    assert releases[0].release_date == date(2023, 2, 2)
+    assert releases[0].price is None
+
+    # dates and prices are not empty.
+    # dates is more than prices.
+    # fill the prices with last price to fit the dates.
+    dates = [date(2020, 2, 2), date(2023, 2, 2)]
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])
+    parser.parse_release_dates = mocker.MagicMock(return_value=dates)
+    releases = parser.parse_releases()
+    assert len(releases) == 2
+    for i, r in enumerate(releases):
+        assert r.release_date == dates[i]
+        assert r.price == 100
+
+    # dates and prices are not empty.
+    # prices is more than dates.
+    # discard the part of prices that more than dates to fit the dates.
+    dates = [date(2020, 2, 2)]
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100), PriceTag(200)])
+    parser.parse_release_dates = mocker.MagicMock(return_value=dates)
+    releases = parser.parse_releases()
+    assert len(releases) == 1
+    for i, r in enumerate(releases):
+        assert r.release_date == date(2020, 2, 2)
+        assert r.price == 100
+
+
+def test_base_parser_head_parsing(mocker: MockerFixture):
+    html_text = """
+    <meta content="https://foobar.com/image1.jpg" content="https://foobar.com/image2.jpg" property="og:image"/>
+    <meta content="https://foobar.com/image1.jpg" content="https://foobar.com/image2.jpg" name="thumbnail"/>
+    """
+    source = BeautifulSoup(html_text, 'lxml')
+    mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
+    parser = MockStrProductParser(source)  # type: ignore
+
+    assert parser.parse_og_image() == "https://foobar.com/image1.jpg"
+    assert parser.parse_thumbnail() == "https://foobar.com/image1.jpg"
