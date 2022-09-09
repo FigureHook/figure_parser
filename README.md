@@ -12,7 +12,7 @@
 | [F:NEX](https://fnex.jp/)                                            |                |              |                 |
 | [SKYTUBE](https://skytube.jp/)                                       |                |              |                 |
 | [quesQ](https://www.quesq.net/)                                      |                |              |                 |
-| [AMAKUNI](http://amakuni.info/)                                      |                |              |                 |
+| [AMAKUNI](http://amakuni.info/)                                      | V              |              |                 |
 | [alphamax](https://alphamax.jp/)                                     |                |              |                 |
 | [ORCATORYS](http://orcatoys.com/)                                    |                |              |                 |
 | [FLARE](https://www.flare-web.jp/)                                   |                |              |                 |
