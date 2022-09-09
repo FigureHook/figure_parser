@@ -5,7 +5,6 @@ from typing import List, Optional
 from bs4 import BeautifulSoup
 from figure_parser.core.entity import PriceTag, Release
 from figure_parser.core.parser.base import AbstractProductParser
-
 from .utils import make_last_element_filler
 
 
@@ -53,12 +52,10 @@ class AbstractBs4ProductParser(AbstractProductParser[BeautifulSoup]):
 
         assert len(dates) <= len(prices)
 
-        releases: List[Release] = [
-            Release(release_date=d, price=p[0], tax_including=p[1])
+        return [
+            Release(release_date=d, price=p.price, tax_including=p.tax_including)
             for d, p in zip(dates, prices)
         ]
-
-        return releases
 
     def parse_thumbnail(self) -> Optional[str]:
         """Parse thumbnail from meta tag.
