@@ -1,22 +1,33 @@
 from abc import ABC
-from typing import (Callable, Generic, List, Mapping, MutableMapping, Optional,
-                    Tuple, Type, TypeVar)
+from typing import (
+    Callable,
+    Generic,
+    List,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Type,
+    TypeVar,
+)
 from urllib.parse import urlparse
 
 import validators
 from figure_parser.core.entity import ProductBase
 from figure_parser.core.parser.base import AbstractProductParser
 
-from .exceptions import (DomainInvalid, DuplicatedDomainRegistration,
-                         FailedToCreateProduct, FailedToProcessProduct,
-                         UnregisteredDomain)
-
-__all__ = (
-    'GenericProductFactory',
+from .exceptions import (
+    DomainInvalid,
+    DuplicatedDomainRegistration,
+    FailedToCreateProduct,
+    FailedToProcessProduct,
+    UnregisteredDomain,
 )
 
+__all__ = ("GenericProductFactory",)
 
-Source_T = TypeVar('Source_T')
+
+Source_T = TypeVar("Source_T")
 
 
 class GenericProductFactory(Generic[Source_T], ABC):
@@ -27,8 +38,10 @@ class GenericProductFactory(Generic[Source_T], ABC):
     def __init__(
         self,
         *,
-        parser_registrations: Optional[Mapping[str, Type[AbstractProductParser[Source_T]]]] = None,
-        pipes: Optional[List[Tuple[Callable[[ProductBase], ProductBase], int]]] = None
+        parser_registrations: Optional[
+            Mapping[str, Type[AbstractProductParser[Source_T]]]
+        ] = None,
+        pipes: Optional[List[Tuple[Callable[[ProductBase], ProductBase], int]]] = None,
     ) -> None:
         self._is_pipes_sorted = False
         self._parser_registration = {}
@@ -49,7 +62,9 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._sort_pipes()
         return self._pipes
 
-    def _create_product_by_parser(self, url: str, parser: AbstractProductParser[Source_T]) -> ProductBase:
+    def _create_product_by_parser(
+        self, url: str, parser: AbstractProductParser[Source_T]
+    ) -> ProductBase:
         try:
             return ProductBase(
                 url=url,
@@ -74,16 +89,16 @@ class GenericProductFactory(Generic[Source_T], ABC):
                 og_image=parser.parse_og_image(),
             )
         except Exception:
-            raise FailedToCreateProduct(f"{parser.__class__} failed to parse the product. (url: {url})")
+            raise FailedToCreateProduct(
+                f"{parser.__class__} failed to parse the product. (url: {url})"
+            )
 
-    def create_product(
-        self,
-        url: str,
-        source: Source_T
-    ) -> ProductBase:
+    def create_product(self, url: str, source: Source_T) -> ProductBase:
         parser_cls = self.get_parser_by_url(url)
         if not parser_cls:
-            raise UnregisteredDomain(f"The domain of url is unregistered. (url: '{url}')")
+            raise UnregisteredDomain(
+                f"The domain of url is unregistered. (url: '{url}')"
+            )
 
         parser = parser_cls.create_parser(url=url, source=source)
         product = self._create_product_by_parser(url=url, parser=parser)
@@ -97,7 +112,8 @@ class GenericProductFactory(Generic[Source_T], ABC):
                 product = process(product)
             except Exception:
                 raise FailedToProcessProduct(
-                    f"Error occured when {process.__qualname__} is processing the product. (product_url: {product.url})")
+                    f"Error occured when {process.__qualname__} is processing the product. (product_url: {product.url})"
+                )
 
         return product
 
@@ -109,7 +125,7 @@ class GenericProductFactory(Generic[Source_T], ABC):
         for domain in self._parser_registration:
             if domain in the_domain:
                 return domain
-        return ''
+        return ""
 
     def add_pipe(self, pipe: Callable[[ProductBase], ProductBase], order: int):
         self._pipes.append((pipe, order))
@@ -119,7 +135,9 @@ class GenericProductFactory(Generic[Source_T], ABC):
         self._pipes.extend(pipes)
         self._is_pipes_sorted = False
 
-    def register_parser(self, domain: str, parser: Type[AbstractProductParser[Source_T]]):
+    def register_parser(
+        self, domain: str, parser: Type[AbstractProductParser[Source_T]]
+    ):
         domain = domain.strip()
         if not validators.domain(domain):  # type: ignore
             raise DomainInvalid(f"{domain} is invalid.")
@@ -129,10 +147,14 @@ class GenericProductFactory(Generic[Source_T], ABC):
 
         self._parser_registration.setdefault(domain, parser)
 
-    def get_parser_by_domain(self, domain: str) -> Optional[Type[AbstractProductParser[Source_T]]]:
+    def get_parser_by_domain(
+        self, domain: str
+    ) -> Optional[Type[AbstractProductParser[Source_T]]]:
         return self._parser_registration.get(domain)
 
-    def get_parser_by_url(self, url: str) -> Optional[Type[AbstractProductParser[Source_T]]]:
+    def get_parser_by_url(
+        self, url: str
+    ) -> Optional[Type[AbstractProductParser[Source_T]]]:
         domain = self.validate_url(url)
         return self._parser_registration.get(domain)
 

@@ -3,9 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, root_validator
 
-__all__ = (
-    'OrderPeriod',
-)
+__all__ = ("OrderPeriod",)
 
 
 class OrderPeriod(BaseModel):
@@ -27,9 +25,11 @@ class OrderPeriod(BaseModel):
 
     @root_validator(pre=True)
     def valid_order_period(cls, values: dict):
-        start, end = values.get('start'), values.get('end')
+        start, end = values.get("start"), values.get("end")
         if start and end:
-            assert start < end, f"start_datetime {start} shouldn't later than end_datetime {end}."
+            assert (
+                start < end
+            ), f"start_datetime {start} shouldn't later than end_datetime {end}."
         return values
 
     @property

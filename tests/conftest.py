@@ -5,12 +5,12 @@ from faker import Faker
 from figure_parser.core.entity import OrderPeriod, ProductBase, Release
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def faker_session_locale():
-    return ['ja-JP']
+    return ["ja-JP"]
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def product(faker: Faker):
     releases: list[Release] = []
     for _ in range(random.randint(1, 4)):
@@ -18,7 +18,7 @@ def product(faker: Faker):
             Release(
                 release_date=faker.date_object(),
                 price=random.randint(1000, 1000000),
-                tax_including=faker.boolean(chance_of_getting_true=25)
+                tax_including=faker.boolean(chance_of_getting_true=25),
             )
         )
 

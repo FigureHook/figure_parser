@@ -12,9 +12,9 @@ from figure_parser.exceptions import ParserInitializationFailed
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
 
-locale_file_path = Path(__file__).parent.joinpath('locale', 'gsc_parse.yml')
+locale_file_path = Path(__file__).parent.joinpath("locale", "gsc_parse.yml")
 
-with open(locale_file_path, "r", encoding='utf-8') as stream:
+with open(locale_file_path, "r", encoding="utf-8") as stream:
     locale_dict = yaml.safe_load(stream)
 
 
@@ -87,9 +87,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         date_pattern: Pattern = self._get_from_locale_dict("release_date_pattern")
         weird_date_pattern: Pattern = self._get_from_locale_dict("weird_date_pattern")
 
-        date_ele = self.detail.find(
-            "dd", {"itemprop": "releaseDate"}
-        )
+        date_ele = self.detail.find("dd", {"itemprop": "releaseDate"})
         assert date_ele
         date_text = date_ele.text.strip()
 
@@ -101,8 +99,8 @@ class GSCProductParser(AbstractBs4ProductParser):
         date_list = []
         if re.match(date_pattern, date_text):
             for matched_date in re.finditer(date_pattern, date_text):
-                year = int(matched_date.group('year'))
-                month = int(matched_date.group('month'))
+                year = int(matched_date.group("year"))
+                month = int(matched_date.group("month"))
                 the_datetime = datetime(year, month, 1).date()
                 date_list.append(the_datetime)
 
@@ -120,8 +118,7 @@ class GSCProductParser(AbstractBs4ProductParser):
 
     def _parse_resale_prices(self) -> List[PriceTag]:
         price_slot: List[PriceTag] = []
-        price_items = self.detail.find_all(
-            name="dt", string=re.compile(r"販(\w|)価格"))
+        price_items = self.detail.find_all(name="dt", string=re.compile(r"販(\w|)価格"))
 
         for price_item in price_items:
             price_text: str = price_item.find_next("dd").text.strip()
@@ -168,10 +165,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         return price_slot
 
     def parse_name(self) -> str:
-        name_ele = self.source.select_one(
-            "h1.title",
-            {"itemprop": "price"}
-        )
+        name_ele = self.source.select_one("h1.title", {"itemprop": "price"})
         assert name_ele
         return name_ele.text.strip()
 
@@ -281,7 +275,7 @@ class GSCProductParser(AbstractBs4ProductParser):
         # FIXME: This is monkey patch.
         the_copyright = the_copyright.replace("\n\n", "\n")
         the_copyright = the_copyright.replace("\r", "")
-        the_copyright = the_copyright.replace(u"\u3000", "\n")
+        the_copyright = the_copyright.replace("\u3000", "\n")
 
         return the_copyright
 
@@ -298,11 +292,7 @@ class GSCProductParser(AbstractBs4ProductParser):
 
         period_text = period.text.strip()
         order_period_pattern = self._get_from_locale_dict("order_period_pattern")
-        period_list = [
-            x for x in re.finditer(
-                order_period_pattern, period_text
-            )
-        ]
+        period_list = [x for x in re.finditer(order_period_pattern, period_text)]
 
         start = make_datetime(period_list[0], self.locale)
         end = None
@@ -346,29 +336,23 @@ class GSCProductParser(AbstractBs4ProductParser):
 
 
 def make_datetime(period: Match[str], locale: str) -> datetime:
-    year = period.group('year')
-    month = period.group('month')
-    day = period.group('day')
-    hour = period.group('hour')
-    minute = period.group('minute')
+    year = period.group("year")
+    month = period.group("month")
+    day = period.group("day")
+    hour = period.group("hour")
+    minute = period.group("minute")
 
-    if locale == 'en':
-        month = datetime.strptime(month, '%B').month
+    if locale == "en":
+        month = datetime.strptime(month, "%B").month
 
-    return datetime(
-        int(year),
-        int(month),
-        int(day),
-        int(hour),
-        int(minute)
-    )
+    return datetime(int(year), int(month), int(day), int(hour), int(minute))
 
 
 def parse_people(people_text: str) -> List[str]:
     people = []
-    if re.search(r'・{2,}', people_text):
+    if re.search(r"・{2,}", people_text):
         people_text = people_text.replace("・", ".")
-    people_group = re.split(r'・|、|/|\u3000', people_text)
+    people_group = re.split(r"・|、|/|\u3000", people_text)
 
     for p in people_group:
         p = PeopleParser.remove_cooperation(p)

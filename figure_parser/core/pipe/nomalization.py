@@ -4,7 +4,7 @@ from typing import Any, Callable, TypeVar, overload
 
 from figure_parser.core.entity import ProductBase
 
-T = TypeVar('T')
+T = TypeVar("T")
 NormalizeFunc = Callable[[T], T]
 
 
@@ -23,9 +23,13 @@ def normalize_worker_fields(product_item: ProductBase) -> ProductBase:
 
 
 @overload
-def _normalize(value: str, normalize_func: NormalizeFunc) -> str: ...
+def _normalize(value: str, normalize_func: NormalizeFunc) -> str:
+    ...
+
+
 @overload
-def _normalize(value: list[str], normalize_func: NormalizeFunc) -> list[str]: ...
+def _normalize(value: list[str], normalize_func: NormalizeFunc) -> list[str]:
+    ...
 
 
 def _normalize(value: Any, normalize_func: NormalizeFunc[Any]) -> Any:

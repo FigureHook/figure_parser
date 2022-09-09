@@ -44,7 +44,13 @@ class AlterProductParser(AbstractBs4ProductParser):
     detail: Tag
     parsed_url: ParseResult
 
-    def __init__(self, source: BeautifulSoup, detail: Tag, spec: Mapping[str, str], parsed_url: ParseResult):
+    def __init__(
+        self,
+        source: BeautifulSoup,
+        detail: Tag,
+        spec: Mapping[str, str],
+        parsed_url: ParseResult,
+    ):
         self.detail = detail
         self.spec = spec
         self.parsed_url = parsed_url
@@ -93,8 +99,7 @@ class AlterProductParser(AbstractBs4ProductParser):
     def parse_release_dates(self) -> List[date]:
         date_text = self.spec["発売月"]
         matched_date = re.findall(r"\d+年\d+月", date_text)
-        date_list = [datetime.strptime(date, "%Y年%m月").date()
-                     for date in matched_date]
+        date_list = [datetime.strptime(date, "%Y年%m月").date() for date in matched_date]
         return date_list
 
     def parse_scale(self) -> Union[int, None]:
@@ -138,10 +143,7 @@ class AlterProductParser(AbstractBs4ProductParser):
     def parse_releaser(self) -> Union[str, None]:
         pattern = r"：(\S.+)"
 
-        the_other_releaser = self.detail.find(
-            "span",
-            string=re.compile("発売元")
-        )
+        the_other_releaser = self.detail.find("span", string=re.compile("発売元"))
 
         if not the_other_releaser:
             return "アルター"
@@ -157,10 +159,7 @@ class AlterProductParser(AbstractBs4ProductParser):
     def parse_distributer(self) -> Union[str, None]:
         pattern = r"：(\S.+)"
 
-        the_other_releaser = self.detail.find(
-            "span",
-            string=re.compile("販売元")
-        )
+        the_other_releaser = self.detail.find("span", string=re.compile("販売元"))
 
         if not the_other_releaser:
             return None
@@ -173,7 +172,7 @@ class AlterProductParser(AbstractBs4ProductParser):
         return distributer
 
     def parse_rerelease(self) -> bool:
-        is_resale = bool(self.source.find(class_='resale'))
+        is_resale = bool(self.source.find(class_="resale"))
         return is_resale
 
     def parse_images(self) -> List[str]:
@@ -189,7 +188,10 @@ class AlterProductParser(AbstractBs4ProductParser):
                 self.parsed_url.scheme,
                 self.parsed_url.netloc,
                 image_source,
-                None, None, None)
+                None,
+                None,
+                None,
+            )
             url = urlunparse(url_components)
             images.append(url)
 
@@ -200,9 +202,7 @@ class AlterProductParser(AbstractBs4ProductParser):
         copyright_ele = self.detail.select_one(".copyright")
         assert copyright_ele
         copyright_info = copyright_ele.text
-        matched_copyright = re.search(
-            pattern, copyright_info
-        )
+        matched_copyright = re.search(pattern, copyright_info)
         assert matched_copyright
         copyright_ = matched_copyright.group(1).strip()
 

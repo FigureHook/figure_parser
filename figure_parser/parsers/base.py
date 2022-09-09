@@ -58,17 +58,19 @@ class AbstractBs4ProductParser(AbstractProductParser[BeautifulSoup]):
         ]
 
     def parse_thumbnail(self) -> Optional[str]:
-        """Parse thumbnail from meta tag.
-        """
+        """Parse thumbnail from meta tag."""
         meta_thumbnail = self.source.select_one("meta[name='thumbnail']")
-        thumbnail = meta_thumbnail.get_attribute_list("content") if meta_thumbnail else None
+        thumbnail = (
+            meta_thumbnail.get_attribute_list("content") if meta_thumbnail else None
+        )
 
         return thumbnail[0] if thumbnail else None
 
     def parse_og_image(self) -> Optional[str]:
-        """Parse open graph image from meta tag.
-        """
+        """Parse open graph image from meta tag."""
         meta_og_image = self.source.select_one("meta[property='og:image']")
-        og_image = meta_og_image.get_attribute_list("content") if meta_og_image else None
+        og_image = (
+            meta_og_image.get_attribute_list("content") if meta_og_image else None
+        )
 
         return og_image[0] if og_image else None

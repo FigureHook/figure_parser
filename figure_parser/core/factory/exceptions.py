@@ -10,6 +10,7 @@ class DuplicatedDomainRegistration(DomainException):
     Exception which is thrown when register duplicated domain in
     :class:`figure_parser.core.factory.base_factory.BaseProductFactory.
     """
+
     pass
 
 
@@ -23,6 +24,7 @@ class UnregisteredDomain(DomainException):
     """
     Exception which is thrown when the given url is from a unsupported domain.
     """
+
     pass
 
 

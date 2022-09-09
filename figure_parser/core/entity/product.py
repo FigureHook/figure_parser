@@ -5,9 +5,7 @@ from pydantic import BaseModel
 from .order_period import OrderPeriod
 from .release import Release
 
-__all__ = (
-    'ProductBase',
-)
+__all__ = ("ProductBase",)
 
 
 class ProductBase(BaseModel):
@@ -18,12 +16,9 @@ class ProductBase(BaseModel):
         "releaser",
         "distributer",
         "paintworks",
-        "sculptors"
+        "sculptors",
     ]
-    __worker_fields__: ClassVar[List[str]] = [
-        "paintworks",
-        "sculptors"
-    ]
+    __worker_fields__: ClassVar[List[str]] = ["paintworks", "sculptors"]
 
     url: str
     name: str

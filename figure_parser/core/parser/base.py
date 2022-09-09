@@ -3,17 +3,16 @@ from typing import Generic, List, Optional, Type, TypeVar
 
 from figure_parser.core.entity import OrderPeriod, Release
 
-Source_T = TypeVar('Source_T')
-Parser_T = TypeVar('Parser_T')
+Source_T = TypeVar("Source_T")
+Parser_T = TypeVar("Parser_T")
 
 
-__all__ = (
-    'AbstractProductParser',
-)
+__all__ = ("AbstractProductParser",)
 
 
 class AbstractProductParser(ABC, Generic[Source_T]):
     """Abstract product parser class"""
+
     _source: Source_T
 
     def __init__(self, source: Source_T) -> None:
@@ -126,8 +125,7 @@ class AbstractProductParser(ABC, Generic[Source_T]):
 
     @abstractmethod
     def parse_adult(self) -> bool:
-        """Is the product adult-only? ( ͡° ͜ʖ ͡°)
-        """
+        """Is the product adult-only? ( ͡° ͜ʖ ͡°)"""
         raise NotImplementedError
 
     @abstractmethod

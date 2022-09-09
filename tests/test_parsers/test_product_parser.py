@@ -12,8 +12,12 @@ from bs4 import BeautifulSoup
 from figure_parser.core.entity import Release
 from figure_parser.core.pipe.sorting import _sort_release
 from figure_parser.entities import PriceTag
-from figure_parser.parsers import (AlterProductParser, AmakuniProductParser,
-                                   GSCProductParser, NativeProductParser)
+from figure_parser.parsers import (
+    AlterProductParser,
+    AmakuniProductParser,
+    GSCProductParser,
+    NativeProductParser,
+)
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from pytest_mock import MockerFixture
 
@@ -28,7 +32,7 @@ class ParserTestTarget:
 
 
 def load_yaml(path):
-    with open(path, "r", encoding='utf-8') as stream:
+    with open(path, "r", encoding="utf-8") as stream:
         sth = yaml.safe_load(stream)
 
     return sth
@@ -36,7 +40,7 @@ def load_yaml(path):
 
 def get_html(url: str, headers={}, cookies={}) -> BeautifulSoup:
     m = md5()
-    m.update(url.encode('utf-8'))
+    m.update(url.encode("utf-8"))
     hash_name = m.hexdigest()
 
     html_dir = THIS_DIR.joinpath("product_case", "html")
@@ -44,12 +48,12 @@ def get_html(url: str, headers={}, cookies={}) -> BeautifulSoup:
 
     html_path = html_dir.joinpath(f"{hash_name}.html")
     if html_path.exists():
-        with open(html_path, 'r', encoding='utf-8') as html:
+        with open(html_path, "r", encoding="utf-8") as html:
             page = BeautifulSoup(html, "lxml")
 
     else:
-        with open(html_path, 'w', encoding='utf-8') as html:
-            cookies_value = ','.join([f"{k}={v}" for k, v in cookies.items()])
+        with open(html_path, "w", encoding="utf-8") as html:
+            cookies_value = ",".join([f"{k}={v}" for k, v in cookies.items()])
             req = urllib.request.Request(url=url, headers=headers)
             req.add_header("Cookie", cookies_value)
             content = urllib.request.urlopen(req).read()
@@ -80,7 +84,9 @@ class BaseTestCase:
         order_period = target.parser.parse_order_period()
         expected_order_period = target.expected.get("order_period")
         assert expected_order_period
-        if not expected_order_period.get('start') and not expected_order_period.get('end'):
+        if not expected_order_period.get("start") and not expected_order_period.get(
+            "end"
+        ):
             pytest.xfail("Some maker didn't announce the period.")
 
         start = order_period.start
@@ -89,10 +95,10 @@ class BaseTestCase:
         if start and not end:
             pytest.xfail("Some products could be ordered until sold out.")
 
-        if expected_order_period['start']:
+        if expected_order_period["start"]:
             assert type(start) is datetime
             assert start == target.expected["order_period"]["start"]
-        if expected_order_period['end']:
+        if expected_order_period["end"]:
             assert type(end) is datetime
             assert end == target.expected["order_period"]["end"]
 
@@ -112,10 +118,15 @@ class BaseTestCase:
 
         for r, e_r in zip(release_infos, expected_release_infos):
             assert r.price == e_r["price"], "The price didn't match."
-            expected_date = e_r["release_date"].date(
-            ) if e_r["release_date"] else e_r["release_date"]
+            expected_date = (
+                e_r["release_date"].date()
+                if e_r["release_date"]
+                else e_r["release_date"]
+            )
             assert r.release_date == expected_date, "The release date didn't match."
-            assert r.tax_including is e_r['tax_including'], "Tax-including information didn't match."
+            assert (
+                r.tax_including is e_r["tax_including"]
+            ), "Tax-including information didn't match."
 
     def test_scale(self, target: ParserTestTarget):
         scale = target.parser.parse_scale()
@@ -174,22 +185,25 @@ class BaseTestCase:
 
 
 class TestGSCParser(BaseTestCase):
-    products = load_yaml(
-        TEST_CASE_DIR.joinpath("gsc.yml")
-    )
+    products = load_yaml(TEST_CASE_DIR.joinpath("gsc.yml"))
 
     @pytest.fixture(scope="class", params=products)
     def target(self, request) -> ParserTestTarget:
-        page = get_html(url=request.param["url"], headers={}, cookies={
-            "age_verification_ok": "true"
-        })
+        page = get_html(
+            url=request.param["url"],
+            headers={},
+            cookies={"age_verification_ok": "true"},
+        )
         return ParserTestTarget(
-            parser=GSCProductParser.create_parser(url=request.param["url"], source=page),
-            expected=request.param
+            parser=GSCProductParser.create_parser(
+                url=request.param["url"], source=page
+            ),
+            expected=request.param,
         )
 
     def test_worker_parser(self):
         from figure_parser.parsers.gsc.product_parser import parse_people
+
         worker1 = "横田健(原型協力 DRAGON Toy)"
         worker2 = "乙山法純(制作協力:アルター)"
         worker3 = "川崎和史 (製作協力:ねんどろん)"
@@ -210,47 +224,44 @@ class TestGSCParser(BaseTestCase):
 
 
 class TestAlterParser(BaseTestCase):
-    products = load_yaml(
-        TEST_CASE_DIR.joinpath("alter.yml")
-    )
+    products = load_yaml(TEST_CASE_DIR.joinpath("alter.yml"))
 
     @pytest.fixture(scope="class", params=products)
     def target(self, request) -> ParserTestTarget:
         page = get_html(request.param["url"])
         return ParserTestTarget(
             parser=AlterProductParser.create_parser(request.param["url"], source=page),
-            expected=request.param
+            expected=request.param,
         )
 
     @pytest.mark.skip(reason="Alter doesn't provide order_period.")
-    def test_order_period(self, *args): ...
+    def test_order_period(self, *args):
+        ...
 
 
 class TestNativeParser(BaseTestCase):
-    products = load_yaml(
-        TEST_CASE_DIR.joinpath("native.yml")
-    )
+    products = load_yaml(TEST_CASE_DIR.joinpath("native.yml"))
 
     @pytest.fixture(scope="class", params=products)
     def target(self, request) -> ParserTestTarget:
         page = get_html(request.param["url"])
         return ParserTestTarget(
             parser=NativeProductParser.create_parser(request.param["url"], source=page),
-            expected=request.param
+            expected=request.param,
         )
 
 
 class TestAmakuniParser(BaseTestCase):
-    products = load_yaml(
-        TEST_CASE_DIR.joinpath("amakuni.yml")
-    )
+    products = load_yaml(TEST_CASE_DIR.joinpath("amakuni.yml"))
 
     @pytest.fixture(scope="class", params=products)
     def target(self, request) -> ParserTestTarget:
         page = get_html(request.param["url"])
         return ParserTestTarget(
-            parser=AmakuniProductParser.create_parser(request.param["url"], source=page),
-            expected=request.param
+            parser=AmakuniProductParser.create_parser(
+                request.param["url"], source=page
+            ),
+            expected=request.param,
         )
 
 
@@ -260,7 +271,7 @@ class MockStrProductParser(AbstractBs4ProductParser):
 
 def test_releases_base_parsing(mocker: MockerFixture):
     mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
-    parser = MockStrProductParser(source='kappa')  # type: ignore
+    parser = MockStrProductParser(source="kappa")  # type: ignore
 
     # dates is empty.
     # fill the dates with None to fit the prices.
@@ -310,7 +321,7 @@ def test_base_parser_head_parsing(mocker: MockerFixture):
     <meta content="https://foobar.com/image1.jpg" content="https://foobar.com/image2.jpg" property="og:image"/>
     <meta content="https://foobar.com/image1.jpg" content="https://foobar.com/image2.jpg" name="thumbnail"/>
     """
-    source = BeautifulSoup(html_text, 'lxml')
+    source = BeautifulSoup(html_text, "lxml")
     mocker.patch.object(MockStrProductParser, "__abstractmethods__", new_callable=set)
     parser = MockStrProductParser(source)  # type: ignore
 

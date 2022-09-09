@@ -12,7 +12,7 @@ def test_product_base(product: ProductBase, faker: Faker):
             Release(
                 release_date=faker.date_object(),
                 price=random.randint(1000, 1000000),
-                tax_including=faker.boolean(chance_of_getting_true=25)
+                tax_including=faker.boolean(chance_of_getting_true=25),
             )
         )
 

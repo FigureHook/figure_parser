@@ -3,10 +3,7 @@ from typing import NamedTuple, Optional
 
 from pydantic import BaseModel, NonNegativeInt
 
-__all__ = (
-    'Release',
-    'PriceTag'
-)
+__all__ = ("Release", "PriceTag")
 
 
 class PriceTag(NamedTuple):
@@ -23,6 +20,7 @@ class Release(BaseModel):
     :param announced_at: The announcing date of the release.
     :type announced_at: datetime.date
     """
+
     release_date: Optional[date] = None
     """The product release date."""
     price: Optional[NonNegativeInt] = None

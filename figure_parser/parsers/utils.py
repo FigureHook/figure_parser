@@ -3,7 +3,7 @@ import unicodedata
 from itertools import repeat
 from typing import Iterable, List, TypeVar, Union
 
-T = TypeVar('T')
+T = TypeVar("T")
 
 
 def make_last_element_filler(target_list: List[T], desired_length: int) -> Iterable[T]:
@@ -48,8 +48,7 @@ def size_parse(text: str) -> Union[int, None]:
         return None
 
     size_slots = [
-        int(float(size) * 10) if is_cm else int(float(size))
-        for size in size_matches
+        int(float(size) * 10) if is_cm else int(float(size)) for size in size_matches
     ]
     return max(size_slots)
     # size = size_text.group(1)

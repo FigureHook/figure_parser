@@ -19,14 +19,16 @@ class LegacyProductInfo(BaseModel):
 
 def parse_legacy_info(source: BeautifulSoup) -> str:
     if source.select_one("#contents_right > .hidden"):
-        info_text_ele = source.select_one("#contents_right > .hidden > p:nth-last-child(1)")
+        info_text_ele = source.select_one(
+            "#contents_right > .hidden > p:nth-last-child(1)"
+        )
         if info_text_ele:
             info_text = info_text_ele.text.strip().replace("\n", "").replace("\t", "")
             return info_text
     else:
         info_text_ele = source.select_one("#contents_right > img:nth-of-type(3)")
         if info_text_ele:
-            possible_info_text = info_text_ele.get('alt')
+            possible_info_text = info_text_ele.get("alt")
             if type(possible_info_text) is str:
                 return possible_info_text
 
@@ -47,7 +49,7 @@ def parse_legacy_title(source: BeautifulSoup) -> str:
 
     midashi_image_alt = source.select_one("#item_midashi > img")
     if midashi_image_alt:
-        the_alt = midashi_image_alt.get('alt')
+        the_alt = midashi_image_alt.get("alt")
         if type(the_alt) is str:
             return the_alt
 
@@ -58,7 +60,7 @@ legacy_series_mapping: Mapping[str, str] = {
     "魔王黙示録": "七つの大罪 魔王黙示録",
     "クイーンズブレイド リベリオン": "クイーンズブレイド リベリオン",
     "『七つの大罪』編特別付録": "七つの大罪",
-    "朧村正": "朧村正"
+    "朧村正": "朧村正",
 }
 
 
@@ -66,15 +68,15 @@ legacy_title_is_lack_of_series: Mapping[str, str] = {
     "三世村正　オアシスVer.": "装甲悪鬼村正",
     "魔王黙示録　傲慢ノ章 ～スイカ割りノ節": "七つの大罪",
     "魔王黙示録 憤怒の章 羞恥サタンクロースノ節": "七つの大罪",
-    "レーシングミク2017Ver.": "初音ミク GTプロジェクト"
+    "レーシングミク2017Ver.": "初音ミク GTプロジェクト",
 }
 
 
 def append_the_lack_series(title: str) -> str:
     if title in legacy_title_is_lack_of_series:
         series = legacy_title_is_lack_of_series[title]
-        title = title.replace(u"\u3000", " ")
-        title = series + u"\u3000" + title
+        title = title.replace("\u3000", " ")
+        title = series + "\u3000" + title
     return title
 
 
@@ -103,8 +105,8 @@ def _parse_order_period(text: str) -> OrderPeriod:
     date_format = "%Y年%m月%d日"
     matched = re.search(pattern, text)
     if matched:
-        start_str = matched.group('start')
-        end_str = matched.group('end')
+        start_str = matched.group("start")
+        end_str = matched.group("end")
         start_date = datetime.strptime(start_str, date_format)
         try:
             end_date = datetime.strptime(end_str, date_format)
@@ -154,10 +156,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
         title_text = parse_legacy_title(source)
         title_text = append_the_lack_series(title_text)
         info_text = parse_legacy_info(source)
-        product_info = LegacyProductInfo(
-            title_text=title_text,
-            info_text=info_text
-        )
+        product_info = LegacyProductInfo(title_text=title_text, info_text=info_text)
         return cls(url=url, source=source, info=product_info)
 
     def parse_name(self) -> str:
@@ -175,7 +174,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
         series = self.parse_series()
         if series:
-            name = name.replace(u"\u3000", " ")
+            name = name.replace("\u3000", " ")
             name = remove_series(series, name)
         return name.strip()
 
@@ -256,12 +255,12 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
     def parse_images(self) -> List[str]:
         images: List[str] = []
-        image_anchors = self.source.select(
-            "#garrely_sum > a"
-        ) or self.source.select("#contents_right .item_right a")
+        image_anchors = self.source.select("#garrely_sum > a") or self.source.select(
+            "#contents_right .item_right a"
+        )
         if image_anchors:
             for anchor in image_anchors:
-                image_src = anchor.get('href')
+                image_src = anchor.get("href")
                 if type(image_src) is str:
                     images.append(urljoin(self._source_url, image_src))
         return images
@@ -277,7 +276,7 @@ class AmakuniLegacyProductParser(AbstractBs4ProductParser):
 
 
 def is_name_with_series(text: str) -> bool:
-    splits = text.split(u"\u3000")
+    splits = text.split("\u3000")
     return len(splits) > 1
 
 
@@ -303,13 +302,15 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
             ".product_name > span:nth-last-child(1)"
         ) or self.source.select_one(".product_name")
         assert name_ele
-        name = " ".join([
-            content.text.strip()
-            for content in name_ele.contents
-            if content.text
-        ]) if self.source.select_one(".sakuhin_mei") else name_ele.contents[-1].text.strip()
+        name = (
+            " ".join(
+                [content.text.strip() for content in name_ele.contents if content.text]
+            )
+            if self.source.select_one(".sakuhin_mei")
+            else name_ele.contents[-1].text.strip()
+        )
         if is_name_with_series(name):
-            return name.split(u"\u3000")[1]
+            return name.split("\u3000")[1]
         return name
 
     def parse_adult(self) -> bool:
@@ -340,7 +341,7 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
         ) or self.source.select_one(".product_name")
         if possible_series_ele:
             if is_name_with_series(possible_series_ele.text.strip()):
-                return possible_series_ele.text.strip().split(u"\u3000")[0]
+                return possible_series_ele.text.strip().split("\u3000")[0]
             return possible_series_ele.contents[0].text.strip()
         return None
 
@@ -401,12 +402,14 @@ class AmakuniFormalProductParser(AbstractBs4ProductParser):
                 images.append(image_src)
         return images
 
-    def parse_thumbnail(self) -> Optional[str]: ...
+    def parse_thumbnail(self) -> Optional[str]:
+        ...
 
     def parse_order_period(self) -> OrderPeriod:
         return _parse_order_period(self._detail_text)
 
-    def parse_JAN(self) -> Optional[str]: ...
+    def parse_JAN(self) -> Optional[str]:
+        ...
 
 
 class AmakuniProductParser(AbstractBs4ProductParser):

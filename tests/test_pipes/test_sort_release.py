@@ -6,15 +6,9 @@ from figure_parser.core.pipe.sorting import sort_releases
 
 
 def test_release_sorting(product: ProductBase):
-    release_1 = Release(
-        release_date=None
-    )
-    release_2 = Release(
-        release_date=date(2020, 2, 2)
-    )
-    release_3 = Release(
-        release_date=date(2022, 2, 2)
-    )
+    release_1 = Release(release_date=None)
+    release_2 = Release(release_date=date(2020, 2, 2))
+    release_3 = Release(release_date=date(2022, 2, 2))
 
     expected_releases = [release_1, release_2, release_3]
 
