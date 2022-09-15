@@ -13,10 +13,13 @@ lint: # Lint the code.
 type-check: # Type check with mypy.
 	mypy
 
+format: # Format the code.
+	black .
+
 test: # Run the tests.
 	coverage run -m pytest
 
-cov-report: # Show the coverage of tests.
+cov-report: test # Show the coverage of tests.
 	coverage combine; \
 	coverage report -m
 
