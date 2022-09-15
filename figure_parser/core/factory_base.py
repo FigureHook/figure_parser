@@ -13,9 +13,8 @@ from typing import (
 from urllib.parse import urlparse
 
 import validators
-from figure_parser.core.entity import ProductBase
-from figure_parser.core.parser.base import AbstractProductParser
 
+from .entity.product import ProductBase
 from .exceptions import (
     DomainInvalid,
     DuplicatedDomainRegistration,
@@ -23,6 +22,7 @@ from .exceptions import (
     FailedToProcessProduct,
     UnregisteredDomain,
 )
+from .parser_base import AbstractProductParser
 
 __all__ = ("GenericProductFactory",)
 

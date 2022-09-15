@@ -5,11 +5,12 @@ from typing import List, Mapping, Optional
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
+from pydantic import BaseModel
+
 from figure_parser.entities import OrderPeriod, PriceTag
 from figure_parser.exceptions import ParserInitializationFailed
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.parsers.utils import price_parse, scale_parse, size_parse
-from pydantic import BaseModel
 
 
 class LegacyProductInfo(BaseModel):

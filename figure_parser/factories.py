@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 
-from figure_parser.core.factory.base import GenericProductFactory
-
+from .core.factory_base import GenericProductFactory
 from .parsers import (
     AlterProductParser,
     AmakuniProductParser,
@@ -9,6 +8,8 @@ from .parsers import (
     NativeProductParser,
 )
 from .pipes import normalize_general_fields, normalize_worker_fields, sort_releases
+
+__all__ = ("Bs4ProductFactory", "GeneralBs4ProductFactory")
 
 
 class Bs4ProductFactory(GenericProductFactory[BeautifulSoup]):

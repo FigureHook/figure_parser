@@ -2,7 +2,7 @@ import random
 from datetime import date
 
 from figure_parser.core.entity import ProductBase, Release
-from figure_parser.core.pipe.sorting import sort_releases
+from figure_parser.pipes import sort_releases
 
 
 def test_release_sorting(product: ProductBase):

@@ -3,6 +3,7 @@ from datetime import date, datetime
 from typing import Dict, List, Mapping, Optional, Union
 
 from bs4 import BeautifulSoup
+
 from figure_parser.entities import OrderPeriod, PriceTag
 
 from ..base import AbstractBs4ProductParser

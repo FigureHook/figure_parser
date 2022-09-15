@@ -9,9 +9,9 @@ from typing import Any, Mapping
 import pytest
 import yaml
 from bs4 import BeautifulSoup
-from figure_parser.core.entity import Release
-from figure_parser.core.pipe.sorting import _sort_release
-from figure_parser.entities import PriceTag
+from pytest_mock import MockerFixture
+
+from figure_parser.entities import PriceTag, Release
 from figure_parser.parsers import (
     AlterProductParser,
     AmakuniProductParser,
@@ -19,7 +19,7 @@ from figure_parser.parsers import (
     NativeProductParser,
 )
 from figure_parser.parsers.base import AbstractBs4ProductParser
-from pytest_mock import MockerFixture
+from figure_parser.pipes.sorting import _sort_release
 
 THIS_DIR = Path(os.path.dirname(__file__)).resolve()
 TEST_CASE_DIR = THIS_DIR.joinpath("product_case")
@@ -275,8 +275,8 @@ def test_releases_base_parsing(mocker: MockerFixture):
 
     # dates is empty.
     # fill the dates with None to fit the prices.
-    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])
-    parser.parse_release_dates = mocker.MagicMock(return_value=[])
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])  # type: ignore
+    parser.parse_release_dates = mocker.MagicMock(return_value=[])  # type: ignore
     releases = parser.parse_releases()
     assert len(releases) == 1
     assert releases[0].release_date is None
@@ -284,8 +284,8 @@ def test_releases_base_parsing(mocker: MockerFixture):
 
     # prices is empty.
     # fill the dates with None to fit the prices.
-    parser.parse_prices = mocker.MagicMock(return_value=[])
-    parser.parse_release_dates = mocker.MagicMock(return_value=[date(2023, 2, 2)])
+    parser.parse_prices = mocker.MagicMock(return_value=[])  # type: ignore
+    parser.parse_release_dates = mocker.MagicMock(return_value=[date(2023, 2, 2)])  # type: ignore
     releases = parser.parse_releases()
     assert len(releases) == 1
     assert releases[0].release_date == date(2023, 2, 2)
@@ -295,8 +295,8 @@ def test_releases_base_parsing(mocker: MockerFixture):
     # dates is more than prices.
     # fill the prices with last price to fit the dates.
     dates = [date(2020, 2, 2), date(2023, 2, 2)]
-    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])
-    parser.parse_release_dates = mocker.MagicMock(return_value=dates)
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100)])  # type: ignore
+    parser.parse_release_dates = mocker.MagicMock(return_value=dates)  # type: ignore
     releases = parser.parse_releases()
     assert len(releases) == 2
     for i, r in enumerate(releases):
@@ -307,8 +307,8 @@ def test_releases_base_parsing(mocker: MockerFixture):
     # prices is more than dates.
     # discard the part of prices that more than dates to fit the dates.
     dates = [date(2020, 2, 2)]
-    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100), PriceTag(200)])
-    parser.parse_release_dates = mocker.MagicMock(return_value=dates)
+    parser.parse_prices = mocker.MagicMock(return_value=[PriceTag(100), PriceTag(200)])  # type: ignore
+    parser.parse_release_dates = mocker.MagicMock(return_value=dates)  # type: ignore
     releases = parser.parse_releases()
     assert len(releases) == 1
     for i, r in enumerate(releases):

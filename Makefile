@@ -14,6 +14,7 @@ type-check: # Type check with mypy.
 	mypy
 
 format: # Format the code.
+	isort -e .; \
 	black .
 
 test: # Run the tests.

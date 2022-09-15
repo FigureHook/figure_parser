@@ -1,4 +1,13 @@
-from figure_parser.core.entity.exceptions import FigureParserException
+class FigureParserException(Exception):
+    """
+    Base exception for figure_parser
+    """
+
+    pass
+
+
+class ParserInitializationFailed(FigureParserException):
+    pass
 
 
 class DomainException(FigureParserException):

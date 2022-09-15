@@ -2,7 +2,8 @@ import random
 
 import pytest
 from faker import Faker
-from figure_parser.core.entity import OrderPeriod, ProductBase, Release
+
+from figure_parser.entities import OrderPeriod, ProductBase, Release
 
 
 @pytest.fixture(scope="session", autouse=True)

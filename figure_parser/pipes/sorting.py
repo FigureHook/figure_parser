@@ -3,7 +3,6 @@ from typing import TypeVar
 
 from figure_parser.core.entity import ProductBase, Release
 
-
 Release_T = TypeVar("Release_T", bound=Release)
 
 

@@ -1,5 +1,5 @@
-from figure_parser.core.entity.product import ProductBase
-from figure_parser.core.pipe.nomalization import (
+from figure_parser.entities import ProductBase
+from figure_parser.pipes.nomalization import (
     _normalize,
     general_normalize,
     normalize_general_fields,

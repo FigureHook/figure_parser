@@ -1,5 +1,6 @@
 import pytest
 from faker import Faker
+
 from figure_parser.parsers.utils import (
     make_last_element_filler,
     price_parse,

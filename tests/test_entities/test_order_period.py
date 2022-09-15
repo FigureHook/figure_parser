@@ -1,8 +1,9 @@
 from datetime import datetime
 
 import pytest
-from figure_parser.core.entity import OrderPeriod
 from pydantic import ValidationError
+
+from figure_parser.entities import OrderPeriod
 
 
 class TestOrderPeriod:

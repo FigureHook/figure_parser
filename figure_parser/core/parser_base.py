@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic, List, Optional, Type, TypeVar
 
-from figure_parser.core.entity import OrderPeriod, Release
+from .entity import OrderPeriod, Release
 
 Source_T = TypeVar("Source_T")
 Parser_T = TypeVar("Parser_T")
