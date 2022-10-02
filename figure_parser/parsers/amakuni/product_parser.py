@@ -380,14 +380,14 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
         pattern = r"●発売元／(.+)"
         matched = re.search(pattern, self._detail_text)
         if matched:
-            return matched.group(1)
+            return matched.group(1).strip()
         return "ホビージャパン"
 
     def parse_distributer(self) -> Optional[str]:
         pattern = r"●販売元／(.+)"
         matched = re.search(pattern, self._detail_text)
         if matched:
-            return matched.group(1)
+            return matched.group(1).strip()
         return "ホビージャパン"
 
     def parse_rerelease(self) -> bool:
