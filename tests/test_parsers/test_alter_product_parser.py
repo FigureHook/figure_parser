@@ -25,3 +25,11 @@ class TestAlterParser(BaseTestCase):
     @pytest.mark.skip(reason="Alter doesn't provide order_period.")
     def test_order_period(self, *args):
         ...
+
+    def test_thumbnail(self, target: ParserTestTarget):
+        thumbnail = target.parser.parse_thumbnail()
+        if thumbnail:
+            assert isinstance(thumbnail, str)
+            if "pagespeed" in thumbnail:
+                pytest.skip()
+        assert thumbnail == target.expected.get("thumbnail")
