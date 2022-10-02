@@ -48,10 +48,7 @@ jobs:
     - name: Test Project
       run: |
         coverage run -m pytest
+        coverage xml
 
-    - name:  coverage data to Coveralls
-      if: ${{ github.event_name == 'push' }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        coveralls --service=github
+    - name: Upload coverage reports to Codecov with GitHub Action
+      uses: codecov/codecov-action@v3

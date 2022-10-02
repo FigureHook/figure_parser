@@ -1,7 +1,7 @@
 [![Pypi](https://img.shields.io/pypi/pyversions/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
 [![Pypi](https://img.shields.io/pypi/v/figure_parser.svg?style=flat-square)](https://pypi.org/project/figure_parser/)
 [![CI](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FFigureHook%2Ffigure_parser%2Fbadge%3Fref%3Dmain&style=flat-square)](https://actions-badge.atrox.dev/FigureHook/figure_parser/goto?ref=main)
-[![Coverage](https://img.shields.io/coveralls/github/FigureHook/figure_parser?style=flat-square)](https://coveralls.io/github/FigureHook/figure_parser)
+![Coverage](https://img.shields.io/codecov/c/github/FigureHook/figure_parser?style=flat-square)
 
 # Figure Parser
 A web parser focus on parsing product information on Japan ACG figure sites.
