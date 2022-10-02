@@ -33,7 +33,7 @@ def _extract_detail_from_source(source: BeautifulSoup) -> Tag:
     return detail
 
 
-class GSCProductParser(AbstractBs4ProductParser):
+class GscProductParser(AbstractBs4ProductParser):
     locale: str
     detail: Tag
 

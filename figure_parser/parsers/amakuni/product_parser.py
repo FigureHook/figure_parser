@@ -140,7 +140,7 @@ def _parse_release_dates(text: str) -> List[date]:
     return []
 
 
-class AmakuniLegacyProductParser(AbstractBs4ProductParser):
+class AmakuniLegacyParser(AbstractBs4ProductParser):
     _info: LegacyProductInfo
     _name: Optional[str]
     _series: Optional[str]
@@ -281,7 +281,7 @@ def is_name_with_series(text: str) -> bool:
     return len(splits) > 1
 
 
-class AmakuniFormalProductParser(AbstractBs4ProductParser):
+class AmakuniFormalParser(AbstractBs4ProductParser):
     _detail_text: str
     _source_url: str
 
@@ -423,9 +423,9 @@ class AmakuniProductParser(AbstractBs4ProductParser):
     @classmethod
     def create_parser(cls, url: str, source: BeautifulSoup):
         if source.select_one(".name_waku"):
-            parser = AmakuniFormalProductParser.create_parser(url=url, source=source)
+            parser = AmakuniFormalParser.create_parser(url=url, source=source)
         else:
-            parser = AmakuniLegacyProductParser.create_parser(url=url, source=source)
+            parser = AmakuniLegacyParser.create_parser(url=url, source=source)
         return cls(source=source, parser=parser)
 
     def parse_name(self) -> str:

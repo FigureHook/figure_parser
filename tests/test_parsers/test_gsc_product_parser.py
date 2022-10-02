@@ -1,6 +1,6 @@
 import pytest
 
-from figure_parser.parsers import GSCProductParser
+from figure_parser.parsers import GscProductParser
 
 from .test_product_parser import (
     TEST_CASE_DIR,
@@ -22,7 +22,7 @@ class TestGSCParser(BaseTestCase):
             cookies={"age_verification_ok": "true"},
         )
         return ParserTestTarget(
-            parser=GSCProductParser.create_parser(
+            parser=GscProductParser.create_parser(
                 url=request.param["url"], source=page
             ),
             expected=request.param,
