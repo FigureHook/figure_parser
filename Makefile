@@ -27,8 +27,5 @@ cov-report: test # Show the coverage of tests.
 freeze: # Export the requirements.txt file.
 	poetry export --without-hashes --dev -f requirements.txt --output requirements.txt
 
-freeze-doc: # Export the requirements.txt for docs.
-	poetry export -E "docs" --without-hashes -f requirements.txt --output docs/source/requirements.txt
-
 clean-test-cache: # Clean cache of test.
 	rm tests/test_parsers/product_case/html/*.html && rm -r .pytest_cache

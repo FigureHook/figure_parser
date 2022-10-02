@@ -101,17 +101,7 @@ class AbstractProductParser(ABC, Generic[Source_T]):
     @abstractmethod
     def parse_releases(self) -> List[Release]:
         """
-        Focus on release dates.
-        if prices is longer than dates, discard remaining data.
-
-        The method will use `dates` from :meth:`.parse_release_dates`
-        and `prices` from :meth:`.parse_prices`.
-
-        If one of them is empty list,
-        the empty one would be filled by `None` to fit the other's length.
-
-        If boths are not empty but one of them is shorter,
-        the shorter would use last element to fit the other's length.
+        Parse the releases.
         """
         raise NotImplementedError
 
