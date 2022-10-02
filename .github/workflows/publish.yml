@@ -30,6 +30,15 @@ jobs:
       run: |
         pytest
 
+    - name: Static type check
+      run: |
+        mypy
+
+    - name: Code format check
+      run: |
+        black --check --diff .
+        isort . --check --diff
+
     - name: Publish package
       run: |
         poetry publish --build -u ${{ secrets.PYPI_USERNAME }} -p ${{ secrets.PYPI_PASSWORD }}

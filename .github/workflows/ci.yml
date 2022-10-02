@@ -37,6 +37,15 @@ jobs:
       run: |
         tox
 
+    - name: Static type check
+      run: |
+        mypy
+
+    - name: Code format check
+      run: |
+        black --check --diff .
+        isort . --check --diff
+
     - name: Run coverage
       if: ${{ github.event_name == 'push' }}
       run: |
