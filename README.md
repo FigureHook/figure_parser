@@ -94,7 +94,7 @@ Generate new parser (the name should be in snake case)
 ```sh
 python cli.py generate new_site
 ```
-After generating the new site, the test data can be found [here](tests/test_pasers/product_case).
+After generating the new site, the test data can be found [here](figure_parser/main/tests/test_parsers/product_case).
 
 Run the test and coverage
 ```sh
