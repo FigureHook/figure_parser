@@ -38,7 +38,8 @@ jobs:
 
     - name: Test Project
       run: |
-        tox
+        coverage run -m pytest
+        coverage report -m
 
     - name: Static type check
       run: |
@@ -48,12 +49,6 @@ jobs:
       run: |
         black --check --diff .
         isort . --check --diff
-
-    - name: Run coverage
-      if: ${{ github.event_name == 'push' }}
-      run: |
-        poetry install
-        coverage run -m pytest
 
     - name:  coverage data to Coveralls
       if: ${{ github.event_name == 'push' }}
