@@ -39,7 +39,6 @@ jobs:
     - name: Test Project
       run: |
         coverage run -m pytest
-        coverage report -m
 
     - name: Static type check
       run: |
