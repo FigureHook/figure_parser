@@ -12,12 +12,6 @@ from bs4 import BeautifulSoup
 from pytest_mock import MockerFixture
 
 from figure_parser.entities import PriceTag, Release
-from figure_parser.parsers import (
-    AlterProductParser,
-    AmakuniProductParser,
-    GSCProductParser,
-    NativeProductParser,
-)
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.pipes.sorting import _sort_release
 
@@ -182,87 +176,6 @@ class BaseTestCase:
         expected_jan = target.expected.get("JAN")
 
         assert jan == expected_jan
-
-
-class TestGSCParser(BaseTestCase):
-    products = load_yaml(TEST_CASE_DIR.joinpath("gsc.yml"))
-
-    @pytest.fixture(scope="class", params=products)
-    def target(self, request) -> ParserTestTarget:
-        page = get_html(
-            url=request.param["url"],
-            headers={},
-            cookies={"age_verification_ok": "true"},
-        )
-        return ParserTestTarget(
-            parser=GSCProductParser.create_parser(
-                url=request.param["url"], source=page
-            ),
-            expected=request.param,
-        )
-
-    def test_worker_parser(self):
-        from figure_parser.parsers.gsc.product_parser import parse_people
-
-        worker1 = "横田健(原型協力 DRAGON Toy)"
-        worker2 = "乙山法純(制作協力:アルター)"
-        worker3 = "川崎和史 (製作協力:ねんどろん)"
-        worker4 = "KADOKAWA(協力:レイアップ)"
-        worker5 = "ナナシ(製作協力:ねんどろん)"
-        worker6 = "ナナシ 制作協力:ねんどろん"
-        worker7 = "セイバー:市橋卓也"
-        worker8 = "鈴乃木凜彩色：eriko、GSX400S カタナ彩色：雷電"
-
-        assert parse_people(worker1) == ["横田健"]
-        assert parse_people(worker2) == ["乙山法純"]
-        assert parse_people(worker3) == ["川崎和史"]
-        assert parse_people(worker4) == ["KADOKAWA"]
-        assert parse_people(worker5) == ["ナナシ"]
-        assert parse_people(worker6) == ["ナナシ"]
-        assert parse_people(worker7) == ["市橋卓也"]
-        assert parse_people(worker8) == ["eriko", "雷電"]
-
-
-class TestAlterParser(BaseTestCase):
-    products = load_yaml(TEST_CASE_DIR.joinpath("alter.yml"))
-
-    @pytest.fixture(scope="class", params=products)
-    def target(self, request) -> ParserTestTarget:
-        page = get_html(request.param["url"])
-        return ParserTestTarget(
-            parser=AlterProductParser.create_parser(request.param["url"], source=page),
-            expected=request.param,
-        )
-
-    @pytest.mark.skip(reason="Alter doesn't provide order_period.")
-    def test_order_period(self, *args):
-        ...
-
-
-class TestNativeParser(BaseTestCase):
-    products = load_yaml(TEST_CASE_DIR.joinpath("native.yml"))
-
-    @pytest.fixture(scope="class", params=products)
-    def target(self, request) -> ParserTestTarget:
-        page = get_html(request.param["url"])
-        return ParserTestTarget(
-            parser=NativeProductParser.create_parser(request.param["url"], source=page),
-            expected=request.param,
-        )
-
-
-class TestAmakuniParser(BaseTestCase):
-    products = load_yaml(TEST_CASE_DIR.joinpath("amakuni.yml"))
-
-    @pytest.fixture(scope="class", params=products)
-    def target(self, request) -> ParserTestTarget:
-        page = get_html(request.param["url"])
-        return ParserTestTarget(
-            parser=AmakuniProductParser.create_parser(
-                request.param["url"], source=page
-            ),
-            expected=request.param,
-        )
 
 
 class MockStrProductParser(AbstractBs4ProductParser):
