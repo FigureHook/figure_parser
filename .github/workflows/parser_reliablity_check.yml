@@ -4,14 +4,8 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches:
-    - main
-    - test_ci
-
-  pull_request:
-    branches: [ main ]
+  schedule:
+    - cron: '0 6,9,12,17 * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,25 +31,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Static type check
-      run: |
-        mypy
-
-    - name: Code format check
-      run: |
-        black --check --diff .
-        isort . --check --diff
-
     - name: Test Project
       run: |
-        coverage run -m pytest
-        coverage combine
-        coverage lcov
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        parallel: true
-        flag-name: run-${{ matrix.python-version }}
-        path-to-lcov: coverage.lcov
+        pytest
