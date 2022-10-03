@@ -15,7 +15,7 @@
 
 # coverage
 *.coverage
-*.coverage.*
+*coverage.*
 **/htmlcov/
 
 # one-time data
