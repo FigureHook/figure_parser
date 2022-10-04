@@ -26,6 +26,7 @@ from figure_parser.factories import GeneralBs4ProductFactory
 
 factory = GeneralBs4ProductFactory.create_factory()
 
+url = "https://www.goodsmile.info/ja/product/11246/PA+15+%E9%AB%98%E6%A0%A1%E8%83%B8%E3%82%AD%E3%83%A5%E3%83%B3%E7%89%A9%E8%AA%9E.html"
 resp = rq.get(url)
 try:
     product = factory.create_product(resp.url, BeautifulSoup(resp.content, 'lxml'))
