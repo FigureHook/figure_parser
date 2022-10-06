@@ -1,5 +1,5 @@
 % for site, parser in site_parsers:
-from .${site}.product_parser import ${parser}
+from .${site} import ${parser}
 % endfor
 
 __all__ = (

@@ -12,6 +12,9 @@ Parser_Test_Case_Dir = Parser_Test_Dir.joinpath("product_case")
 Parser_Dir = Here.joinpath("figure_parser", "parsers")
 Template_Dir = Here.joinpath("templates")
 
+site_parser_init_template = Template(
+    filename=str(Template_Dir.joinpath("site_module_init.mako"))
+)
 parser_template = Template(filename=str(Template_Dir.joinpath("product_parser.mako")))
 parser_test_template = Template(
     filename=str(Template_Dir.joinpath("product_parser_test.mako"))
@@ -31,6 +34,10 @@ class Target:
     @property
     def parser_file(self):
         return self.parser_dir.joinpath("product_parser.py")
+
+    @property
+    def site_parser_init_file(self):
+        return self.parser_dir.joinpath("__init__.py")
 
     @property
     def test_case_file(self):
@@ -64,6 +71,11 @@ class Target:
     def generate(self):
         self.parser_dir.mkdir(exist_ok=True)
         self.generate_file(
+            self.site_parser_init_file,
+            site_parser_init_template,
+            camel_name=self.camel_name,
+        )
+        self.generate_file(
             self.parser_file,
             parser_template,
             name=self.camel_name,
@@ -85,6 +97,7 @@ class Target:
         self._rm(self.parser_dir)
         self._rm(self.parser_test_file)
         self._rm(self.test_case_file)
+        self._rm(self.site_parser_init_file)
         self.post_process()
 
     def post_process(self):
@@ -95,7 +108,9 @@ class Target:
             )
         self.generate_file(
             Parser_Dir.joinpath("__init__.py"),
-            template=Template(filename=str(Template_Dir.joinpath("parsers_init.mako"))),
+            template=Template(
+                filename=str(Template_Dir.joinpath("parsers_module_init.mako"))
+            ),
             overwrite=True,
             site_parsers=site_parsers,
         )
