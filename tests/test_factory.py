@@ -1,6 +1,7 @@
 import pytest
 from pytest_mock import MockerFixture
 
+from figure_parser import GeneralBs4ProductFactory
 from figure_parser.core.entities import ProductBase
 from figure_parser.core.factory_base import GenericProductFactory
 from figure_parser.core.parser_base import AbstractProductParser
@@ -131,8 +132,12 @@ def test_factory__failed_to_process_product_with_pipe(
 
     def bad_process(p: ProductBase) -> ProductBase:
         assert None
-        return p
 
     factory.add_pipe(bad_process, 1)
     with pytest.raises(FailedToProcessProduct):
         factory.create_product(url="https://foo.bar/114514", source="114514")
+
+
+def test_general_bs4_factory_creation():
+    factory = GeneralBs4ProductFactory.create_factory()
+    assert isinstance(factory, GeneralBs4ProductFactory)
