@@ -5,8 +5,6 @@ from pydantic import BaseModel
 from .order_period import OrderPeriod
 from .release import Release
 
-__all__ = ("ProductBase",)
-
 
 class ProductBase(BaseModel):
     __general_str_fields__: ClassVar[List[str]] = [

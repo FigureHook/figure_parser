@@ -1,13 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import Generic, List, Optional, Type, TypeVar
 
-from .entity import OrderPeriod, Release
+from .entities import OrderPeriod, Release
 
 Source_T = TypeVar("Source_T")
 Parser_T = TypeVar("Parser_T")
-
-
-__all__ = ("AbstractProductParser",)
 
 
 class AbstractProductParser(ABC, Generic[Source_T]):

@@ -3,8 +3,6 @@ from typing import Optional
 
 from pydantic import BaseModel, root_validator
 
-__all__ = ("OrderPeriod",)
-
 
 class OrderPeriod(BaseModel):
     """

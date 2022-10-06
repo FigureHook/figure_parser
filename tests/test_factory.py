@@ -1,7 +1,7 @@
 import pytest
 from pytest_mock import MockerFixture
 
-from figure_parser.core.entity import ProductBase
+from figure_parser.core.entities import ProductBase
 from figure_parser.core.factory_base import GenericProductFactory
 from figure_parser.core.parser_base import AbstractProductParser
 from figure_parser.exceptions import (

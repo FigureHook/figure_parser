@@ -9,8 +9,6 @@ from .parsers import (
 )
 from .pipes import normalize_general_fields, normalize_worker_fields, sort_releases
 
-__all__ = ("Bs4ProductFactory", "GeneralBs4ProductFactory")
-
 
 class Bs4ProductFactory(GenericProductFactory[BeautifulSoup]):
     pass

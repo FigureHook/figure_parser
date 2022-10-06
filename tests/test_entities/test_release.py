@@ -2,7 +2,7 @@ import random
 
 from faker import Faker
 
-from figure_parser.entities import Release
+from figure_parser import Release
 
 
 def test_release_initialize(faker: Faker):

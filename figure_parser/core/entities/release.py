@@ -3,8 +3,6 @@ from typing import NamedTuple, Optional
 
 from pydantic import BaseModel, NonNegativeInt
 
-__all__ = ("Release", "PriceTag")
-
 
 class PriceTag(NamedTuple):
     price: Optional[int] = None

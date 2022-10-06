@@ -4,7 +4,7 @@ from typing import Dict, List, Mapping, Optional, Union
 
 from bs4 import BeautifulSoup
 
-from figure_parser.entities import OrderPeriod, PriceTag
+from figure_parser import OrderPeriod, PriceTag
 
 from ..base import AbstractBs4ProductParser
 from ..utils import price_parse, scale_parse, size_parse

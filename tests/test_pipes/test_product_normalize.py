@@ -1,4 +1,4 @@
-from figure_parser.entities import ProductBase
+from figure_parser import ProductBase
 from figure_parser.pipes.nomalization import (
     _normalize,
     general_normalize,

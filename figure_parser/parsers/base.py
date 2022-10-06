@@ -4,7 +4,7 @@ from typing import List, Optional
 
 from bs4 import BeautifulSoup
 
-from figure_parser.core.entity import PriceTag, Release
+from figure_parser.core.entities import PriceTag, Release
 from figure_parser.core.parser_base import AbstractProductParser
 
 from .utils import make_last_element_filler

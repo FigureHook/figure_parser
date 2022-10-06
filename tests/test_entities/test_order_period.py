@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from pydantic import ValidationError
 
-from figure_parser.entities import OrderPeriod
+from figure_parser import OrderPeriod
 
 
 class TestOrderPeriod:

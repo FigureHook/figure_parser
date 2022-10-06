@@ -11,7 +11,7 @@ import yaml
 from bs4 import BeautifulSoup
 from pytest_mock import MockerFixture
 
-from figure_parser.entities import PriceTag, Release
+from figure_parser import PriceTag, Release
 from figure_parser.parsers.base import AbstractBs4ProductParser
 from figure_parser.pipes.sorting import _sort_release
 

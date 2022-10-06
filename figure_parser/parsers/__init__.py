@@ -1,7 +1,7 @@
-from .alter.product_parser import AlterProductParser
-from .amakuni.product_parser import AmakuniProductParser
-from .gsc.product_parser import GscProductParser
-from .native.product_parser import NativeProductParser
+from .alter import AlterProductParser
+from .amakuni import AmakuniProductParser
+from .gsc import GscProductParser
+from .native import NativeProductParser
 
 __all__ = (
     "AlterProductParser",
