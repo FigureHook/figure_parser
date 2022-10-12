@@ -113,7 +113,12 @@ def _parse_order_period(text: str) -> OrderPeriod:
             end_date = datetime.strptime(end_str, date_format)
         except ValueError:
             end_date = datetime.strptime(f"{start_date.year}年" + end_str, date_format)
-        end_date = datetime(end_date.year, end_date.month, end_date.day, 23, 59, 59)
+        end_year = end_date.year
+        if end_year == start_date.year and end_date.month < start_date.month:
+            end_year += 1
+        if end_date.month > start_date.month and end_year < start_date.year:
+            end_year += 1
+        end_date = datetime(end_year, end_date.month, end_date.day, 23, 59, 59)
         return OrderPeriod(start=start_date, end=end_date)
     return OrderPeriod()
 
@@ -239,7 +244,7 @@ class AmakuniLegacyParser(AbstractBs4ProductParser):
         return None
 
     def parse_copyright(self) -> Optional[str]:
-        pattern = r"((©|\(C\)|\(c\)).+)"
+        pattern = r"((?:©|\(C\)|\(c\)|\（c\）).+)"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return matched.group(0)

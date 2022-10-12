@@ -542,3 +542,57 @@
   size: 230
   thumbnail: null
   url: http://amakuni.info/item/2018/023.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©SUNBORN Network Technology Co., Ltd. ©SUNBORN Japan Co., Ltd. All Rights Reserved.
+  distributer: あみあみ
+  images: http://amakuni.info/images/item/2022/002/003.jpg
+  manufacturer: AMAKUNI
+  name: M4 SOPMOD Ⅱ
+  og_image: null
+  order_period:
+    end: 2022-05-10 23:59:59
+    start: 2022-02-12 00:00:00
+  paintwork:
+    - 五日市歩
+  release_infos:
+    - price: 22000
+      release_date: 2022-03-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - ヤドカリ
+  series: ドールズフロントライン
+  size: 260
+  thumbnail: null
+  url: http://amakuni.info/item/2022/002.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: （c）HOBBY JAPAN/Niθ
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2016/014/004.jpg
+  manufacturer: AMAKUNI
+  name: 暴食の章 魔吊夜店巡りノ節
+  og_image: null
+  order_period:
+    end: 2016-02-10 23:59:59
+    start: 2015-12-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 12960
+      release_date: 2016-08-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - 遠那かんし（りゅんりゅん亭）
+  series: 七つの大罪 魔王黙示録
+  size: 230
+  thumbnail: null
+  url: http://amakuni.info/item/2016/014.php
