@@ -596,3 +596,84 @@
   size: 230
   thumbnail: null
   url: http://amakuni.info/item/2016/014.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©TRIGGER・中島かずき／キルラキル製作委員会
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2020/009/006.jpg
+  manufacturer: AMAKUNI
+  name: 纏流子 湯上り温泉艶肌Ver.
+  og_image: null
+  order_period:
+    end: 2019-11-12 23:59:59
+    start: 2019-09-25 00:00:00
+  paintwork: []
+  release_infos:
+    - price: 13200
+      release_date: 2020-06-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - あきもふ
+  series: キルラキル
+  size: 160
+  thumbnail:
+  url: http://amakuni.info/item/2020/009.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©ATLUS ©SEGA All rights reserved.
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2019/022/003.jpg
+  manufacturer: AMAKUNI
+  name: 新島真 怪盗 Ver. with ヨハンナ HJ50周年Ver.
+  og_image: null
+  order_period:
+    end: 2019-08-14 23:59:59
+    start: 2019-05-31 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 28600
+      release_date: 2019-12-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 8
+  sculptor:
+    - Vispo
+    - Bicycle TARO
+  series: ペルソナ５
+  size: 180
+  thumbnail: null
+  url: http://amakuni.info/item/2019/022.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: ©春場ねぎ・講談社／「五等分の花嫁∬」製作委員会
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2021/017/007.jpg
+  manufacturer: AMAKUNI
+  name: 中野三玖 ウェディングVer.
+  og_image: null
+  order_period:
+    end: 2021-03-31 23:59:59
+    start: 2020-12-25 00:00:00
+  paintwork:
+    - 緋色
+  release_infos:
+    - price: 20900
+      release_date: 2021-11-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - iTANDi
+  series: 五等分の花嫁∬
+  size: 240
+  thumbnail: null
+  url: http://amakuni.info/item/2021/017.php

@@ -62,6 +62,19 @@ legacy_series_mapping: Mapping[str, str] = {
     "クイーンズブレイド リベリオン": "クイーンズブレイド リベリオン",
     "『七つの大罪』編特別付録": "七つの大罪",
     "朧村正": "朧村正",
+    "Fate/kaleid liner プリズマ☆イリヤ": "Fate/kaleid liner プリズマ☆イリヤ",
+    "艦隊これくしょん -艦これ- ": "艦隊これくしょん -艦これ- ",
+    "モーレツ宇宙海賊": "モーレツ宇宙海賊",
+    "新次元ゲイム": "新次元ゲイム",
+    "閃乱カグラ NewWave Gバースト": "閃乱カグラ NewWave Gバースト",
+    "まおゆう魔王勇者": "まおゆう魔王勇者",
+    "地獄先生ぬ～べ～": "地獄先生ぬ～べ～",
+    "WIXOSS-ウィクロス-": "WIXOSS-ウィクロス-",
+    "ＴＶアニメ『ダンジョンに出会いを求めるのは間違っているだろうか』": "ＴＶアニメ『ダンジョンに出会いを求めるのは間違っているだろうか』",
+    "遊☆戯☆王": "遊☆戯☆王",
+    "『中二病でも恋がしたい！ 戀』": "『中二病でも恋がしたい！ 戀』",
+    "『君のいる町』": "『君のいる町』",
+    "東方Project": "東方Project",
 }
 
 
@@ -97,7 +110,7 @@ def remove_series(series: str, name: str) -> str:
 
 
 def parse_workers(workers_text: str) -> List[str]:
-    pattern = r"[、|・]"
+    pattern = r"[、|・|/]"
     return re.split(pattern=pattern, string=workers_text)
 
 
@@ -308,16 +321,30 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
             ".product_name > span:nth-last-child(1)"
         ) or self.source.select_one(".product_name")
         assert name_ele
-        name = (
-            " ".join(
+
+        if name_ele.text:
+            name = " ".join(
                 [content.text.strip() for content in name_ele.contents if content.text]
             )
-            if self.source.select_one(".sakuhin_mei")
-            else name_ele.contents[-1].text.strip()
-        )
-        if is_name_with_series(name):
-            return name.split("\u3000")[1]
-        return name
+            series = self.parse_series()
+            if series:
+                name = name.replace(series, "")
+                name = name.strip()
+            return name.replace("\u3000", " ")
+
+        title = self.source.select_one("title")
+        assert title
+        possible_name = re.sub(r"\| AMAKUNI", "", title.text)
+        series = self.parse_series()
+        if series:
+            name = possible_name.replace(series, "")
+            name = name.strip()
+            return name.replace("\u3000", " ")
+        return possible_name
+        # if self.source.select_one(".sakuhin_mei"):
+        #     name = name_ele.contents[-1].text.strip()
+        # if is_name_with_series(name):
+        #     return name.split("\u3000")[1]
 
     def parse_adult(self) -> bool:
         return False
@@ -334,6 +361,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
     def parse_release_dates(self) -> List[date]:
         return _parse_release_dates(self._detail_text)
 
+    @cache
     def parse_series(self) -> Optional[str]:
         series_ele = self.source.select_one(
             ".product_name > span:nth-child(1)"
@@ -342,13 +370,15 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
             series = series_ele.text.strip()
             return series
 
-        possible_series_ele = self.source.select_one(
-            ".product_name"
-        ) or self.source.select_one(".product_name")
+        possible_series_ele = self.source.select_one(".product_name")
         if possible_series_ele:
-            if is_name_with_series(possible_series_ele.text.strip()):
-                return possible_series_ele.text.strip().split("\u3000")[0]
-            return possible_series_ele.contents[0].text.strip()
+            if possible_series_ele.text:
+                return possible_series_ele.contents[0].text.strip()
+            # if is_name_with_series(possible_series_ele.text.strip()):
+            # return possible_series_ele.text.strip().split("\u3000")[0]
+            title = self.source.select_one("title")
+            if title:
+                return title.text.split("\u3000")[0].strip()
         return None
 
     def parse_paintworks(self) -> List[str]:
@@ -359,7 +389,9 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
     def parse_sculptors(self) -> List[str]:
         pattern = r"●原型製作／(.+)"
         matched = re.search(pattern, self._detail_text)
-        return parse_workers(matched.group(1).strip()) if matched else []
+        workers = parse_workers(matched.group(1).strip()) if matched else []
+        workers = [worker.strip() for worker in workers]
+        return workers
 
     def parse_scale(self) -> Optional[int]:
         pattern = r"●仕様／(.+)"
@@ -369,7 +401,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
         return None
 
     def parse_size(self) -> Optional[int]:
-        pattern = r"●仕様／(.+)"
+        pattern = r"仕様／(?:.+)高約(\d+\.?\d+.{1,4})"
         matched = re.search(pattern, self._detail_text)
         if matched:
             return size_parse(matched.group(1))
