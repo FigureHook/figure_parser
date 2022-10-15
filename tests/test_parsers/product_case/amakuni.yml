@@ -677,3 +677,30 @@
   size: 240
   thumbnail: null
   url: http://amakuni.info/item/2021/017.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: © GIRLS und PANZER Finale Projekt
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2020/001/005.jpg
+  manufacturer: AMAKUNI
+  name: 西住しほ
+  og_image: null
+  order_period:
+    end: 2019-08-14 23:59:59
+    start: 2019-06-25 00:00:00
+  paintwork:
+    - 五日市歩
+  release_infos:
+    - price: 14500
+      release_date: 2020-03-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - ろいん
+  series: ガールズ&パンツァー 最終章
+  size: 245
+  thumbnail: null
+  url: http://amakuni.info/item/2020/001.php

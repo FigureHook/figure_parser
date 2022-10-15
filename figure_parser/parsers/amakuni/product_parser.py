@@ -75,6 +75,7 @@ legacy_series_mapping: Mapping[str, str] = {
     "『中二病でも恋がしたい！ 戀』": "『中二病でも恋がしたい！ 戀』",
     "『君のいる町』": "『君のいる町』",
     "東方Project": "東方Project",
+    "『真・三國無双7』": "真・三國無双7",
 }
 
 
@@ -102,7 +103,7 @@ def legacy_get_series_by_keyword(keyword: str) -> Optional[str]:
 
 
 def remove_series(series: str, name: str) -> str:
-    series_pattern = r"^.+(?<={})".format(series)
+    series_pattern = r"^.+(?<={})(?:』?)".format(series)
     name = re.sub(series_pattern, "", name)
     if series in name:
         name = remove_series(series, name.strip())
@@ -356,6 +357,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
 
     @cache
     def parse_series(self) -> Optional[str]:
+        # FIXME: Need to refactor.
         series_ele = self.source.select_one(
             ".product_name > span:nth-child(1)"
         ) or self.source.select_one(".sakuhin_mei")
@@ -366,7 +368,10 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
         possible_series_ele = self.source.select_one(".product_name")
         if possible_series_ele:
             if possible_series_ele.text:
-                return possible_series_ele.contents[0].text.strip()
+                series = possible_series_ele.contents[0].text.strip()
+                if series.count("\u3000") == 1:
+                    return series.split("\u3000")[0]
+                return series
             # if is_name_with_series(possible_series_ele.text.strip()):
             # return possible_series_ele.text.strip().split("\u3000")[0]
             title = self.source.select_one("title")
