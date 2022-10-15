@@ -22,7 +22,7 @@ test: # Run the tests.
 
 cov-report: test # Show the coverage of tests.
 	coverage combine; \
-	coverage report -m
+	coverage report --precision=2 -m
 
 freeze: # Export the requirements.txt file.
 	poetry export --without-hashes --dev -f requirements.txt --output requirements.txt

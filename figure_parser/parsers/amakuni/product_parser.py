@@ -33,7 +33,7 @@ def parse_legacy_info(source: BeautifulSoup) -> str:
             if type(possible_info_text) is str:
                 return possible_info_text
 
-    raise ParserInitializationFailed
+    raise ParserInitializationFailed  # pragma: no cover
 
 
 def parse_legacy_title(source: BeautifulSoup) -> str:
@@ -54,7 +54,7 @@ def parse_legacy_title(source: BeautifulSoup) -> str:
         if type(the_alt) is str:
             return the_alt
 
-    raise ParserInitializationFailed
+    raise ParserInitializationFailed  # pragma: no cover
 
 
 legacy_series_mapping: Mapping[str, str] = {
@@ -106,7 +106,7 @@ def remove_series(series: str, name: str) -> str:
     name = re.sub(series_pattern, "", name)
     if series in name:
         name = remove_series(series, name.strip())
-    return name
+    return name.strip()
 
 
 def parse_workers(workers_text: str) -> List[str]:
@@ -294,11 +294,6 @@ class AmakuniLegacyParser(AbstractBs4ProductParser):
         return None
 
 
-def is_name_with_series(text: str) -> bool:
-    splits = text.split("\u3000")
-    return len(splits) > 1
-
-
 class AmakuniFormalParser(AbstractBs4ProductParser):
     _detail_text: str
     _source_url: str
@@ -312,7 +307,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
     def create_parser(cls, url: str, source: BeautifulSoup):
         detail_ele = source.select_one(".product_details")
         if not detail_ele:
-            raise ParserInitializationFailed
+            raise ParserInitializationFailed  # pragma: no cover
         detail_text = detail_ele.text.strip()
         return cls(url=url, source=source, detail_text=detail_text)
 
@@ -328,8 +323,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
             )
             series = self.parse_series()
             if series:
-                name = name.replace(series, "")
-                name = name.strip()
+                name = remove_series(series, name)
             return name.replace("\u3000", " ")
 
         title = self.source.select_one("title")
@@ -337,8 +331,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
         possible_name = re.sub(r"\| AMAKUNI", "", title.text)
         series = self.parse_series()
         if series:
-            name = possible_name.replace(series, "")
-            name = name.strip()
+            name = remove_series(series, possible_name)
             return name.replace("\u3000", " ")
         return possible_name
         # if self.source.select_one(".sakuhin_mei"):
