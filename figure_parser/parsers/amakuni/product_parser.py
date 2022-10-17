@@ -82,6 +82,9 @@ series_mapping: Mapping[str, str] = {
     "ペルソナ５": "ペルソナ５",
     "えんどろ～！": "えんどろ～！",
     "Fate/Grand Order": "Fate/Grand Order",
+    "スーパーロボット大戦X-Ω": "スーパーロボット大戦X-Ω",
+    "ガールズ&パンツァー 最終章": "ガールズ&パンツァー 最終章",
+    "PHANTASY STAR ONLINE 2 es": "PHANTASY STAR ONLINE 2 es",
 }
 
 
@@ -389,9 +392,9 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
         possible_series_ele = self.source.select_one(".product_name")
         if possible_series_ele:
             if possible_series_ele.text:
-                series = possible_series_ele.contents[0].text.strip()
+                series = possible_series_ele.contents[0].text
                 if series.count("\u3000") == 1:
-                    return series.split("\u3000")[0]
+                    return series.split("\u3000")[0].strip()
                 series = legacy_get_series_by_keyword(series)
                 return series
             # if is_name_with_series(possible_series_ele.text.strip()):
