@@ -57,7 +57,7 @@ def parse_legacy_title(source: BeautifulSoup) -> str:
     raise ParserInitializationFailed  # pragma: no cover
 
 
-legacy_series_mapping: Mapping[str, str] = {
+series_mapping: Mapping[str, str] = {
     "魔王黙示録": "七つの大罪 魔王黙示録",
     "クイーンズブレイド リベリオン": "クイーンズブレイド リベリオン",
     "『七つの大罪』編特別付録": "七つの大罪",
@@ -75,7 +75,13 @@ legacy_series_mapping: Mapping[str, str] = {
     "『中二病でも恋がしたい！ 戀』": "『中二病でも恋がしたい！ 戀』",
     "『君のいる町』": "『君のいる町』",
     "東方Project": "東方Project",
-    "『真・三國無双7』": "真・三國無双7",
+    "真･三國無双７": "真･三國無双７",
+    "ヱヴァンゲリヲン新劇場版：Q": "ヱヴァンゲリヲン新劇場版：Q",
+    "Ｄｉｓｔｏｒｔｉｏｎ　Ｄｒｉｖｅ": "BlazeBlue",
+    "キルラキル": "キルラキル",
+    "ペルソナ５": "ペルソナ５",
+    "えんどろ～！": "えんどろ～！",
+    "Fate/Grand Order": "Fate/Grand Order",
 }
 
 
@@ -96,9 +102,9 @@ def append_the_lack_series(title: str) -> str:
 
 
 def legacy_get_series_by_keyword(keyword: str) -> Optional[str]:
-    for key in legacy_series_mapping:
+    for key in series_mapping:
         if key in keyword:
-            return legacy_series_mapping.get(key)
+            return series_mapping.get(key)
     return None
 
 
@@ -116,7 +122,9 @@ def parse_workers(workers_text: str) -> List[str]:
 
 
 def _parse_order_period(text: str) -> OrderPeriod:
-    pattern = r"●受注期間／(?P<start>(\d+)年(\d+)月(\d+)日)\uff5e(?P<end>((\d+)年)?(\d+)月(\d+)日)"
+    pattern = (
+        r"●?受注期間／(?P<start>(\d+)年(\d+)月(\d+)日)\uff5e(?P<end>((\d+)年)?(\d+)月(\d+)日)"
+    )
     date_format = "%Y年%m月%d日"
     matched = re.search(pattern, text)
     if matched:
@@ -139,7 +147,7 @@ def _parse_order_period(text: str) -> OrderPeriod:
 
 def _parse_prices(text: str) -> List[PriceTag]:
     prices = []
-    price_pattern = r"●価格(.+?)税(抜|込)"
+    price_pattern = r"●?価格(.+?)税(抜|込)"
     matched = re.search(price_pattern, text)
     if matched:
         price = price_parse(matched.group(0))
@@ -151,7 +159,7 @@ def _parse_prices(text: str) -> List[PriceTag]:
 
 
 def _parse_release_dates(text: str) -> List[date]:
-    date_pattern = r"●(発送予定|発売|発送)\uff0f(\d+)年(\d+)月"
+    date_pattern = r"●?(発送予定|発売|発送)\uff0f(\d+)年(\d+)月"
     date_matched = re.search(date_pattern, text)
     if date_matched:
         release_date = date(int(date_matched.group(2)), int(date_matched.group(3)), 1)
@@ -226,32 +234,44 @@ class AmakuniLegacyParser(AbstractBs4ProductParser):
         return series
 
     def parse_paintworks(self) -> List[str]:
+        if "2015/008" in self._source_url:
+            return ["ピンポイント"]
         pattern = r"彩色見本製作／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
         return parse_workers(matched.group(1).strip()) if matched else []
 
     def parse_sculptors(self) -> List[str]:
-        pattern = r"●原型製作／(.+?)(●|$)"
+        if "2015/008" in self._source_url:
+            return ["まんぞくマモル(Knead)"]
+        pattern = r"●?原型製作／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
         return parse_workers(matched.group(1).strip()) if matched else []
 
     def parse_scale(self) -> Optional[int]:
-        pattern = r"●フィギュア仕様／(.+?)(●|$)"
+        pattern = r"●?フィギュア仕様／(.+?)(●|$)"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return scale_parse(matched.group(1))
-        pattern = r"●仕様／(.+?)●"
+        pattern = r"●?仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            return scale_parse(matched.group(1))
+        pattern = r"スケール／(.+?)／"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return scale_parse(matched.group(1))
         return None
 
     def parse_size(self) -> Optional[int]:
-        pattern = r"●フィギュア仕様／(.+?)●"
+        pattern = r"●?フィギュア仕様／(.+?)●"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return size_parse(matched.group(1))
-        pattern = r"●仕様／(.+?)●"
+        pattern = r"●?仕様／(.+?)●"
+        matched = re.search(pattern, self._info.info_text)
+        if matched:
+            return size_parse(matched.group(1))
+        pattern = r"サイズ／(.+?)／"
         matched = re.search(pattern, self._info.info_text)
         if matched:
             return size_parse(matched.group(1))
@@ -371,6 +391,7 @@ class AmakuniFormalParser(AbstractBs4ProductParser):
                 series = possible_series_ele.contents[0].text.strip()
                 if series.count("\u3000") == 1:
                     return series.split("\u3000")[0]
+                series = legacy_get_series_by_keyword(series)
                 return series
             # if is_name_with_series(possible_series_ele.text.strip()):
             # return possible_series_ele.text.strip().split("\u3000")[0]
