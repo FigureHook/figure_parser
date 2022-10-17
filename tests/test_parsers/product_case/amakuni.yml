@@ -865,3 +865,30 @@
   size: null
   thumbnail: null
   url: http://amakuni.info/item/2015/007.php
+- JAN: null
+  adult: false
+  category: フィギュア
+  copyright: null
+  distributer: ホビージャパン
+  images: http://amakuni.info/images/item/2016/016/005.jpg
+  manufacturer: AMAKUNI
+  name: 三世村正 ウェディングＶｅｒ．
+  og_image: null
+  order_period:
+    end: 2016-04-12 23:59:59
+    start: 2016-02-25 00:00:00
+  paintwork:
+    - ピンポイント
+  release_infos:
+    - price: 13980
+      release_date: 2016-11-01 00:00:00
+      tax_including: true
+  releaser: ホビージャパン
+  rerelease: false
+  scale: 7
+  sculptor:
+    - Vispo
+  series: 装甲悪鬼村正
+  size: 250
+  thumbnail: null
+  url: http://amakuni.info/item/2016/016.php
