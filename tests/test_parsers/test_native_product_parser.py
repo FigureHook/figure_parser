@@ -21,3 +21,27 @@ class TestNativeParser(BaseTestCase):
             parser=NativeProductParser.create_parser(request.param["url"], source=page),
             expected=request.param,
         )
+
+    def test_images(self, target: ParserTestTarget):
+        images = target.parser.parse_images()
+        assert type(images) is list
+        if "pagespeed" in images:
+            pytest.skip("The url is cache url.")
+        else:
+            assert target.expected.get("images") in images
+
+    def test_thumbnail(self, target: ParserTestTarget):
+        thumbnail = target.parser.parse_thumbnail()
+        if thumbnail:
+            if "pagespeed" in thumbnail:
+                pytest.skip("The url is cache url.")
+        else:
+            super().test_thumbnail(target)
+
+    def test_og_image(self, target: ParserTestTarget):
+        og_image = target.parser.parse_og_image()
+        if og_image:
+            if "pagespeed" in og_image:
+                pytest.skip("The url is cache url.")
+        else:
+            super().test_og_image(target)
