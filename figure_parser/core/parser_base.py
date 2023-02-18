@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Generic, List, Optional, Type, TypeVar
 
-from .entities import OrderPeriod, Release
+from .models import OrderPeriod, Release
 
 Source_T = TypeVar("Source_T")
 Parser_T = TypeVar("Parser_T")

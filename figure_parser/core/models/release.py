@@ -27,3 +27,8 @@ class Release(BaseModel):
     """Annotate the price is including tax or not."""
     announced_at: Optional[date] = None
     """The announcing date of the release."""
+
+    def set_price(self, price_tag: PriceTag):
+        self.price = price_tag.price
+        self.tax_including = price_tag.tax_including
+        return self

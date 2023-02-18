@@ -22,3 +22,4 @@
 | [KOTOBUKIYA](https://www.kotobukiya.co.jp/product-category/figure/)  |                |
 | [MegaHouse](https://www.megahouse.co.jp/products/highqualityfigure/) |                |
 | [Lechery](https://lechery.biz/)                                      |                |
+| [Bellfine](https://shop.bellfine.co.jp/view/category/figures)        |                |

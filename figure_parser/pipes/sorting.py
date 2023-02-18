@@ -1,7 +1,7 @@
 from datetime import date
 from typing import TypeVar
 
-from figure_parser.core.entities import ProductBase, Release
+from figure_parser.core.models import ProductBase, Release
 
 Release_T = TypeVar("Release_T", bound=Release)
 

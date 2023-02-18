@@ -14,7 +14,6 @@ from urllib.parse import urlparse
 
 import validators
 
-from .entities.product import ProductBase
 from .exceptions import (
     DomainInvalid,
     DuplicatedDomainRegistration,
@@ -22,6 +21,7 @@ from .exceptions import (
     FailedToProcessProduct,
     UnregisteredDomain,
 )
+from .models.product import ProductBase
 from .parser_base import AbstractProductParser
 
 Source_T = TypeVar("Source_T")

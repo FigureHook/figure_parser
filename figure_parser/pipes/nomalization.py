@@ -2,7 +2,7 @@ import re
 import unicodedata
 from typing import Any, Callable, TypeVar, overload
 
-from figure_parser.core.entities import ProductBase
+from figure_parser.core.models import ProductBase
 
 T = TypeVar("T")
 NormalizeFunc = Callable[[T], T]

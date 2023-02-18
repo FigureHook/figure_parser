@@ -2,8 +2,8 @@ import pytest
 from pytest_mock import MockerFixture
 
 from figure_parser import GeneralBs4ProductFactory
-from figure_parser.core.entities import ProductBase
 from figure_parser.core.factory_base import GenericProductFactory
+from figure_parser.core.models import ProductBase
 from figure_parser.core.parser_base import AbstractProductParser
 from figure_parser.exceptions import (
     DomainInvalid,

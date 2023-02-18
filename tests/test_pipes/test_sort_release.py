@@ -1,7 +1,7 @@
 import random
 from datetime import date
 
-from figure_parser.core.entities import ProductBase, Release
+from figure_parser.core.models import ProductBase, Release
 from figure_parser.pipes import sort_releases
 
 
