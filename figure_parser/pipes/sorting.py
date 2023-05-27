@@ -7,9 +7,7 @@ Release_T = TypeVar("Release_T", bound=Release)
 
 
 def _sort_release(release: Release):
-    if release.release_date:
-        return release.release_date
-    return date.fromtimestamp(0)
+    return release.release_date or date.fromtimestamp(0)
 
 
 def sort_releases(product_item: ProductBase) -> ProductBase:

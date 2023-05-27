@@ -127,10 +127,12 @@ class GenericProductFactory(Generic[Source_T], ABC):
     def add_pipe(self, pipe: Callable[[ProductBase], ProductBase], order: int):
         self._pipes.append((pipe, order))
         self._is_pipes_sorted = False
+        return self
 
     def add_pipes(self, *pipes: Tuple[Callable[[ProductBase], ProductBase], int]):
         self._pipes.extend(pipes)
         self._is_pipes_sorted = False
+        return self
 
     def register_parser(
         self, domain: str, parser: Type[AbstractProductParser[Source_T]]
@@ -143,6 +145,7 @@ class GenericProductFactory(Generic[Source_T], ABC):
             raise DuplicatedDomainRegistration(f"{domain} was registered.")
 
         self._parser_registration.setdefault(domain, parser)
+        return self
 
     def get_parser_by_domain(
         self, domain: str
