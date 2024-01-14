@@ -36,7 +36,7 @@ def _normalize(value: Any, normalize_func: NormalizeFunc[Any]) -> Any:
     if isinstance(value, str):
         return normalize_func(value)
     if isinstance(value, list):
-        if all([type(v) is str for v in value]):
+        if all(type(v) is str for v in value):
             return [normalize_func(v) for v in value]
     return value
 
@@ -54,10 +54,9 @@ def general_normalize(value: str) -> str:
 
 def worker_normalize(value: str) -> str:
     # add space before bracket
-    value = value.replace("[", "(")
-    value = value.replace("]", ")")
-    value = value.replace("{", "(")
-    value = value.replace("]", ")")
+    value = (
+        value.replace("[", "(").replace("]", ")").replace("{", "(").replace("]", ")")
+    )
     value = re.sub(r"(?<![\s])\(", " (", value, 0)
 
     return value.strip()
