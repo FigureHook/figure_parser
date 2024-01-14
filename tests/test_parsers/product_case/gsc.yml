@@ -91,23 +91,26 @@
   images: https://images.goodsmile.info/cgm/images/product/20200318/9361/68599/large/a8b96d40fe85c254fa1cdb15b32e26df.jpg
   maker_id: "9361"
   manufacturer: ＫＡＤＯＫＡＷＡ
-  name: セイバーオルタ 着物Ver.
+  name: セイバーオルタ 着物ver.
   og_image: http://images.goodsmile.info/cgm/images/product/20200318/9361/68610/medium/d2e96f23dd8c649c8e8c741ebb7d7f74.jpg
   order_period:
-    end: 2020-06-10 21:00:00
-    start: 2020-03-26 12:00:00
+    end: 2023-06-21 21:00:00
+    start: 2023-05-16 12:00:00
   paintwork:
-    - かわも（リボルブ）
+    - かわも（クレーネル）
   release_infos:
     - price: 24000
       release_date: 2020-12-01 00:00:00
       tax_including: true
+    - price: 24000
+      release_date: 2024-01-01 00:00:00
+      tax_including: true
   releaser: KADOKAWA
-  rerelease: false
+  rerelease: true
   scale: 7
   sculptor:
-    - のぶた（リボルブ）
-  series: 劇場版Fate/stay night [Heaven's Feel]
+    - のぶた（クレーネル）
+  series: 劇場版「Fate/stay night [Heaven’s Feel]」
   size: 275
   thumbnail: http://images.goodsmile.info/cgm/images/product/20200318/9361/68610/medium/d2e96f23dd8c649c8e8c741ebb7d7f74.jpg
   url: https://www.goodsmile.info/ja/product/9361
